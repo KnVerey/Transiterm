@@ -3,6 +3,7 @@ Transiterm::Application.routes.draw do
   resources :users, except: [:index] do
     member do
       get :activate
+      get :unlock
     end
   end
   resources :sessions, only: [:create]

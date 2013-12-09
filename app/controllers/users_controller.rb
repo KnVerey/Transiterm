@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  skip_before_filter :require_login, only: [:new, :create, :activate]
+  skip_before_filter :require_login, only: [:new, :create, :activate, :unlock]
 
   def new
     @user = User.new
@@ -13,8 +13,21 @@ class UsersController < ApplicationController
     if (@user = User.load_from_activation_token(params[:id]))
       @user.activate!
       auto_login(@user)
-      redirect_to(user_path(@user), :notice => "Welcome, #{@user.first_name}! Your account was successfully activated.")
+      redirect_to(user_path(@user), notice: "Welcome, #{@user.first_name}! Your account was successfully activated.")
     else
+      flash[:alert] = "Activation token not found"
+      not_authenticated
+    end
+  end
+
+  def unlock
+    @user = User.load_from_unlock_token(params[:id])
+    if @user
+      @user.unlock!
+      auto_login(@user)
+      redirect_to(user_path(@user), notice: "Your account has been unlocked!")
+    else
+      flash[:alert] = "Unlock token not found"
       not_authenticated
     end
   end
