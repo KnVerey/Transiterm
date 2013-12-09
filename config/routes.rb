@@ -1,6 +1,10 @@
 Transiterm::Application.routes.draw do
   root to: 'sessions#new'
-  resources :users, except: [:index]
+  resources :users, except: [:index] do
+    member do
+      get :activate
+    end
+  end
   resources :sessions, only: [:create]
 
   get 'login' => 'sessions#new', :as => :login

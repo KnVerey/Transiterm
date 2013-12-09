@@ -1,12 +1,22 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  skip_before_filter :require_login, only: [:new, :create]
+  skip_before_filter :require_login, only: [:new, :create, :activate]
+
+  def new
+    @user = User.new
+  end
 
   def show
   end
 
-  def new
-    @user = User.new
+  def activate
+    if (@user = User.load_from_activation_token(params[:id]))
+      @user.activate!
+      auto_login(@user)
+      redirect_to(user_path(@user), :notice => "Welcome, #{@user.first_name}! Your account was successfully activated.")
+    else
+      not_authenticated
+    end
   end
 
   def edit
@@ -17,7 +27,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to new_session_path, notice: 'Account created! Please follow the activation link in the email we just sent you.' }
+        format.html { redirect_to login_path, notice: 'Account created! Please follow the activation link in the email we just sent you.' }
         format.json { render action: 'show', status: :created, location: @user }
       else
         format.html { render action: 'new' }
