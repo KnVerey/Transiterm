@@ -36,11 +36,7 @@ group :development, :test do
 	gem 'rspec-rails'
 	gem 'factory_girl_rails', '~> 4.3.0'
 	gem 'pry'
-end
-
-group :test do
   gem 'cucumber-rails', :require => false
-  # database_cleaner is not required, but highly recommended
   gem 'database_cleaner'
 end
 
