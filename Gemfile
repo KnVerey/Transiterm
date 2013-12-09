@@ -40,6 +40,8 @@ group :development, :test do
   gem 'database_cleaner'
 end
 
+gem 'sorcery'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
