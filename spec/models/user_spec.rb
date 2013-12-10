@@ -1,5 +1,16 @@
 require 'spec_helper'
 
 describe User do
-  pending "add some examples to (or delete) #{__FILE__}"
+	let!(:katrina) { FactoryGirl.create(:user) }
+
+  it 'must have a first name' do
+  	user = User.new
+  	user.first_name.should == nil
+  	user.first_name.should_not == "something"
+  	user.should_not be_valid
+  end
+
+  it 'should have saved user to db if valid fields provided' do
+  	katrina.first_name.should_not == nil
+  end
 end
