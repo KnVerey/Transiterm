@@ -1,5 +1,5 @@
 Transiterm::Application.routes.draw do
-  root to: 'sessions#new'
+  root to: 'pages#home', as: :home
 
   resources :users, except: [:index] do
     member do
