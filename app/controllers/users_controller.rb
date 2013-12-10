@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     if (@user = User.load_from_activation_token(params[:id]))
       @user.activate!
       auto_login(@user)
-      redirect_to(user_path(@user), notice: "Welcome, #{@user.first_name}! Your account was successfully activated.")
+      redirect_to(user_collections_path(@user), notice: "Welcome, #{@user.first_name}! Your account was successfully activated.")
     else
       flash[:alert] = "Activation token not found"
       not_authenticated
@@ -25,7 +25,7 @@ class UsersController < ApplicationController
     if @user
       @user.unlock!
       auto_login(@user)
-      redirect_to(user_path(@user), notice: "Your account has been unlocked!")
+      redirect_to(user_collections_path(@user), notice: "Your account has been unlocked!")
     else
       flash[:alert] = "Unlock token not found"
       not_authenticated
