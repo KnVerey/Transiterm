@@ -1,12 +1,16 @@
 Transiterm::Application.routes.draw do
   root to: 'pages#home', as: :home
+  get 'msaccess' => 'pages#msaccess', as: :msaccess
 
   resources :users, except: [:index] do
     member do
       get :activate
       get :unlock
     end
+
+    resources :collections
   end
+
 
   resources :password_resets, only: [:create, :edit, :update, :new]
 
