@@ -2,12 +2,11 @@
 
 FactoryGirl.define do
   factory :collection do
-    name ""
-    description ""
-    language1_id ""
-    language2_id ""
-    field1_id ""
-    field2_id ""
-    sharable false
+    title "Animals"
+    description "Fuzzy things on paws"
+    english true
+    french true
+    spanish false
+    user
   end
 end

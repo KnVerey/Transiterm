@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131210190535) do
+ActiveRecord::Schema.define(version: 20131210210745) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,16 @@ ActiveRecord::Schema.define(version: 20131210190535) do
   create_table "collections", force: true do |t|
     t.string   "title"
     t.text     "description"
-    t.integer  "language_pair_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "english"
+    t.boolean  "french"
+    t.boolean  "spanish"
+  end
+
+  create_table "domains", force: true do |t|
+    t.string   "name"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -28,6 +37,13 @@ ActiveRecord::Schema.define(version: 20131210190535) do
   create_table "language_pairs", force: true do |t|
     t.string "language1"
     t.string "language2"
+  end
+
+  create_table "sources", force: true do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "term_records", force: true do |t|
