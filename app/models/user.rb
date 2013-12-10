@@ -10,4 +10,6 @@ class User < ActiveRecord::Base
   validates :last_name, presence: true
 
   has_many :collections, dependent: :destroy
+  has_many :sources, dependent: :destroy
+  has_many :domains, dependent: :destroy
 end
