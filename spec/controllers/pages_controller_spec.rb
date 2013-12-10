@@ -2,20 +2,36 @@ require 'spec_helper'
 
 describe PagesController do
 
+	describe "GET home" do
+		it "should render home template when no current_user" do
+			get :home
+			expect(response).to render_template("home")
+		end
 
+		it 'should redirect when logged in' do
+			user = FactoryGirl.create(:user)
+			login_user(user)
 
-	it "should render home template when no current_user" do
-		get :home
-		expect(response).to render_template("home")
+			get :home
+
+			expect(response).to redirect_to("/users/#{user.id}/collections")
+		end
 	end
 
-	it 'should redirect when logged in' do
-		user = FactoryGirl.create(:user)
-		login_user(user)
+	describe "GET access" do
+		it "should render access template when no current_user" do
+			get :msaccess
+			expect(response).to render_template("msaccess")
+		end
 
-		get :home
+		it "should render access template when logged in" do
+			user = FactoryGirl.create(:user)
+			login_user(user)
 
-		expect(response).to redirect_to("/users/#{user.id}/collections")
+			get :msaccess
+
+			expect(response).to render_template("msaccess")
+		end
 	end
 
 end
