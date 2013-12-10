@@ -1,6 +1,7 @@
 Transiterm::Application.routes.draw do
-  root to: 'pages#home', as: :home
+  root to: 'pages#home'
   get 'msaccess' => 'pages#msaccess', as: :msaccess
+  get 'home' => 'pages#home', as: :home
 
   resources :users, except: [:index] do
     member do
@@ -10,7 +11,6 @@ Transiterm::Application.routes.draw do
 
     resources :collections
   end
-
 
   resources :password_resets, only: [:create, :edit, :update, :new]
 
