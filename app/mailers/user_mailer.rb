@@ -9,21 +9,28 @@ class UserMailer < ActionMailer::Base
   def activation_needed_email(user)
     @user = user
     @url  = "http://0.0.0.0:3000/users/#{@user.activation_token}/activate"
-    mail(:to => user.email,
+    mail(:to => @user.email,
          :subject => "Welcome to Transiterm")
   end
 
   def activation_success_email(user)
     @user = user
     @url  = "http://0.0.0.0:3000/login"
-    mail(:to => user.email,
+    mail(:to => @user.email,
          :subject => "Your Transiterm account is now active")
   end
 
   def send_unlock_token_email(user)
     @user = user
     @url = "http://0.0.0.0:3000/users/#{@user.unlock_token}/unlock"
-    mail(to: user.email, subject: "Action needed: Your Transiterm account has been locked")
+    mail(to: @user.email, subject: "Action needed: Your Transiterm account has been locked")
+  end
+
+  def reset_password_email(user)
+    @user = user
+    @url = "http://0.0.0.0:3000/password_resets/#{@user.reset_password_token}/edit"
+    mail(:to => @user.email,
+       :subject => "Your password has been reset")
   end
 
 end

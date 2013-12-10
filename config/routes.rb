@@ -1,13 +1,16 @@
 Transiterm::Application.routes.draw do
   root to: 'sessions#new'
+
   resources :users, except: [:index] do
     member do
       get :activate
       get :unlock
     end
   end
-  resources :sessions, only: [:create]
 
+  resources :password_resets, only: [:create, :edit, :update, :new]
+
+  resources :sessions, only: [:create]
   get 'login' => 'sessions#new', :as => :login
   post 'logout' => 'sessions#destroy', :as => :logout
 
