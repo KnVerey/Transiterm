@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
 
   def create
     if @user = login(params[:email], params[:password], params[:remember])
-      redirect_back_or_to(user_collections_path(@user), notice: 'Login successful')
+      redirect_to user_collections_path(@user), flash: {success: 'Login successful'}
     else
       flash.now[:alert] = "Login failed"
       render action: "new"
