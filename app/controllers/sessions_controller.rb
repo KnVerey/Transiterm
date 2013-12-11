@@ -10,7 +10,14 @@ class SessionsController < ApplicationController
     if @user = login(params[:email], params[:password], params[:remember])
       redirect_to user_collections_path(@user), flash: {success: 'Login successful'}
     else
-      flash.now[:alert] = "Login failed"
+      @user = User.find_by email: params[:email]
+
+      if @user && @user.unlock_token
+        flash.now[:alert] = "Your account has been locked. Please check your email for more information."
+      else
+        flash.now[:alert] = "Login failed"
+      end
+
       render action: "new"
     end
   end

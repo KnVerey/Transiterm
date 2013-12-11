@@ -12,7 +12,6 @@ describe SessionsController do
 
   describe "POST create" do
     it "redirects to users's collections on login success" do
-
       post :create, email: user.email, password: user.password
 
       expect(response).to redirect_to("/users/#{user.id}/collections")
@@ -36,6 +35,13 @@ describe SessionsController do
       post :create, email: "notvalid@email.com", password: "notvalid"
 
       flash[:alert].should_not be_nil
+    end
+
+    it "tells the user they're locked out when applicable" do
+      user.unlock_token = "a_TOKEN"
+      post :create, email: user.email, password: "notvalid"
+
+      expect(flash[:alert]).to match(/locked/i)
     end
   end
 
