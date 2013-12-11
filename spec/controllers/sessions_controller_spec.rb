@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe SessionsController do
+  let!(:user) { FactoryGirl.create(:user) }
 
   describe "GET new" do
     it "assigns a virtual user" do
@@ -11,7 +12,6 @@ describe SessionsController do
 
   describe "POST create" do
     it "redirects to users's collections on login success" do
-      user = FactoryGirl.create(:user)
 
       post :create, email: user.email, password: user.password
 
@@ -20,7 +20,6 @@ describe SessionsController do
     end
 
     it "flashes login success message" do
-      user = FactoryGirl.create(:user)
 
       post :create, email: user.email, password: user.password
 
@@ -42,7 +41,7 @@ describe SessionsController do
 
   describe "POST destroy" do
     it "redirects to the login page on logout" do
-      login_user(FactoryGirl.create(:user))
+      login_user(user)
       post :destroy
 
       expect(response).to redirect_to("/login")
