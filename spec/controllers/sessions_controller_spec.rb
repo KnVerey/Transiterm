@@ -9,16 +9,17 @@ describe SessionsController do
     end
   end
 
-  describe "GET create" do
-    xit "redirects to users's collections on login success" do
+  describe "POST create" do
+    it "redirects to users's collections on login success" do
       user = FactoryGirl.create(:user)
 
       post :create, email: user.email, password: user.password
 
       expect(response).to redirect_to("/users/#{user.id}/collections")
+
     end
 
-    xit "flashes login success message" do
+    it "flashes login success message" do
       user = FactoryGirl.create(:user)
 
       post :create, email: user.email, password: user.password
@@ -39,10 +40,12 @@ describe SessionsController do
     end
   end
 
-  describe "GET 'destroy'" do
-    xit "returns http success" do
-      get 'destroy'
-      response.should be_success
+  describe "POST destroy" do
+    it "redirects to the login page on logout" do
+      login_user(FactoryGirl.create(:user))
+      post :destroy
+
+      expect(response).to redirect_to("/login")
     end
   end
 
