@@ -151,4 +151,67 @@ describe UsersController do
     end
   end
 
+  describe "GET activate" do
+    before(:each) do
+      @activate_me = FactoryGirl.create(:inactive_user, email: "email#{rand(1000)}@test.com")
+    end
+
+    describe "with a valid token" do
+      it "logs the user in" do
+        get :activate, {:id => @activate_me.activation_token}
+        expect(controller.current_user).to_not be_false
+      end
+
+      it "redirects to the user's collections" do
+        get :activate, {:id => @activate_me.activation_token}
+        expect(response).to redirect_to("/users/#{@activate_me.id}/collections")
+      end
+    end
+
+    describe "with invalid token" do
+      it "alerts the user of a problem with token" do
+        User.any_instance.stub(:load_from_activation_token).and_return(false)
+        get :activate, {id: "invalid_id"}
+        expect(flash[:alert]).to match(/token/i)
+      end
+
+      it "redirects to the login screen" do
+        User.any_instance.stub(:load_from_activation_token).and_return(false)
+        get :activate, {id: "invalid_id"}
+        expect(response).to redirect_to("/login")
+      end
+    end
+  end
+
+  describe "GET unlock" do
+    before(:each) do
+      @unlock_me = FactoryGirl.create(:locked_user, email: "email#{rand(1000)}@test.com")
+    end
+
+    describe "with a valid token" do
+      it "logs the user in" do
+        get :unlock, {:id => @unlock_me.unlock_token}
+        expect(controller.current_user).to_not be_false
+      end
+
+      it "redirects to the user's collections" do
+        get :unlock, {:id => @unlock_me.unlock_token}
+        expect(response).to redirect_to("/users/#{@unlock_me.id}/collections")
+      end
+    end
+
+    describe "with invalid token" do
+      it "alerts the user of a problem with token" do
+        User.any_instance.stub(:load_from_unlock_token).and_return(false)
+        get :unlock, {id: "invalid_id"}
+        expect(flash[:alert]).to match(/token/i)
+      end
+
+      it "redirects to the login screen" do
+        User.any_instance.stub(:load_from_unlock_token).and_return(false)
+        get :unlock, {id: "invalid_id"}
+        expect(response).to redirect_to("/login")
+      end
+    end
+  end
 end
