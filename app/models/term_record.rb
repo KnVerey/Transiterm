@@ -8,6 +8,7 @@ class TermRecord < ActiveRecord::Base
 
 	validate :correct_languages_present
 
+	private
 	def correct_languages_present
 		result = ["french","english","spanish"].detect do |language|
 			self.collection.send(language) && self.send(language).empty?
