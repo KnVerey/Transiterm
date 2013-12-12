@@ -11,37 +11,44 @@ describe SessionsController do
   end
 
   describe "POST create" do
-    it "redirects to users's collections on login success" do
-      post :create, email: user.email, password: user.password
+    describe "when account found" do
+      it "redirects to users's collections on login success" do
+        controller.stub(:login).and_return(User.last)
 
-      expect(response).to redirect_to("/users/#{user.id}/collections")
+        post :create, email: user.email, password: user.password
 
+        expect(response).to redirect_to("/users/#{user.id}/collections")
+      end
+
+      it "flashes login success message" do
+        controller.stub(:login).and_return(User.last)
+
+        post :create, email: user.email, password: user.password
+
+        flash[:success].should_not be_nil
+      end
     end
 
-    it "flashes login success message" do
+    describe "when login params invalid" do
 
-      post :create, email: user.email, password: user.password
+      it "renders new when login failed" do
+        post :create, email: "notvalid@email.com", password: "notvalid"
 
-      flash[:success].should_not be_nil
-    end
+        expect(response).to render_template("new")
+      end
 
-    it "renders new when login failed" do
-      post :create, email: "notvalid@email.com", password: "notvalid"
+      it "flashes failure message on login failure" do
+        post :create, email: "notvalid@email.com", password: "notvalid"
 
-      expect(response).to render_template("new")
-    end
+        flash[:alert].should_not be_nil
+      end
 
-    it "flashes failure message on login failure" do
-      post :create, email: "notvalid@email.com", password: "notvalid"
+      it "tells the user they're locked out when applicable" do
+        locked_user = FactoryGirl.create(:locked_user)
+        post :create, email: locked_user.email, password: "notvalid"
 
-      flash[:alert].should_not be_nil
-    end
-
-    it "tells the user they're locked out when applicable" do
-      user.unlock_token = "a_TOKEN"
-      post :create, email: user.email, password: "notvalid"
-
-      expect(flash[:alert]).to match(/locked/i)
+        expect(flash[:alert]).to match(/locked/i)
+      end
     end
   end
 
