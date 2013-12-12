@@ -8,14 +8,14 @@ class UserMailer < ActionMailer::Base
   #
   def activation_needed_email(user)
     @user = user
-    @url  = "http://0.0.0.0:3000/users/#{@user.activation_token}/activate"
+    @url  = "#{ENV['ROOT_URL']}/users/#{@user.activation_token}/activate"
     mail(:to => @user.email,
          :subject => "Welcome to Transiterm")
   end
 
   def activation_success_email(user)
     @user = user
-    @url  = "http://0.0.0.0:3000/login"
+    @url  = "#{ENV['ROOT_URL']}/login"
     mail(:to => @user.email,
          :subject => "Your Transiterm account is now active")
   end
