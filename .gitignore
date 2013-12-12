@@ -16,3 +16,31 @@
 /tmp
 
 *.todo
+config/database.yml
+config/google_analytics.yml
+
+#FROM GITHUB'S GITIGNORE
+
+*.rbc
+*.sassc
+.sass-cache
+capybara-*.html
+.rspec
+/log
+/public/system
+/coverage/
+/spec/tmp
+**.orig
+rerun.txt
+pickle-email-*.html
+config/initializers/secret_token.rb
+
+## Environment normalisation:
+/.bundle
+/vendor/bundle
+
+# these should all be checked in to normalise the environment:
+# Gemfile.lock, .ruby-version, .ruby-gemset
+
+# unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
+.rvmrc
