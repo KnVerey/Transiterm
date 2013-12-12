@@ -40,7 +40,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to login_path, notice: 'Account created! Please follow the activation link in the email we just sent you.' }
+        format.html { redirect_to login_path, flash: { success: 'Account created! Please follow the activation link in the email we just sent you.'} }
         format.json { render action: 'show', status: :created, location: @user }
       else
         format.html { render action: 'new' }
