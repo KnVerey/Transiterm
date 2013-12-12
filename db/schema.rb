@@ -34,11 +34,6 @@ ActiveRecord::Schema.define(version: 20131210210745) do
     t.datetime "updated_at"
   end
 
-  create_table "language_pairs", force: true do |t|
-    t.string "language1"
-    t.string "language2"
-  end
-
   create_table "sources", force: true do |t|
     t.string   "name"
     t.integer  "user_id"
