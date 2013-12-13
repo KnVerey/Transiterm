@@ -3,7 +3,7 @@ require 'spec_helper'
 describe CollectionsController do
 
   let(:person) { FactoryGirl.create(:user, email: "email#{rand(1000)}@test.com") }
-  let(:person_collection) { FactoryGirl.create(:collection, user: person) }
+  let!(:person_collection) { FactoryGirl.create(:collection, user: person) }
 
   let(:valid_attributes) { {
   	title: "Music",
@@ -118,10 +118,10 @@ describe CollectionsController do
 			  expect(response).to redirect_to("/login")
 			end
 
-			xit "updates the current user's specified collection" do
+			it "updates the current user's specified collection" do
 			  login_user(person)
+			  person_collection.should_receive(:update).with({title: "Coin collecting", description: "New hobby"})
 			  put :update, user_id: person.to_param, id: person_collection.to_param, collection: {title: "Coin collecting", description: "New hobby"}
-			  person_collection.should_receive(:update).with({"title"=>"Coin collecting", "description"=>"New hobby"})
 			end
 
 			it "redirects to the user's collections if success" do
@@ -155,11 +155,12 @@ describe CollectionsController do
       assigns(:collection).should eq(person_collection)
     end
 
-    xit "destroys the requested collection" do
+    it "destroys the requested collection" do
       login_user(person)
       expect {
         delete :destroy, {id: person_collection.to_param, user_id: person.to_param}
       }.to change(Collection, :count).by(-1)
+      puts Collection.count
     end
 
     it "redirects to the user's collections page" do
