@@ -1,29 +1,65 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Transiterm</title>
-  <%= stylesheet_link_tag    "application", media: "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-  <div id="nav">
-    <%= image_tag("T.png", class: "logo",alt:"Transiterm logo") %>
-    <% if current_user %>
-      <%= link_to "Account / Settings", edit_user_path(current_user.id) %>
-      <%= link_to "Logout", :logout, method: :post %>
-    <% else %>
-      <%= link_to "Register", new_user_path %> |
-      <%= link_to "Login", :login %>
-    <% end %>
-  </div>
-  <div>
-    <p id="notice"><%= flash[:notice] %></p>
-    <p id="alert"><%= flash[:alert] %></p>
-    <p id="success"><%= flash[:success] %></p>
-  </div>
+<html class="no-js full-height" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<%= yield %>
+    <title><%= content_for?(:title) ? yield(:title) : "Transiterm" %></title>
+    <%= stylesheet_link_tag "application", media: "all" %>
+    <%= csrf_meta_tags %>
+  </head>
 
-</body>
+  <body class="full-height">
+
+    <div class="row full-height no-margin">
+      <div class="small-4 medium-3 columns sidebar full-height no-padding">
+
+        <!-- Icon row -->
+        <div class="row">
+          <div class="small-11 small-offset-1 small-centered columns">
+            <%= image_tag("T.png", class: "logo logo-large", alt:"Transiterm logo") %>
+          </div>
+        </div>
+
+        <!-- Login/settings row -->
+        <div class="row cling-bottom settings">
+          <div class="small-6 columns">
+            <%= link_to "My Transiterm", edit_user_path(current_user) %>
+          </div>
+          <div class="small-6 columns">
+            <%= link_to "Log out", logout_path, method: :post %>
+          </div>
+        </div>
+      </div>
+
+      <main class="small-7 small-offset-1 medium-8 medium-offset-1 columns full-height">
+
+        <!-- Alerts section -->
+        <div class="row">
+          <div class="small-12 small-centered columns"
+            <% if flash[:notice] %>
+              <div data-alert class="alert-box info">
+                <%= flash[:notice] %>
+                <a href="#" class="close">&times;</a>
+              </div>
+            <% elsif flash[:alert] %>
+              <div data-alert class="alert-box alert">
+                <%= flash[:alert] %>
+                <a href="#" class="close">&times;</a>
+              </div>
+            <% elsif flash[:success] %>
+              <div data-alert class="alert-box success">
+                <%= flash[:success] %>
+                <a href="#" class="close">&times;</a>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <%= yield %>
+      </main>
+
+    </div>
+    <%= javascript_include_tag "application" %>
+  </body>
 </html>

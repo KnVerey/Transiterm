@@ -1,5 +1,49 @@
-.logo {
+.full-height {
+	height: 100%;
+}
+
+.no-margin {
+	margin: 0;
+}
+
+.no-padding {
+	padding: 0;
+}
+
+.sidebar {
+	background-color: $c-bg-primary;
+	color: $c-text-primary;
+	height: 100%;
+	text-align: center;
+}
+
+
+.logo-large {
+		max-width: 90%;
+		margin: 1em 0;
+		background-color: white;
+		border-radius: 5px;
+		padding:1em;
+	}
+
+.logo-small {
 	width: 36px;
 	height: 36px;
 	margin: 3px;
+}
+
+.settings {
+	font-size: 0.75em;
+}
+
+.row.cling-bottom {
+	background-color: $c-bg-secondary;
+	color: $c-text-secondary;
+
+	text-align: center;
+	position: absolute;
+	width:100%;
+	bottom: 0;
+	padding: 0.75em 0;
+	margin:0;
 }
