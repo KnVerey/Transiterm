@@ -33,7 +33,7 @@ describe UsersController do
 
     it "assigns a new user as @user" do
       get :new
-      assigns(:user).kind_of?(User).should be_true
+      assigns(:user).should be_a_new(User)
     end
   end
 
