@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title><%= content_for?(:title) ? yield(:title) : "Transiterm" %></title>
+    <%= stylesheet_link_tag "application", media: "all" %>
+    <%= csrf_meta_tags %>
+  </head>
+
+  <body>
+    <nav class="top-bar" data-topbar>
+      <ul class="title-area">
+        <li class="left"><%= link_to (image_tag("T.png", class: "logo",alt:"Transiterm logo")), home_path %>Transiterm</li>
+        <li class="name"><h1><a href="<%= home_path %>"></a></h1></li>
+
+        <li class="toggle-topbar menu-icon">
+          <a href="#">
+            <span>Menu</span>
+          </a>
+        </li>
+      </ul>
+
+      <section class="top-bar-section">
+        <ul class="right">
+          <li class="active"><%= link_to "Home", home_path %></li>
+          <li><%= link_to "Register", new_user_path %></li>
+          <li><%= link_to "Login", :login %></li>
+        </ul>
+      </section>
+    </nav>
+
+
+    <div>
+      <% if flash[:notice] %>
+        <div data-alert class="alert-box info">
+          <%= flash[:notice] %>
+          <a href="#" class="close">&times;</a>
+        </div>
+      <% elsif flash[:alert] %>
+        <div data-alert class="alert-box alert">
+          <%= flash[:alert] %>
+          <a href="#" class="close">&times;</a>
+        </div>
+      <% elsif flash[:success] %>
+        <div data-alert class="alert-box success">
+          <%= flash[:success] %>
+          <a href="#" class="close">&times;</a>
+        </div>
+      <% end %>
+    </div>
+
+  <%= yield %>
+      <%= javascript_include_tag "application" %>
+  </body>
+</html>
