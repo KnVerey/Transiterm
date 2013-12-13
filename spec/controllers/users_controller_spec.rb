@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe UsersController do
 
-  let(:person) { FactoryGirl.create(:user) }
+  let(:person) { FactoryGirl.create(:user, email: "email#{rand(1000)}@test.com") }
   let(:valid_attributes) { {
     first_name: "Test",
     last_name: "Test",

@@ -38,14 +38,10 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to login_path, flash: { success: 'Account created! Please follow the activation link in the email we just sent you.'} }
-        format.json { render action: 'show', status: :created, location: @user }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.save
+      redirect_to login_path, flash: { success: 'Account created! Please follow the activation link in the email we just sent you.'}
+    else
+      render action: 'new'
     end
   end
 
@@ -63,10 +59,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
-    respond_to do |format|
-      format.html { redirect_to home_path }
-      format.json { head :no_content }
-    end
+    redirect_to home_path
   end
 
   private
