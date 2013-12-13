@@ -51,7 +51,11 @@
       <% end %>
     </div>
 
-  <%= yield %>
-      <%= javascript_include_tag "application" %>
+    <main class="row">
+      <div class="medium-8 medium-offset-2 columns">
+        <%= yield %>
+      </div>
+    </main>
+    <%= javascript_include_tag "application" %>
   </body>
 </html>
