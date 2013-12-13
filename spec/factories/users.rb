@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :user do
   	first_name "Katrina"
   	last_name "Verey"
-  	email "kn.verey@gmail.com"
+  	email { "test#{rand(1000)}@test.com" }
   	password "password1"
   	password_confirmation "password1"
   	after(:create) { |user| user.activate! }
@@ -11,7 +11,7 @@ FactoryGirl.define do
   factory :inactive_user, class: User do
   	first_name "Kate"
   	last_name "Smith"
-  	email "user@gmail.com"
+    email { "test#{rand(1000)}@test.com" }
   	password "password1"
   	password_confirmation "password1"
   end
@@ -19,7 +19,7 @@ FactoryGirl.define do
   factory :locked_user, class: User do
     first_name "Jane"
     last_name "Miller"
-    email "user@gmail.com"
+    email { "test#{rand(1000)}@test.com" }
     password "password1"
     password_confirmation "password1"
     after(:create) { |user| user.send("lock!") }
