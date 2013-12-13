@@ -3,5 +3,6 @@
 FactoryGirl.define do
   factory :domain do
     name "MyString"
+    user
   end
 end
