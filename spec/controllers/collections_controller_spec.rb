@@ -75,10 +75,10 @@ describe CollectionsController do
 		end
 
 		describe "with invalid params" do
-			it "assigns a newly created by unsaved collection as @collection" do
+			it "assigns a newly created but unsaved collection as @collection" do
 			  login_user(person)
-			  User.any_instance.stub(:save).and_return(false)
-			  post :create, user_id: person.to_param, collection: { description: "bad params" }
+			  Collection.any_instance.stub(:save).and_return(false)
+			  post :create, user_id: person.to_param, collection: {nothing: "bad params"}
 			  assigns(:collection).should be_a_new(Collection)
 			end
 
@@ -97,10 +97,75 @@ describe CollectionsController do
 		  expect(response).to redirect_to("/login")
 		end
 
+    it "sets @collection to requested collection" do
+      login_user(person)
+      get :edit, { user_id: person.id, id: person_collection.to_param }
+      assigns(:collection).should eq(person_collection)
+    end
+
 		it "renders the view if user logged in" do
 			login_user(person)
 		  get :edit, { user_id: person.to_param, id: person_collection.to_param }
 			expect(response.status).to eq(200)
 		end
 	end
+
+	describe "PUT update" do
+		describe "with valid params" do
+
+			it "redirects if user not logged in" do
+		  	put :update, { user_id: person.to_param, id: person_collection.to_param }
+			  expect(response).to redirect_to("/login")
+			end
+
+			xit "updates the current user's specified collection" do
+			  login_user(person)
+			  put :update, user_id: person.to_param, id: person_collection.to_param, collection: {title: "Coin collecting", description: "New hobby"}
+			  person_collection.should_receive(:update).with({"title"=>"Coin collecting", "description"=>"New hobby"})
+			end
+
+			it "redirects to the user's collections if success" do
+			  login_user(person)
+			  Collection.any_instance.stub(:update).and_return(true)
+			  put :update, user_id: person.to_param, id: person_collection.to_param, collection: {title: "Coin collecting", description: "New hobby"}
+			  expect(response).to redirect_to("/users/#{person.id}/collections")
+			end
+		end
+
+		describe "with invalid params" do
+			it "re-renders the 'edit' template" do
+			  login_user(person)
+			  Collection.any_instance.stub(:update).and_return(false)
+			  put :update, user_id: person.to_param, id: person_collection.to_param, collection: {invalid: "false"}
+			  expect(response).to render_template("edit")
+			end
+		end
+	end
+
+	describe "DELETE destroy" do
+
+		it "redirects if user not logged in" do
+	  	delete :destroy, { user_id: person.to_param, id: person_collection.to_param }
+		  expect(response).to redirect_to("/login")
+		end
+
+    it "sets @collection to requested collection" do
+      login_user(person)
+      delete :destroy, { user_id: person.id, id: person_collection.to_param }
+      assigns(:collection).should eq(person_collection)
+    end
+
+    xit "destroys the requested collection" do
+      login_user(person)
+      expect {
+        delete :destroy, {id: person_collection.to_param, user_id: person.to_param}
+      }.to change(Collection, :count).by(-1)
+    end
+
+    it "redirects to the user's collections page" do
+      login_user(person)
+      delete :destroy, {:user_id => person.to_param, id: person_collection.to_param}
+      response.should redirect_to("/users/#{person.id}/collections")
+    end
+  end
 end
