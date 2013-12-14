@@ -9,20 +9,20 @@
     <%= csrf_meta_tags %>
   </head>
 
-  <body class="full-height">
+  <body style="height: 100%">
 
     <div class="row full-height no-margin">
-      <div class="small-4 medium-3 columns sidebar full-height no-padding">
+      <div class="small-4 medium-3 columns no-padding sidebar" id="sidebar">
 
         <!-- Icon row -->
         <div class="row">
           <div class="small-11 small-offset-1 small-centered columns">
-            <%= image_tag("T.png", class: "logo logo-large", alt:"Transiterm logo") %>
+            <%= link_to image_tag("T.png", class: "logo logo-large", alt:"Transiterm logo"), user_collections_path(current_user) %>
           </div>
         </div>
 
         <!-- Login/settings row -->
-        <div class="row cling-bottom settings">
+        <div class="row cling-bottom settings full-width">
           <div class="small-6 columns">
             <%= link_to "My Transiterm", edit_user_path(current_user) %>
           </div>
@@ -32,11 +32,11 @@
         </div>
       </div>
 
-      <main class="small-7 small-offset-1 medium-8 medium-offset-1 columns full-height">
+      <main class="small-8 medium-9 columns full-height">
 
         <!-- Alerts section -->
         <div class="row">
-          <div class="small-12 small-centered columns"
+          <div class="small-12 small-centered columns">
             <% if flash[:notice] %>
               <div data-alert class="alert-box info">
                 <%= flash[:notice] %>
