@@ -111,10 +111,17 @@ describe UsersController do
         expect(response).to redirect_to("/login")
       end
 
-      it "redirects to the user page if success" do
+      it "redirects to the same page if success" do
         login_user(person)
         put :update, {:id => person.to_param, :user => valid_attributes}
-        response.should redirect_to("/users/#{person.id}")
+        response.should redirect_to("/users/#{person.id}/edit")
+      end
+
+      it "lets the user know it succeeded" do
+        login_user(person)
+        User.any_instance.stub(:update).and_return(true)
+        put :update, {:id => person.to_param, :user => valid_attributes}
+        expect(flash[:success]).to match(/update/i)
       end
     end
 
