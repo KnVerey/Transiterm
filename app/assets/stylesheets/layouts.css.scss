@@ -1,3 +1,12 @@
+html {
+	position: relative;
+}
+
+body {
+	height: 100%;
+	position: static;
+}
+
 .full-height {
 	min-height: 100% !important;
 }
