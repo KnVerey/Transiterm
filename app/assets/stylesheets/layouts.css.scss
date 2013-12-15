@@ -61,15 +61,14 @@ fieldset {
 
 .settings {
 	font-size: 0.75em;
+	background-color: $c-bg-secondary;
+	color: $c-text-secondary;
+	padding: 0.75em 0;
 }
 
 .row.cling-bottom {
-	background-color: $c-bg-secondary;
-	color: $c-text-secondary;
-
 	text-align: center;
 	position: absolute;
 	bottom: 0;
-	padding: 0.75em 0;
 	margin:0;
 }

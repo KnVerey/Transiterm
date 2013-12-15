@@ -21,43 +21,64 @@
           </div>
         </div>
 
-        <!-- Login/settings row -->
-        <div class="row cling-bottom settings full-width">
-          <div class="small-6 columns">
-            <%= link_to "My Transiterm", edit_user_path(current_user) %>
+        <!-- Collections list row -->
+        <% if @collections %>
+          <div class="row">
+            <div class="small-11 small-offset-1 small-centered columns">
+              <h5>My collections</h5>
+              <%= link_to "Search all", user_collections_path %>
+              <% @collections.each do |c| %>
+                <%= link_to "#{c.name}", user_collection_path(current_user, c) %>
+              <% end %>
+            </div>
           </div>
-          <div class="small-6 columns">
-            <%= link_to "Log out", logout_path, method: :post %>
+        <% end %>
+
+        <!-- Add buton and Login/settings row -->
+        <div class="row cling-bottom full-width">
+          <div class="small-12 columns full-width">
+            <%= link_to "Add collection", new_user_collection_path(current_user), class: "button tiny success" %>
+          </div>
+
+          <div class="small-12 columns settings full-width"
+            <div class="row">
+              <div class="small-6 columns">
+                <%= link_to "My Transiterm", edit_user_path(current_user) %>
+              </div>
+              <div class="small-6 columns">
+                <%= link_to "Log out", logout_path, method: :post %>
+              </div>
+            </div>
           </div>
         </div>
+
+        <main class="small-8 medium-9 columns full-height">
+
+          <!-- Alerts section -->
+          <div class="row">
+            <div class="small-12 small-centered columns">
+              <% if flash[:notice] %>
+                <div data-alert class="alert-box info">
+                  <%= flash[:notice] %>
+                  <a href="#" class="close">&times;</a>
+                </div>
+              <% elsif flash[:alert] %>
+                <div data-alert class="alert-box alert">
+                  <%= flash[:alert] %>
+                  <a href="#" class="close">&times;</a>
+                </div>
+              <% elsif flash[:success] %>
+                <div data-alert class="alert-box success">
+                  <%= flash[:success] %>
+                  <a href="#" class="close">&times;</a>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <%= yield %>
+        </main>
       </div>
-
-      <main class="small-8 medium-9 columns full-height">
-
-        <!-- Alerts section -->
-        <div class="row">
-          <div class="small-12 small-centered columns">
-            <% if flash[:notice] %>
-              <div data-alert class="alert-box info">
-                <%= flash[:notice] %>
-                <a href="#" class="close">&times;</a>
-              </div>
-            <% elsif flash[:alert] %>
-              <div data-alert class="alert-box alert">
-                <%= flash[:alert] %>
-                <a href="#" class="close">&times;</a>
-              </div>
-            <% elsif flash[:success] %>
-              <div data-alert class="alert-box success">
-                <%= flash[:success] %>
-                <a href="#" class="close">&times;</a>
-              </div>
-            <% end %>
-          </div>
-        </div>
-
-        <%= yield %>
-      </main>
 
     </div>
     <%= javascript_include_tag "application" %>
