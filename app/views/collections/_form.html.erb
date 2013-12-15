@@ -1,0 +1,64 @@
+<%= form_for([@user, @collection]) do |f| %>
+  <% if @collection.errors.any? %>
+    <div id="error_explanation">
+      <h2>Please fix these <%= pluralize(@collection.errors.count, "problem") %> to save your collection:</h2>
+
+      <ul>
+      <% @collection.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div class="row">
+  <div class="small-12 large-6 columns">
+    <div class="row">
+      <div class="small-3 columns">
+        <%= f.label :title, class: "right inline" %><br>
+      </div>
+      <div class="small-9 columns">
+        <%= f.text_field :title %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="small-3 columns">
+        <%= f.label :description, class: "right inline"  %><br>
+      </div>
+      <div class="small-9 columns">
+        <%= f.text_field :description %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="small-1 columns">
+        <%= f.check_box :english%><br>
+      </div>
+      <div class="small-3 columns">
+        <%= f.label :english %>
+      </div>
+
+      <div class="small-1 columns">
+        <%= f.check_box :french%><br>
+      </div>
+      <div class="small-3 columns">
+        <%= f.label :french %>
+      </div>
+
+      <div class="small-1 columns">
+        <%= f.check_box :spanish%><br>
+      </div>
+      <div class="small-3 columns">
+        <%= f.label :spanish %>
+      </div>
+  </div>
+
+    <div class="row">
+      <div class="actions small-12 columns">
+        <%= f.submit class: "button tiny right" %>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

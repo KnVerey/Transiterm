@@ -25,17 +25,17 @@
         <% if @collections %>
           <div class="row full-width no-margin">
             <h5>List collections with:</h5>
-            <div class="small-4 columns no-padding hide-for-large"><span class="language selector active">EN</span></div>
+            <a href="#"><div class="small-4 columns no-padding hide-for-large"><span class="language selector active">EN</span></div></a>
 
-            <div class="small-4 columns no-padding hide-for-large"><span class="language selector active">FR</span></div>
+            <a href="#"><div class="small-4 columns no-padding hide-for-large"><span class="language selector active">FR</span></div></a>
 
-            <div class="small-4 columns no-padding hide-for-large"><span class="language selector">SP</span></div>
+            <a href="#"><div class="small-4 columns no-padding hide-for-large"><span class="language selector">SP</span></div></a>
 
-            <div class="small-4 columns no-padding show-for-large"><span class="language selector active">English</span></div>
+            <a href="#"><div class="small-4 columns no-padding show-for-large"><span class="language selector active">English</span></div></a>
 
-            <div class="small-4 columns no-padding show-for-large"><span class="language selector active">French</span></div>
+            <a href="#"><div class="small-4 columns no-padding show-for-large"><span class="language selector active">French</span></div></a>
 
-            <div class="small-4 columns no-padding show-for-large"><span class="language selector">Spanish</span></div>
+            <a href="#"><div class="small-4 columns no-padding show-for-large"><span class="language selector">Spanish</span></div></a>
           </div>
 
           <div class="row full-width collections-container">
@@ -48,6 +48,8 @@
               <% end %>
             </div>
           </div>
+        <% else %>
+          <strong><%= link_to "←  Back to collections", user_collections_path(current_user), class: "button tiny c-secondary" %></strong>
         <% end %>
 
         <!-- Add buton and Login/settings row -->
@@ -55,8 +57,6 @@
           <div class="small-12 columns full-width">
             <% if @collections %>
               <%= link_to "Add collection", new_user_collection_path(current_user), class: "button tiny c-secondary" %>
-            <% else %>
-              <strong><%= link_to "←  Back to collections", user_collections_path(current_user), class: "button tiny c-secondary" %></strong>
             <% end %>
           </div>
 

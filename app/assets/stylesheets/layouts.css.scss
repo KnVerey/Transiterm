@@ -27,6 +27,12 @@ html {
 	max-width:100%;
 }
 
+.divider {
+	border-top: 1px solid;
+	height: 0;
+	margin-bottom: 1em;
+}
+
 form {
 	fieldset {
 		min-width: 365px;
@@ -87,11 +93,6 @@ form {
 		margin: 0.5em 0;
 	}
 
-	// .divider {
-	// 	border-top: 1px solid;
-	// 	height: 0;
-	// 	margin-bottom: 1em;
-	// }
 
 	.collections-container {
 		margin: 2em 0 0 0;
@@ -105,6 +106,11 @@ form {
 		.collection {
 			margin: 0.5em 1em;
 			padding: 0.25em;
+		}
+
+		#select-all {
+			border-radius: 3px;
+			margin: 0.5em 0.5em;
 		}
 	}
 
