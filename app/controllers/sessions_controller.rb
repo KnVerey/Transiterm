@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
 
   def create
     if @user = login(params[:email], params[:password], params[:remember])
-      redirect_to user_collections_path(@user), flash: {success: 'Login successful'}
+      redirect_to user_collections_path(@user), flash: {success: 'Welcome!'}
     else
       @user = User.find_by email: params[:email]
 
