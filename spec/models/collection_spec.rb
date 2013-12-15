@@ -2,10 +2,6 @@ require 'spec_helper'
 
 describe Collection do
 
-	before(:each) do
-		User.last.delete
-	end
-
 	it 'should not save collections with 0 languages' do
 		collection = FactoryGirl.build(:collection, english: false, french: false, spanish: false)
 
