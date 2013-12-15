@@ -66,6 +66,12 @@ describe CollectionsController do
 			  }.to change(Collection, :count).by(1)
 			end
 
+			it "saves current_user's id in the collection" do
+				login_user(person)
+				post :create, user_id: person.id, collection: valid_attributes
+				assigns(:collection).user_id.should eq(person.id)
+			end
+
 			it "redirects to the user's collections index" do
 			  login_user(person)
 			  Collection.any_instance.stub(:save).and_return(true)
