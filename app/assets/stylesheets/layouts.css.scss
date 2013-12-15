@@ -7,11 +7,11 @@
 }
 
 .no-margin {
-	margin: 0;
+	margin: 0 !important;
 }
 
 .no-padding {
-	padding: 0;
+	padding: 0 !important;
 }
 
 html {
@@ -52,21 +52,60 @@ form {
 	color: $c-text-primary;
 
 	h5 {
-		color: $c-text-primary;
+		// border: 2px solid black;
+		background-color: $c-bg-secondary;
+		box-shadow: 0px 2px;
+		color: $c-text-secondary;
+		margin-bottom: 1em;
 	}
 
 	.logo {
 		max-width: 90%;
-		margin: 1em 0;
+		margin: 2em 0;
 		background-color: white;
 		border-radius: 5px;
 		padding:1em;
 	}
 
-	.collection-selector {
-		background-color: $c-bg-secondary;
-		color: $c-text-secondary;
-		padding: 0.25em;
+	.selector {
+		border-radius: 6px;
+		font-size: 0.8em;
+		background-color: darken($c-bg-primary, 5%);
+		color: $c-bg-secondary;
+	}
+
+	.selector:hover {
+		background-color: darken($c-bg-primary, 12%);
+	}
+
+	.active {
+		background-color: darken($c-bg-primary, 12%);
+	}
+
+	.language {
+		padding: 0.4em 0.8em;
+		margin: 0.5em 0;
+	}
+
+	// .divider {
+	// 	border-top: 1px solid;
+	// 	height: 0;
+	// 	margin-bottom: 1em;
+	// }
+
+	.collections-container {
+		margin: 2em 0 0 0;
+		padding-right: 0;
+		text-align: center;
+
+		div {
+			position: relative;
+		}
+
+		.collection {
+			margin: 0.5em 1em;
+			padding: 0.25em;
+		}
 	}
 
 	.settings {
