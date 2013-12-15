@@ -21,6 +21,10 @@ html {
 		height: 100%;
 		position: static;
 	}
+
+	main {
+		padding-top: 2em;
+	}
 }
 
 .row {
@@ -36,6 +40,14 @@ html {
 form {
 	fieldset {
 		min-width: 365px;
+	}
+
+	input[type="checkbox"] {
+		font-size: 2.25em;
+	}
+
+	h4 {
+		margin-top: 2em;
 	}
 }
 

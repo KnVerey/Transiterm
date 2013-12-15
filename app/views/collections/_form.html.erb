@@ -1,62 +1,53 @@
 <%= form_for([@user, @collection]) do |f| %>
-  <% if @collection.errors.any? %>
-    <div id="error_explanation">
-      <h2>Please fix these <%= pluralize(@collection.errors.count, "problem") %> to save your collection:</h2>
-
-      <ul>
-      <% @collection.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
 
 <div class="row">
-  <div class="small-12 large-6 columns">
-    <div class="row">
-      <div class="small-3 columns">
-        <%= f.label :title, class: "right inline" %><br>
-      </div>
-      <div class="small-9 columns">
-        <%= f.text_field :title %>
-      </div>
-    </div>
+  <div class="small-12 large-9 columns">
 
-    <div class="row">
-      <div class="small-3 columns">
-        <%= f.label :description, class: "right inline"  %><br>
-      </div>
-      <div class="small-9 columns">
-        <%= f.text_field :description %>
-      </div>
-    </div>
+    <% if @collection.errors.any? %>
+      <div id="error_explanation">
+        <h2>Oh no! I couldn't save your collection!</h2>
 
+        <ul>
+        <% @collection.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <h4>Title</h4>
+    <%= f.text_field :title, placeholder: "A short, snappy name" %>
+
+    <h4>Description</h4>
+    <%= f.text_area :description, placeholder: "Time for details: what's this collection about?" %>
+
+    <h4>Languages to include</h4>
     <div class="row">
       <div class="small-1 columns">
-        <%= f.check_box :english%><br>
+        <%= f.check_box :english, class: "right" %><br>
       </div>
       <div class="small-3 columns">
         <%= f.label :english %>
       </div>
 
       <div class="small-1 columns">
-        <%= f.check_box :french%><br>
+        <%= f.check_box :french, class: "right" %><br>
       </div>
       <div class="small-3 columns">
         <%= f.label :french %>
       </div>
 
       <div class="small-1 columns">
-        <%= f.check_box :spanish%><br>
+        <%= f.check_box :spanish, class: "right" %><br>
       </div>
       <div class="small-3 columns">
         <%= f.label :spanish %>
       </div>
   </div>
-
+<br><br>
     <div class="row">
       <div class="actions small-12 columns">
-        <%= f.submit class: "button tiny right" %>
+        <%= f.submit class: "button tiny" %>
       </div>
     </div>
   </div>
