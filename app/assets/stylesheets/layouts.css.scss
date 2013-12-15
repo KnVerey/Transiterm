@@ -1,22 +1,9 @@
-html {
-	position: relative;
-}
-
-body {
-	height: 100%;
-	position: static;
-}
-
 .full-height {
 	min-height: 100% !important;
 }
 
 .full-width {
 	width: 100% !important;
-}
-
-.row {
-	max-width:100%;
 }
 
 .no-margin {
@@ -27,13 +14,29 @@ body {
 	padding: 0;
 }
 
-fieldset {
-	min-width: 365px;
+html {
+	position: relative;
+
+	body {
+		height: 100%;
+		position: static;
+	}
 }
 
-.sidebar {
-	background-color: $c-bg-primary;
-	color: $c-text-primary;
+.row {
+	max-width:100%;
+}
+
+form {
+	fieldset {
+		min-width: 365px;
+	}
+}
+
+.logo-small {
+		width: 36px;
+		height: 36px;
+		margin: 3px;
 }
 
 #sidebar {
@@ -44,8 +47,15 @@ fieldset {
 	left: 0;
 }
 
+.sidebar {
+	background-color: $c-bg-primary;
+	color: $c-text-primary;
 
-.logo-large {
+	h5 {
+		color: $c-text-primary;
+	}
+
+	.logo {
 		max-width: 90%;
 		margin: 1em 0;
 		background-color: white;
@@ -53,22 +63,33 @@ fieldset {
 		padding:1em;
 	}
 
-.logo-small {
-	width: 36px;
-	height: 36px;
-	margin: 3px;
+	.collection-selector {
+		background-color: $c-bg-secondary;
+		color: $c-text-secondary;
+		padding: 0.25em;
+	}
+
+	.settings {
+		font-size: 0.75em;
+		background-color: $c-bg-secondary;
+		color: $c-text-secondary;
+		padding: 0.75em 0;
+	}
+
+	.row.cling-bottom {
+		text-align: center;
+		position: absolute;
+		bottom: 0;
+		margin:0;
+	}
 }
 
-.settings {
-	font-size: 0.75em;
+.c-secondary {
 	background-color: $c-bg-secondary;
 	color: $c-text-secondary;
-	padding: 0.75em 0;
 }
 
-.row.cling-bottom {
-	text-align: center;
-	position: absolute;
-	bottom: 0;
-	margin:0;
+.c-secondary:hover, .c-secondary:active {
+	background-color: lighten($c-bg-secondary, 20%);
+	color: $c-bg-primary;
 }

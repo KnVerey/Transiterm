@@ -17,7 +17,7 @@
         <!-- Icon row -->
         <div class="row">
           <div class="small-11 small-offset-1 small-centered columns">
-            <%= link_to image_tag("T.png", class: "logo logo-large", alt:"Transiterm logo"), user_collections_path(current_user) %>
+            <%= link_to image_tag("T.png", class: "logo", alt:"Transiterm logo"), user_collections_path(current_user) %>
           </div>
         </div>
 
@@ -26,9 +26,9 @@
           <div class="row">
             <div class="small-11 small-offset-1 small-centered columns">
               <h5>My collections</h5>
-              <%= link_to "Search all", user_collections_path %>
+              <span class="collection-selector"><%= link_to "Search all", user_collections_path %></span>
               <% @collections.each do |c| %>
-                <%= link_to "#{c.name}", user_collection_path(current_user, c) %>
+                <span class="collection-selector"><%= link_to "#{c.name}", user_collection_path(current_user, c) %></span>
               <% end %>
             </div>
           </div>
@@ -37,7 +37,11 @@
         <!-- Add buton and Login/settings row -->
         <div class="row cling-bottom full-width">
           <div class="small-12 columns full-width">
-            <%= link_to "Add collection", new_user_collection_path(current_user), class: "button tiny success" %>
+            <% if @collections %>
+              <%= link_to "Add collection", new_user_collection_path(current_user), class: "button tiny c-secondary" %>
+            <% else %>
+              <strong><%= link_to "←  Back to collections", user_collections_path(current_user), class: "button tiny c-secondary" %></strong>
+            <% end %>
           </div>
 
           <div class="small-12 columns settings full-width"
