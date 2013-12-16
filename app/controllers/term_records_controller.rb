@@ -19,7 +19,7 @@ class TermRecordsController < ApplicationController
 		if @term_record.save
 			redirect_to user_collection_path(current_user, @collection), flash: { success: 'Record created'}
 		else
-
+			render action: "new"
 		end
 
 	end

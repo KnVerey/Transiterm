@@ -106,5 +106,43 @@ describe TermRecordsController do
 			  expect(response).to redirect_to("/users/#{person.id}/collections/#{person_collection.id}")
 			end
 		end
+
+		describe "with invalid params" do
+			before(:each) { login_user(person) }
+
+			it "assigns a newly created but unsaved record as @term_record" do
+			  TermRecord.any_instance.stub(:save).and_return(false)
+			  post :create, user_id: person.id, collection_id: person_collection.id, term_record: { isnt: "valid" }
+			  assigns(:term_record).should be_a_new(TermRecord)
+			end
+
+			it "does not set blank domains" do
+			  post :create, user_id: person.id, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "", source: "Common knowledge" }
+			  assigns(:term_record).domain_id.should be_nil
+			end
+
+			it "does not save records with blank domains" do
+			  expect {
+				  post :create, user_id: person.id, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "", source: "Common knowledge" }
+				  }.not_to change(TermRecord, :count)
+			end
+
+			it "does not set blank sources" do
+			  post :create, user_id: person.id, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "" }
+			  assigns(:term_record).source_id.should be_nil
+			end
+
+			it "does not save records with blank sources" do
+			  expect {
+				  post :create, user_id: person.id, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "" }
+				  }.not_to change(TermRecord, :count)
+			end
+
+			it "re-renders the 'new' template" do
+			  TermRecord.any_instance.stub(:save).and_return(false)
+			  post :create, user_id: person.id, collection_id: person_collection.id, term_record: { isnt: "valid" }
+			  expect(response).to render_template("new")
+			end
+		end
 	end
 end
