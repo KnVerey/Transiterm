@@ -42,7 +42,7 @@ describe CollectionsController do
 		it "assigns a new collection as @collection" do
 		  login_user(person)
 		  get :new, { user_id: person.to_param }
-		  assigns(:collection).kind_of?(Collection).should be_true
+		  assigns(:collection).should be_a_new(Collection)
 		end
 	end
 

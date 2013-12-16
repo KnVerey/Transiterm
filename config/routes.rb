@@ -9,7 +9,9 @@ Transiterm::Application.routes.draw do
       get :unlock
     end
 
-    resources :collections
+    resources :collections do
+      resources :term_records, except: [:index, :show]
+    end
   end
 
   resources :password_resets, only: [:create, :edit, :update, :new]

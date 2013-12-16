@@ -1,0 +1,2 @@
+module TermRecordsHelper
+end
