@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :source do
-    name "MyString"
+    name "Common knowledge"
     user
   end
 end

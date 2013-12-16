@@ -8,7 +8,7 @@ describe TermRecordsController do
 
   let(:record) { FactoryGirl.create(:term_record, collection: person_collection) }
 
-  let(:valid_attributes) {{ english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "Common knowledge" }}
+  let(:valid_attributes) {{ english: "Test", french: "test", spanish: "TEST", source: "A SOURCE", domain: "A DOMAIN" }}
 
 	describe "GET new" do
 		it "redirects if user not logged in" do
@@ -64,6 +64,46 @@ describe TermRecordsController do
 				name = "Also a new domain"
 				post :create, user_id: person.id, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: name, source: "Common knowledge" }
 				assigns(:term_record).domain.name.should eq(name)
+			end
+
+			it "adds source id for existing sources" do
+				source = FactoryGirl.create(:source, name: "Common knowledge", user_id: person.id)
+
+				post :create, { user_id: person.id, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "Common knowledge" } }
+
+				assigns(:term_record).source_id.should eq(source.id)
+			end
+
+			it "does not duplicate existing source" do
+				source = FactoryGirl.create(:source, name: "Common knowledge", user_id: person.id)
+
+					expect {
+						post :create, user_id: person.id, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "Common knowledge" }
+						}.not_to change(Source, :count)
+			end
+
+			it "creates nonexisting sources" do
+					expect {
+						post :create, user_id: person.id, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "A novel source" }
+						}.to change(Source, :count).by(1)
+			end
+
+			it "assigns newly created sources to term record" do
+				name = "Also a new source"
+				post :create, user_id: person.id, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: name }
+				assigns(:term_record).source.name.should eq(name)
+			end
+
+			it "creates a new term record" do
+			  expect {
+			  	post :create, user_id: person.id, collection_id: person_collection.id, term_record: valid_attributes
+			  }.to change(TermRecord, :count).by(1)
+			end
+
+			it "redirects to the parent collection" do
+			  post :create, user_id: person.id, collection_id: person_collection.id, term_record: valid_attributes
+
+			  expect(response).to redirect_to("/users/#{person.id}/collections/#{person_collection.id}")
 			end
 		end
 	end
