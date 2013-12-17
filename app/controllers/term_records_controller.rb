@@ -38,6 +38,11 @@ class TermRecordsController < ApplicationController
 		end
 	end
 
+	def destroy
+		@term_record.destroy
+		redirect_to user_collection_path(current_user, params[:collection_id])
+	end
+
 
 	private
 

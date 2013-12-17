@@ -247,4 +247,41 @@ describe TermRecordsController do
 			end
 		end
 	end
+
+	describe "DELETE destroy" do
+		context "when not logged in" do
+			it "redirects to the login page" do
+			  delete :destroy, { user_id: person.id, collection_id: person_collection.id, id: record.id }
+			  expect(response).to redirect_to("/login")
+			end
+		end
+
+		context "when logged in" do
+			before(:each) { login_user(person) }
+
+			it "identifies the requested record" do
+			  delete :destroy, { user_id: person.id, collection_id: person_collection.id, id: record.id }
+			  assigns(:term_record).should eq(record)
+			end
+
+			it "destroys the requested record" do
+			  record.reload
+			  expect {
+				  delete :destroy, { user_id: person.id, collection_id: person_collection.id, id: record.id }
+			  }.to change(TermRecord, :count).by(-1)
+			end
+
+			it "does not destroy the parent collection" do
+				record.reload
+			  expect {
+				  delete :destroy, { user_id: person.id, collection_id: person_collection.id, id: record.id }
+			  }.not_to change(Collection, :count)
+			end
+
+			it "redirects to the parent collection" do
+			  delete :destroy, { user_id: person.id, collection_id: person_collection.id, id: record.id }
+			  expect(response).to redirect_to("/users/#{person.id}/collections/#{person_collection.id}")
+			end
+		end
+	end
 end
