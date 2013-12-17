@@ -130,11 +130,11 @@ describe CollectionsController do
 			  put :update, user_id: person.id, id: person_collection.id, collection: {id: person_collection.id, title: "Ornithology"}
 			end
 
-			it "redirects to the user's collections if success" do
+			it "redirects to the updated collection if success" do
 			  login_user(person)
 			  Collection.any_instance.stub(:update).and_return(true)
 			  put :update, user_id: person.to_param, id: person_collection.to_param, collection: {title: "Coin collecting", description: "New hobby"}
-			  expect(response).to redirect_to("/users/#{person.id}/collections")
+			  expect(response).to redirect_to("/users/#{person.id}/collections/#{person_collection.id}")
 			end
 		end
 

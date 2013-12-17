@@ -30,7 +30,7 @@ class CollectionsController < ApplicationController
 	def update
 		respond_to do |format|
 			if @collection.update(collection_params)
-				format.html { redirect_to user_collections_path, notice: 'Collection details successfully updated' }
+				format.html { redirect_to user_collection_path(current_user, @collection), notice: 'Collection details successfully updated' }
 				format.json {}
 			else
 				format.html { render action: 'edit' }
