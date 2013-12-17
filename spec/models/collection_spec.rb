@@ -33,6 +33,11 @@ describe Collection do
 			expect(@collection).to be_valid
 		end
 
+		it "reports an array of two language names" do
+		  expect(@collection.active_languages.kind_of? Array).to be_true
+		  expect(@collection.active_languages.length).to eq(2)
+		end
+
 		it "reports the number of languages correctly" do
 		  expect(@collection.num_languages).to eq(2)
 		end
@@ -44,6 +49,11 @@ describe Collection do
 
 		it "saves the collection" do
 			expect(@collection).to be_valid
+		end
+
+		it "reports an array of three language names" do
+		  expect(@collection.active_languages.kind_of? Array).to be_true
+		  expect(@collection.active_languages.length).to eq(3)
 		end
 
 		it "reports the number of languages correctly" do
