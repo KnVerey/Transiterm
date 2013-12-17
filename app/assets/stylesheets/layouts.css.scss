@@ -20,6 +20,10 @@ html {
 	body {
 		height: 100%;
 		position: static;
+
+		.close {
+			display: none;
+		}
 	}
 
 	main {
