@@ -1,6 +1,6 @@
 <tr class="term-record">
-	<% columns = lang_columns %>
-	<% columns[:titles].each do |title| %>
+	<% columns = @collection.active_languages %>
+	<% columns.each do |title| %>
 		<td><%= term_record.send(title.downcase) %></td>
 	<% end %>
 	<td><%= term_record.source.name %></td>

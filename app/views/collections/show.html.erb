@@ -12,9 +12,9 @@
 <table class="records-table">
 	<thead>
 		<tr>
-			<% columns = lang_columns %>
-			<% columns[:titles].each do |title| %>
-				<th><%= title %></th>
+			<% columns = @collection.active_languages %>
+			<% columns.each do |title| %>
+				<th><%= title.capitalize %></th>
 			<% end %>
 			<th>Source</th>
 			<th>Domain</th>
