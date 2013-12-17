@@ -124,10 +124,11 @@ describe CollectionsController do
 			  expect(response).to redirect_to("/login")
 			end
 
-			xit "updates the current user's specified collection" do
+			it "updates the current user's specified collection" do
 			  login_user(person)
-			  person_collection.should_receive(:update).with("title" => "Ornithology")
-			  put :update, user_id: person.id, id: person_collection.id, collection: {id: person_collection.id, title: "Ornithology"}
+			  Collection.stub(:find).and_return(person_collection)
+			  person_collection.should_receive(:update).with({"title" => "Ornithology"})
+			  put :∑update, user_id: person.id, id: person_collection.id, collection: {id: person_collection.id, title: "Ornithology"}
 			end
 
 			it "redirects to the updated collection if success" do
