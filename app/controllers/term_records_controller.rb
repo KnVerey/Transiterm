@@ -27,12 +27,14 @@ class TermRecordsController < ApplicationController
 	end
 
 	def update
-		handle_domain_link if params[:term_record][:domain].present?
-		handle_source_link if params[:term_record][:source].present?
+		#use is_a? String instead of present? so will throw visible error if user attempted to set blank source/domain
+		handle_domain_link if params[:term_record][:domain].is_a? String
+		handle_source_link if params[:term_record][:source].is_a? String
 
 		if @term_record.update(term_record_params)
 			redirect_to user_collection_path(current_user, @term_record.collection),flash: { success: 'Record updated'}
 		else
+			render action: "edit"
 		end
 	end
 

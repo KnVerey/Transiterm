@@ -180,7 +180,7 @@ describe TermRecordsController do
 		context "when logged in" do
 			before(:each) { login_user(person) }
 
-			describe "with valid params" do
+			context "with valid params" do
 
 				it "locates the correct record" do
 				  put :update, { user_id: person.id, collection_id: person_collection.id, id: record.id, term_record: { english: "Good day", domain: "Travel" } }
@@ -215,6 +215,34 @@ describe TermRecordsController do
 				  record.reload
 				  expect(record.domain.name).to eq("Travel")
 				  expect(record.english).to eq("Good day")
+				end
+			end
+
+			context "with invalid params" do
+				it "re-renders the 'edit' template" do
+					put :update, { user_id: person.id, collection_id: person_collection.id, id: record.id, term_record: { english: "" }}
+					expect(response).to render_template("edit")
+				end
+
+				it "does not update the record" do
+					put :update, { user_id: person.id, collection_id: person_collection.id, id: record.id, term_record: { french: "salut", english: "" }}
+					record.reload
+				  expect(record.french).not_to eq("salut")
+				end
+
+				it "re-renders edit template if blank domain submitted" do
+					put :update, { user_id: person.id, collection_id: person_collection.id, id: record.id, term_record: { domain: ""}}
+					expect(response).to render_template("edit")
+				end
+
+				it "re-renders the edit template if blank source submitted" do
+					put :update, { user_id: person.id, collection_id: person_collection.id, id: record.id, term_record: { source: ""}}
+					expect(response).to render_template("edit")
+				end
+
+				it "re-renders edit if blank source submitted with other valid params" do
+					put :update, { user_id: person.id, collection_id: person_collection.id, id: record.id, term_record: { source: "", english: "Good day"}}
+					expect(response).to render_template("edit")
 				end
 			end
 		end
