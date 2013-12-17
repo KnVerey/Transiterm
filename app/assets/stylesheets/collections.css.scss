@@ -2,3 +2,13 @@ p.compact-para {
 		font-size: 90%;
 		margin-bottom: 0;
 }
+
+.row {
+	.records-container {
+		margin-top: 3em;
+
+		.header-row {
+			background-color: $c-bg-secondary;
+		}
+	}
+}

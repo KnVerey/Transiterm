@@ -36,10 +36,20 @@ html {
 	max-width:100%;
 }
 
+.add-button-column {
+	position: absolute;
+	top: 25%;
+	right: 0;
+}
+
 .divider {
 	border-top: 1px solid;
 	height: 0;
 	margin-bottom: 1em;
+}
+
+.anchor {
+	position: relative;
 }
 
 form {

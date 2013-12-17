@@ -44,7 +44,7 @@
             <div class="small-12 small-centered columns full-width no-margin no-padding">
 
             <h5>Select collections</h5>
-              <a href="<%= user_collections_path %>"><div class="collection selector active" id="select-all">All my collections</div></a>
+              <a href="<%= user_collections_path %>"><div class="collection selector active" id="select-all">All collections</div></a>
               <% @collections.each do |c| %>
                 <a href="<%= user_collection_path(@user, c) %>"><div class="collection selector"><%= c.title %></div></a>
               <% end %>

@@ -1,0 +1,9 @@
+<div class="row full-width term-record">
+	<% columns = lang_columns %>
+	<% columns[:titles].each do |title| %>
+		<div class="small-<%= columns[:width] %> columns"><%= term_record.send(title) %></div>
+	<% end %>
+	<div class="small-2 columns"><%= term_record.source.name %></div>
+	<div class="small-2 columns"><%= term_record.domain.name %></div>
+	<div class="small-1 column"></div>
+</div>
