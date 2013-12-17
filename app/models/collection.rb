@@ -5,10 +5,16 @@ class Collection < ActiveRecord::Base
 	validates :title, presence: true
 	validate :valid_num_languages
 
-	def num_languages
+	def active_languages
+		langs = []
 		["french","english","spanish"].inject(0) do |counter, lang|
-			self.send(lang) ? counter += 1 : counter
+			 langs << lang if self.send(lang)
 		end
+		langs
+	end
+
+	def num_languages
+		active_languages.length
 	end
 
 	private
