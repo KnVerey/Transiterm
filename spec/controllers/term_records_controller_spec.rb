@@ -107,7 +107,7 @@ describe TermRecordsController do
 			end
 		end
 
-		describe "with invalid params" do
+		context "with invalid params" do
 			before(:each) { login_user(person) }
 
 			it "assigns a newly created but unsaved record as @term_record" do
@@ -142,6 +142,80 @@ describe TermRecordsController do
 			  TermRecord.any_instance.stub(:save).and_return(false)
 			  post :create, user_id: person.id, collection_id: person_collection.id, term_record: { isnt: "valid" }
 			  expect(response).to render_template("new")
+			end
+		end
+	end
+
+	describe "GET edit" do
+		context "when not logged in" do
+			it "redirects to the login page" do
+			  get :edit, { user_id: person.id, collection_id: person_collection.id, id: record.id }
+			  expect(response).to redirect_to("/login")
+			end
+		end
+
+		context "when logged in" do
+			before(:each) { login_user(person) }
+
+			it "sets @term_record to the requested record" do
+			  get :edit, { user_id: person.id, collection_id: person_collection.id, id: record.id }
+			  assigns(:term_record).should eq(record)
+			end
+
+			it "renders the edit view" do
+			  get :edit, { user_id: person.id, collection_id: person_collection.id, id: record.id }
+			  expect(response.status).to eq(200)
+			end
+		end
+	end
+
+	describe "PUT update" do
+		context "when not logged in" do
+			it "redirects to the login page" do
+			  put :update, { user_id: person.id, collection_id: person_collection.id, id: record.id }
+			  expect(response).to redirect_to("/login")
+			end
+		end
+
+		context "when logged in" do
+			before(:each) { login_user(person) }
+
+			describe "with valid params" do
+
+				it "locates the correct record" do
+				  put :update, { user_id: person.id, collection_id: person_collection.id, id: record.id, term_record: { english: "Good day", domain: "Travel" } }
+				  assigns(:term_record).should eq(record)
+				end
+
+				it "redirects to the parent collection" do
+				  put :update, { user_id: person.id, collection_id: person_collection.id, id: record.id, term_record: { english: "Good day", domain: "Travel" } }
+				  expect(response).to redirect_to("/users/#{person.id}/collections/#{person_collection.id}")
+				end
+
+				it "updates the correct record" do
+				  put :update, { user_id: person.id, collection_id: person_collection.id, id: record.id, term_record: { english: "Good day" } }
+				  record.reload
+				  expect(record.english).to eq("Good day")
+				end
+
+				it "updates a domain" do
+				  put :update, { user_id: person.id, collection_id: person_collection.id, id: record.id, term_record: { domain: "Travel" } }
+				  record.reload
+				  expect(record.domain.name).to eq("Travel")
+				end
+
+				it "updates a source" do
+				  put :update, { user_id: person.id, collection_id: person_collection.id, id: record.id, term_record: { source: "Teacher" } }
+				  record.reload
+				  expect(record.source.name).to eq("Teacher")
+				end
+
+				it "updates diverse fields" do
+				  put :update, { user_id: person.id, collection_id: person_collection.id, id: record.id, term_record: { english: "Good day", domain: "Travel" } }
+				  record.reload
+				  expect(record.domain.name).to eq("Travel")
+				  expect(record.english).to eq("Good day")
+				end
 			end
 		end
 	end
