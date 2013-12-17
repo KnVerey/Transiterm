@@ -2,41 +2,47 @@ require 'spec_helper'
 
 describe Collection do
 
-	it 'should not save collections with 0 languages' do
-		collection = FactoryGirl.build(:collection, english: false, french: false, spanish: false)
+	context "with no languages" do
+		it 'should not save the collection' do
+			collection = FactoryGirl.build(:collection, english: false, french: false, spanish: false)
 
-		expect(collection).to be_invalid
+			expect(collection).to be_invalid
+		end
 	end
 
-	it "should save a collection with one language" do
-		collection = FactoryGirl.build(:one_lang_collection)
-		expect(collection).to be_valid
-	end
+	context "with one language" do
+		before(:all) { @collection = FactoryGirl.build(:one_lang_collection) }
 
-	it "should save a collection with two languages" do
-		collection = FactoryGirl.build(:two_lang_collection)
-		expect(collection).to be_valid
-	end
-
-	it "should save a collection with three languages" do
-		collection = FactoryGirl.build(:three_lang_collection)
-		expect(collection).to be_valid
-	end
-
-	describe "reports the number of languages" do
-		it "correctly with one language" do
-		  collection = FactoryGirl.create(:one_lang_collection)
-		  expect(collection.num_languages).to eq(1)
+		it "saves the collection" do
+ 			expect(@collection).to be_valid
 		end
 
-		it "correctly with two languages" do
-		  collection = FactoryGirl.create(:two_lang_collection)
-		  expect(collection.num_languages).to eq(2)
+		it "reports the number of languages correctly" do
+		  expect(@collection.num_languages).to eq(1)
+		end
+	end
+
+	context "with two languages" do
+		before(:all) { @collection = FactoryGirl.build(:two_lang_collection) }
+		it "saves the collection" do
+			expect(@collection).to be_valid
 		end
 
-		it "correctly with one language" do
-		  collection = FactoryGirl.create(:three_lang_collection)
-		  expect(collection.num_languages).to eq(3)
+		it "reports the number of languages correctly" do
+		  expect(@collection.num_languages).to eq(2)
+		end
+
+	end
+
+	context "with three languages" do
+		before(:all) { @collection = FactoryGirl.build(:three_lang_collection) }
+
+		it "saves the collection" do
+			expect(@collection).to be_valid
+		end
+
+		it "reports the number of languages correctly" do
+		  expect(@collection.num_languages).to eq(3)
 		end
 	end
 
