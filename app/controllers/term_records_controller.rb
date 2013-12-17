@@ -3,6 +3,8 @@ class TermRecordsController < ApplicationController
 	before_action :find_term_record, only: [:edit, :update, :destroy]
 
 	def new
+		@user = current_user
+		@collection = Collection.find(params[:collection_id])
 		@term_record = TermRecord.new
 	end
 

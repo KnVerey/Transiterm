@@ -19,10 +19,21 @@ describe TermRecordsController do
 		end
 
 		context "when logged in" do
+			before(:each) { login_user(person) }
+
 			it "assigns a new term record as @record" do
-			  login_user(person)
 			  get :new, { user_id: person.id, collection_id: person_collection.id }
 			  assigns(:term_record).should be_a_new(TermRecord)
+			end
+
+			it "assigns current_user as @user" do
+			  get :new, { user_id: person.id, collection_id: person_collection.id }
+			  assigns(:user).should eq(person)
+			end
+
+			it "assigns current collection as @collection" do
+			  get :new, { user_id: person.id, collection_id: person_collection.id }
+			  assigns(:collection).should eq(person_collection)
 			end
 		end
 	end
