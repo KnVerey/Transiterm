@@ -25,9 +25,18 @@ html {
 	main {
 		padding-top: 2em;
 
+		a.regular-link, a.regular-link:visited {
+			color: $c-link-unchanging;
+			text-decoration: underline;
+		}
+
 		a:hover {
 			background-color: initial;
 			color: $c-bg-primary;
+		}
+
+		.button:visited {
+			color: white;
 		}
 	}
 }

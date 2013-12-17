@@ -1,0 +1,9 @@
+<tr class="term-record">
+	<% columns = lang_columns %>
+	<% columns[:titles].each do |title| %>
+		<td><%= term_record.send(title.downcase) %></td>
+	<% end %>
+	<td><%= term_record.source.name %></td>
+	<td><%= term_record.domain.name %></td>
+	<td></td>
+</tr>

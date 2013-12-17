@@ -2,25 +2,26 @@
 	<div class="small-8 columns">
 		<h1><%= @collection.title %></h1>
 		<p><%= @collection.description %><br>
-		<%= link_to "Edit collection details", edit_user_collection_path(@user, @collection) %></p>
+		<%= link_to "Edit collection details", edit_user_collection_path(@user, @collection), class: "regular-link" %></p>
 	</div>
 	<div class="small-3 columns add-button-column">
 		<%= link_to "Add record", new_user_collection_term_record_path(@user, @collection), class: "button", id: "add-button" %>
 	</div>
 </div>
 
-<div class="row full-width records-container">
-	<div class="small-12 columns">
-		<div class="row full-width header-row">
+<table class="records-table">
+	<thead>
+		<tr>
 			<% columns = lang_columns %>
 			<% columns[:titles].each do |title| %>
-				<div class="small-<%= columns[:width] %> columns"><%= title %></div>
+				<th><%= title %></th>
 			<% end %>
-			<div class="small-2 columns">Source</div>
-			<div class="small-2 columns">Domain</div>
-			<div class="small-1 column"></div>
-		</div>
-
+			<th>Source</th>
+			<th>Domain</th>
+			<th></th>
+		</tr>
+	</thead
+	<tbody>
 		<%= render @collection.term_records %>
-	</div>
-</div>
+	</tbody>
+</table>

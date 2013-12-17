@@ -3,12 +3,11 @@ p.compact-para {
 		margin-bottom: 0;
 }
 
-.row {
-	.records-container {
-		margin-top: 3em;
+.records-table {
+	margin-top: 3em;
+	width:95%;
 
-		.header-row {
-			background-color: $c-bg-secondary;
-		}
+	.header-row {
+		background-color: $c-bg-secondary;
 	}
 }
