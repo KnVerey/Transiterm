@@ -11,20 +11,6 @@ describe UsersController do
     password_confirmation: "password1"
    }}
 
-  describe "GET show" do
-    it "sets @user to current_user" do
-      login_user(person)
-      get :show, { id: person.to_param }
-      assigns(:user).should eq(controller.current_user)
-    end
-
-    it "doesn't show someone else's profile if other id in params" do
-      login_user(person)
-      get :show, { id: rand(1000) }
-      assigns(:user).should eq(person)
-    end
-  end
-
   describe "GET new" do
     it "is available to logged out users" do
       get :new

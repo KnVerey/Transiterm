@@ -3,7 +3,7 @@ Transiterm::Application.routes.draw do
   get 'msaccess' => 'pages#msaccess', as: :msaccess
   get 'home' => 'pages#home', as: :home
 
-  resources :users, except: [:index] do
+  resources :users, except: [:index, :show] do
     member do
       get :activate
       get :unlock
