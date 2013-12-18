@@ -14,15 +14,20 @@ describe CollectionsController do
   } }
 
  	describe "GET index" do
-		it "redirects if user not logged in" do
-		  get :index, { user_id: person.to_param }
-		  expect(response).to redirect_to("/login")
+ 		context "when not logged in" do
+			it "redirects to the login page" do
+			  get :index, { user_id: person.to_param }
+			  expect(response).to redirect_to("/login")
+			end
 		end
 
-		it "does not give access to other users' collections through url" do
-			login_user(person)
-			get :index, { user_id: rand(1000) }
-			assigns(:collections).should eq(person.collections)
+		context "when logged in" do
+			before(:each) { login_user(person) }
+
+			it "does not give access to other users' collections through url" do
+				get :index, { user_id: rand(1000) }
+				assigns(:collections).should eq(person.collections)
+			end
 		end
 	end
 
