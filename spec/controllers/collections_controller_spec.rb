@@ -128,7 +128,7 @@ describe CollectionsController do
 			  login_user(person)
 			  Collection.stub(:find).and_return(person_collection)
 			  person_collection.should_receive(:update).with({"title" => "Ornithology"})
-			  put :∑update, user_id: person.id, id: person_collection.id, collection: {id: person_collection.id, title: "Ornithology"}
+			  put :update, user_id: person.id, id: person_collection.id, collection: {id: person_collection.id, title: "Ornithology"}
 			end
 
 			it "redirects to the updated collection if success" do
