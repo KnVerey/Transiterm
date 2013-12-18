@@ -13,4 +13,10 @@ describe User do
   it 'should have saved user to db if valid fields provided' do
   	katrina.first_name.should_not == nil
   end
+
+  it 'should have default active languages set' do
+    expect(katrina.french_active).to be_true
+    expect(katrina.english_active).to be_true
+    expect(katrina.spanish_active).to be_false
+  end
 end
