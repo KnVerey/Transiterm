@@ -159,9 +159,21 @@ form {
 		color: $c-text-secondary;
 		padding: 0.75em 0;
 
-		a:hover {
+		a:hover, a:visited:hover, #logout-link:hover, #logout-link:visited:hover {
 			background-color: initial;
+			color: #666;
+		}
+
+		a:visited, #logout-link:visited {
 			color: $c-bg-primary;
+		}
+
+		#logout-link {
+			background: none;
+			border: none;
+			color: #800404;
+		  text-decoration: none;
+		  line-height: inherit;
 		}
 	}
 

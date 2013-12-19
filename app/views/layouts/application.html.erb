@@ -27,7 +27,9 @@
         <% if @collections %>
           <div class="row full-width no-margin">
             <h5>List collections with:</h5>
-            <a href="#"><div class="small-4 columns no-padding hide-for-large"><span class="language selector active">EN</span></div></a>
+              <div class="small-4 columns no-padding hide-for-large">
+                <%= link_to "EN", "#{user_collections_path(@user)}?lang_toggle=english", class: "language selector #{ 'active' if @user.english_active == true }" %>
+              </div>
 
             <a href="#"><div class="small-4 columns no-padding hide-for-large"><span class="language selector active">FR</span></div></a>
 
@@ -68,7 +70,9 @@
                 <%= link_to "My Transiterm", edit_user_path(current_user) %>
               </div>
               <div class="small-6 columns">
-                <%= link_to "Log out", logout_path, method: :post %>
+                <%= form_tag(logout_path) do %>
+                  <%= submit_tag "Log out", id: "logout-link" %>
+                <% end %>
               </div>
             </div>
           </div>
