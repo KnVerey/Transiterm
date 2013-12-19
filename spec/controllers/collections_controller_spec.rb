@@ -28,6 +28,13 @@ describe CollectionsController do
 				get :index, { user_id: rand(1000) }
 				assigns(:collections).should eq(person.collections)
 			end
+
+			it "uses param to toggle active languages" do
+				person.should_receive(:toggle_language).with("english")
+				User.any_instance.stub(:save)
+				controller.stub(:user).and_return(person)
+				get :index, { user_id: person.id, lang_toggle: "english" }
+			end
 		end
 	end
 

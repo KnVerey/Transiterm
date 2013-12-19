@@ -3,6 +3,8 @@ class CollectionsController < ApplicationController
 	before_action :find_collection, only: [:update, :edit, :show, :destroy]
 
 	def index
+		@user.toggle_language(params[:lang_toggle]) if Collection::LANGUAGES.include?(params[:lang_toggle])
+		@user.save
 		@collections = @user.collections
 	end
 

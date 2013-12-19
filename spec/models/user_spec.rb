@@ -19,4 +19,14 @@ describe User do
     expect(katrina.english_active).to be_true
     expect(katrina.spanish_active).to be_false
   end
+
+  describe "toggle_language" do
+
+    it "toggles the language specified as arg" do
+      user = FactoryGirl.build(:user, french_active: true)
+      user.toggle_language("french")
+      expect(user.french_active).to be_false
+    end
+
+  end
 end

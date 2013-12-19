@@ -21,10 +21,9 @@ class User < ActiveRecord::Base
   has_many :sources, dependent: :destroy
   has_many :domains, dependent: :destroy
 
-
   def toggle_language(language)
-    if ["english","french","spanish"].include?(language)
-      self.send("#{language}_active", !self.send("#{language}_active"))
+    if Collection::LANGUAGES.include?(language)
+      self.send("#{language}_active=", !self.send("#{language}_active"))
     end
   end
 
