@@ -3,7 +3,7 @@ FactoryGirl.define do
   factory :user do
   	first_name "Katrina"
   	last_name "Verey"
-  	sequence(:email) {|n| "email#{n}@factory.com" }
+  	sequence(:email) {|n| "active#{n}@factory.com" }
   	password "password1"
   	password_confirmation "password1"
   	after(:create) { |user| user.activate! }
@@ -12,7 +12,7 @@ FactoryGirl.define do
   factory :inactive_user, class: User do
   	first_name "Kate"
   	last_name "Smith"
-    sequence(:email) {|n| "email#{n}@factory.com" }
+    sequence(:email) {|n| "inactive#{n}@factory.com" }
   	password "password1"
   	password_confirmation "password1"
   end
@@ -20,7 +20,7 @@ FactoryGirl.define do
   factory :locked_user, class: User do
     first_name "Jane"
     last_name "Miller"
-    sequence(:email) {|n| "email#{n}@factory.com" }
+    sequence(:email) {|n| "locked#{n}@factory.com" }
     password "password1"
     password_confirmation "password1"
     after(:create) { |user| user.send("lock!") }
