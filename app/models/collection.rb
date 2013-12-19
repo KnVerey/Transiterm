@@ -5,9 +5,12 @@ class Collection < ActiveRecord::Base
 	validates :title, presence: true
 	validate :valid_num_languages
 
+  LANGUAGES = %w{english french spanish}
+
+
 	def active_languages
 		langs = []
-		["french","english","spanish"].inject(0) do |counter, lang|
+		Collection::LANGUAGES.inject(0) do |counter, lang|
 			 langs << lang if self.send(lang)
 		end
 		langs

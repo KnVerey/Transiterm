@@ -10,7 +10,7 @@ class TermRecord < ActiveRecord::Base
 
 	private
 	def correct_languages_present
-		result = ["french","english","spanish"].detect do |language|
+		result = Collection::LANGUAGES.detect do |language|
 			self.collection.send(language) && self.send(language).empty?
 		end
 
