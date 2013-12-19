@@ -30,7 +30,8 @@ end
 group :development, :test do
 	gem 'rspec-rails'
 	gem 'factory_girl_rails', '~> 4.3.0'
-	gem 'pry'
+	gem 'pry-rails'
+	gem 'pry-byebug'
 	gem 'better_errors'
 	gem 'binding_of_caller'
   gem 'cucumber-rails', :require => false
