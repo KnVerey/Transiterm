@@ -63,6 +63,14 @@ describe UsersController do
     end
 
     describe "with invalid params" do
+      it "does not allow creation without password and confirmation" do
+        bad_user = { first_name: "Test", last_name: "Test", email: "test@gmail.com", password: "password1" }
+        User.any_instance.stub(:save).and_return(false)
+        post :create, user: bad_user
+
+        assigns(:user).should_not be_valid
+      end
+
       it "assigns a newly created but unsaved user as @user" do
         User.any_instance.stub(:save).and_return(false)
         post :create, user: { email: "invalid value" }
@@ -86,7 +94,7 @@ describe UsersController do
         assigns(:user).should eq(controller.current_user)
       end
 
-      it "updates the requested user" do
+      it "updates the requested user without password" do
         login_user(person)
         person.should_receive(:update).with("email" => "test@test.com")
         put :update, id: person.to_param, user: { id: person.to_param, email: "test@test.com" }
@@ -112,6 +120,12 @@ describe UsersController do
     end
 
     describe "with invalid params" do
+
+      it "doesn't update if password but no confirmation" do
+        login_user(person)
+        put :update, id: person.id, user: { id: person.id, email: "test@test.com", password: "test93" }
+        expect(response).to render_template("edit")
+      end
 
       it "re-renders the 'edit' template" do
         login_user(person)
