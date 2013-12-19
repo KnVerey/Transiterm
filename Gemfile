@@ -36,6 +36,7 @@ group :development, :test do
 	gem 'binding_of_caller'
   gem 'cucumber-rails', :require => false
   gem 'database_cleaner'
+  gem 'spork-rails'
 end
 
 gem 'sorcery'
