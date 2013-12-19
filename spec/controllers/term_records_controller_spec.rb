@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe TermRecordsController do
 
-  let(:person) { FactoryGirl.create(:user, email: "email#{rand(1000)}@test.com") }
+  let(:person) { FactoryGirl.create(:user) }
 
   let(:person_collection) { FactoryGirl.create(:three_lang_collection, user: person) }
 
