@@ -31,15 +31,39 @@ describe CollectionsController do
 				get :index, { user_id: person.id, lang_toggle: "english" }
 			end
 
-			xit "sets @collections" do
-			  get :index, { user_id: person.id }
-			  assigns(:collections).should eq(person_collection)
+			context "without a query in params" do
+				it "sets @collections" do
+				  get :index, { user_id: person.id }
+				  assigns(:collections).should_not be_nil
+				end
+
+				it "sets @term_records" do
+				  get :index, { user_id: person.id }
+				  assigns(:term_records).should_not be_nil
+				end
+
+				it "sets @columns and @fields" do
+				  controller.current_user.stub(:active_languages).and_return(["array"])
+				  get :index, { user_id: person.id }
+				  assigns(:fields).should_not be_nil
+				  assigns(:columns).should_not be_nil
+				end
 			end
 
-			xit "sets @term records" do
-			  get :index, { user_id: person.id }
-			  assigns(:term_records).should_not be_nil
+			context "with a query in params" do
+				it "finds a record that's there" do
+					FactoryGirl.create(:term_record, collection: person_collection, english: "Hello kitty")
+				  get :index, { user_id: person.id, search: "kitty", field: "english" }
+				  assigns(:term_records).should_not be_empty
+				end
+
+				it "respects the exact match param" do
+					FactoryGirl.create(:term_record, collection: person_collection, english: "Hello kitty")
+				  get :index, { user_id: person.id, search: "kitty", field: "english", exact_match: "1"}
+				  assigns(:term_records).should be_empty
+				end
 			end
+
 		end
 	end
 
