@@ -8,7 +8,16 @@ class CollectionsController < ApplicationController
 			current_user.save
 		end
 
-		@collections = Collection.where("user_id = '#{current_user.id}' AND english = '#{current_user.english_active}' AND french = '#{current_user.french_active}' AND spanish = '#{current_user.spanish_active}'")
+		# @collections = Collection.where("user_id = '#{current_user.id}' AND english = '#{current_user.english_active}' AND french = '#{current_user.french_active}' AND spanish = '#{current_user.spanish_active}'")
+
+		@term_records = TermRecord.find_by_sql("
+			SELECT collections.title, term_records.*
+			FROM term_records
+			INNER JOIN collections ON term_records.collection_id = collections.id
+			WHERE collections.user_id = '#{current_user.id}' AND collections.english = '#{current_user.english_active}' AND collections.french = '#{current_user.french_active}' AND collections.spanish = '#{current_user.spanish_active}';")
+
+		@collections = @term_records.uniq { |record| record.title  }
+		@columns = current_user.active_languages
 	end
 
 	def show

@@ -1,7 +1,12 @@
 <div class="row full-width">
 	<div class="small-12 columns">
 		<h1>Multi-collection search </h1>
-		<h5 class="subheader">You're searching:
+		<h5 class="subheader">
+			<% if @collections.empty? %>
+				&larr; Use sidebar to choose collections to search
+			<% else %>
+				You're searching:
+			<% end %>
 			<% @collections.length.times do |c| %>
 				<% spacer = (c == (@collections.length - 1) ? "" : ", ") %>
 				<%= @collections[c].title + spacer %>
@@ -9,3 +14,21 @@
 		</h5>
 	</div>
 </div>
+
+<% if @term_records.present? %>
+	<table class="records-table">
+		<thead>
+			<tr>
+				<% @columns.each do |lang| %>
+					<th class="lang-column" width="<%= 60 / @columns.length %>%"><%= lang.capitalize %></th>
+				<% end %>
+				<th class="source-column">Source</th>
+				<th class="domain-column">Domain</th>
+				<th class="expander-column"></th>
+			</tr>
+		</thead
+		<tbody>
+			<%= render @term_records %>
+		</tbody>
+	</table>
+<% end %>
