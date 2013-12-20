@@ -14,7 +14,12 @@ p.compact-para {
 		border-top-left-radius: 3px;
 	}
 
-	input[type="submit"] {
+	select, input[type="submit"], input[type="text"] {
+		margin: 0;
+	}
+
+	#match-box label, #match-box input {
+		font-size: 90%;
 		margin: 0;
 	}
 }

@@ -19,14 +19,17 @@
   <div class="small-11 columns">
   	<%= form_tag(user_collections_path, method: :get) do %>
 	    <div class="row collapse">
-		      <div class="small-8 columns">
+		      <div class="small-6 large-8 columns">
 		      	<%= text_field_tag "search", nil, placeholder: "Search terms" %>
+
 		      </div>
 		      <div class="small-1 columns">
 		      	<%= submit_tag "Go", class: "button postfix radius" %>
 		      </div>
-		      <div class="small-2 columns right">
+		      <div class="small-4 large-2 columns right">
 		      	<%= select_tag "field", options_for_select(Collection::FIELDS.map(&:capitalize), "English") %>
+		      	<span class="right" id="match-box"><%= check_box_tag "exact_match" %>
+		      	<%= label_tag "exact_match", "Exact match" %></span>
 		      </div>
 	    </div>
     <% end %>
@@ -49,4 +52,6 @@
 			<%= render @term_records %>
 		</tbody>
 	</table>
+<% else %>
+<h5 class="subheader">No results, sorry</h5>
 <% end %>
