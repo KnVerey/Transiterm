@@ -40,4 +40,31 @@ p.compact-para {
 		width: 20%;
 	}
 
+	.expanded-cell {
+		padding: 0 3em 0.75em 3em;
+		font-size: 0.75rem;
+
+		small {
+			font-size: 0.55rem;
+		}
+
+		.optional-field {
+			display: block;
+		}
+	}
+
+	form {
+		display: inline;
+		margin: 0;
+		padding: 0;
+	}
+
+	.delete-link, .delete-link:visited, a, a:visited {
+			background: none;
+			border: none;
+			color: $c-link-unchanging;
+		  text-decoration: none;
+		  padding: 2px 6px 3px;
+	}
+
 }

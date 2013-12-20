@@ -42,7 +42,7 @@ class TermRecordsController < ApplicationController
 
 	def destroy
 		@term_record.destroy
-		redirect_to user_collection_path(current_user, params[:collection_id])
+		redirect_to request.referer
 	end
 
 

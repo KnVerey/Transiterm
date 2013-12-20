@@ -1,9 +1,29 @@
 <tr class="term-record">
 	<% columns = term_record.collection.active_languages %>
 	<% columns.each do |title| %>
-		<td><%= term_record.send(title.downcase) %></td>
+		<td><strong><%= term_record.send(title.downcase) %></td></strong>
 	<% end %>
 	<td><%= term_record.source.name %></td>
 	<td><%= term_record.domain.name %></td>
 	<td></td>
+</tr>
+
+<tr class="record-expand">
+	<td colspan="<%= columns.length + 3 %>" class="expanded-cell">
+		<% if term_record.context.present? %>
+			<span class="optional-field"><em>Context</em>: <%= term_record.context %></span>
+		<% end %>
+
+		<% if term_record.comment.present? %>
+			<span class="optional-field"><em>Comment</em>: <%= term_record.comment %></span>
+		<% end %>
+			<small class="right">Created: <%= term_record.created_at %> |
+			Last updated: <%= term_record.updated_at %>
+				(<%= link_to "Edit",edit_user_collection_term_record_path(current_user.id, term_record.collection.id, term_record.id) %> |
+	        <%= form_tag(user_collection_term_record_path(current_user.id, term_record.collection.id, term_record.id), method: :delete) do %>
+				    <%= submit_tag "Delete", class: "delete-link" %>
+				  <% end %>
+				)
+			</small>
+	</td>
 </tr>
