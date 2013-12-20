@@ -1,6 +1,5 @@
 class CollectionsController < ApplicationController
 	before_action :find_collection, only: [:update, :edit, :show, :destroy]
-	before_action :set_fields_and_columns, only: [:index, :show]
 
 	def index
 		if Collection::LANGUAGES.include?(params[:lang_toggle])
@@ -8,11 +7,13 @@ class CollectionsController < ApplicationController
 			current_user.save
 		end
 
+		set_fields_and_columns
 		@collections = find_relevant_collections
 		@term_records = run_term_record_query
 	end
 
 	def show
+		set_fields_and_columns
 		search_field = configure_search_params
 		@term_records = TermRecord.where("collection_id = '#{@collection.id}' AND #{search_field} ilike ?", "#{params[:search]}").limit(20)
 	end
