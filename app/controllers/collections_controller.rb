@@ -54,16 +54,26 @@ class CollectionsController < ApplicationController
 	end
 
 	def configure_search_params
-		if params[:field].present? &&
-			TermRecord.column_names.include?(params[:field].downcase)
-			search_field = params[:field].downcase
+		if params[:field].present? && @fields.include?(params[:field])
+
 			params[:search].gsub!("*","%")
 			params[:search].prepend("%") << "%" unless params[:exact_match].to_i == 1
+
+			search_field = case
+			when params[:field] == "Domain"
+				"domains.name"
+			when params[:field] == "Source"
+				"sources.name"
+			else
+				"term_records.#{params[:field].downcase}"
+			end
+
 		else
 			params[:search] = "%"
-			search_field = "English"
+			search_field = "term_records.english"
 		end
-		search_field
+
+		return search_field
 	end
 
 	def run_term_record_query
@@ -73,7 +83,7 @@ class CollectionsController < ApplicationController
 		SELECT collections.title, term_records.*
 		FROM term_records
 		INNER JOIN collections ON term_records.collection_id = collections.id
-		WHERE collections.user_id = '#{current_user.id}' AND collections.english = '#{current_user.english_active}' AND collections.french = '#{current_user.french_active}' AND collections.spanish = '#{current_user.spanish_active}' AND term_records.#{search_field} ilike ? LIMIT 20", "#{params[:search]}"])
+		WHERE collections.user_id = '#{current_user.id}' AND collections.english = '#{current_user.english_active}' AND collections.french = '#{current_user.french_active}' AND collections.spanish = '#{current_user.spanish_active}' AND #{search_field} ilike ? LIMIT 20", "#{params[:search]}"])
 	end
 
 	def find_collection

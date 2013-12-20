@@ -44,15 +44,51 @@ describe CollectionsController do
 			end
 
 			context "with a query in params" do
-				it "finds a record that's there" do
+				it "retrieves exising record by en query" do
 					FactoryGirl.create(:term_record, collection: person_collection, english: "Hello kitty")
-				  get :index, { user_id: person.id, search: "kitty", field: "english" }
+				  get :index, { user_id: person.id, search: "kitty", field: "English" }
+				  assigns(:term_records).should_not be_empty
+				end
+
+				it "retrieves exising record by fr query" do
+					FactoryGirl.create(:term_record, collection: person_collection, french: "Croque monsieur")
+				  get :index, { user_id: person.id, search: "sieur", field: "French" }
+				  assigns(:term_records).should_not be_empty
+				end
+
+				it "retrieves exising record by sp query" do
+					FactoryGirl.create(:term_record, collection: person_collection, spanish: "hola los amigos")
+				  get :index, { user_id: person.id, search: "hola", field: "Spanish" }
+				  assigns(:term_records).should_not be_empty
+				end
+
+				it "retrives existing by domain query" do
+					FactoryGirl.create(:term_record, collection: person_collection, domain: "Botanical gardens")
+				  get :index, { user_id: person.id, search: "garden", field: "Domain" }
+				  assigns(:term_records).should_not be_empty
+				end
+
+				it "retrives existing by source query" do
+					FactoryGirl.create(:term_record, collection: person_collection, source: "Historical record")
+				  get :index, { user_id: person.id, search: "record", field: "Source" }
+				  assigns(:term_records).should_not be_empty
+				end
+
+				it "retrives existing by comment query" do
+					FactoryGirl.create(:term_record, collection: person_collection, comment: "Historical record")
+				  get :index, { user_id: person.id, search: "record", field: "Comment" }
+				  assigns(:term_records).should_not be_empty
+				end
+
+				it "retrives existing by comment query" do
+					FactoryGirl.create(:term_record, collection: person_collection, context: "Historical record")
+				  get :index, { user_id: person.id, search: "record", field: "Context" }
 				  assigns(:term_records).should_not be_empty
 				end
 
 				it "respects the exact match param" do
 					FactoryGirl.create(:term_record, collection: person_collection, english: "Hello kitty")
-				  get :index, { user_id: person.id, search: "kitty", field: "english", exact_match: "1"}
+				  get :index, { user_id: person.id, search: "kitty", field: "English", exact_match: "1"}
 				  assigns(:term_records).should be_empty
 				end
 			end
