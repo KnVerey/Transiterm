@@ -9,19 +9,44 @@
 	</div>
 </div>
 
-<table class="records-table">
-	<thead>
-		<tr>
-			<% columns = @collection.active_languages %>
-			<% columns.each do |lang| %>
-				<th class="lang-column" width="<%= 60 / @collection.num_languages %>%"><%= lang.capitalize %></th>
-			<% end %>
-			<th class="source-column">Source</th>
-			<th class="domain-column">Domain</th>
-			<th class="expander-column"></th>
-		</tr>
-	</thead
-	<tbody>
-		<%= render @collection.term_records %>
-	</tbody>
-</table>
+<div class="row search-bar">
+  <div class="small-11 columns">
+  	<%= form_tag(user_collection_path(current_user, @collection), method: :get) do %>
+	    <div class="row collapse">
+		      <div class="small-6 large-8 columns">
+		      	<%= text_field_tag "search", nil, placeholder: "Search terms" %>
+
+		      </div>
+		      <div class="small-1 columns">
+		      	<%= submit_tag "Go", class: "button postfix radius" %>
+		      </div>
+		      <div class="small-4 large-2 columns right">
+		      	<%= select_tag "field", options_for_select(@fields, "English") %>
+		      	<span class="right" id="match-box"><%= check_box_tag "exact_match" %>
+		      	<%= label_tag "exact_match", "Exact match" %></span>
+		      </div>
+	    </div>
+    <% end %>
+  </div>
+</div>
+
+<% if @term_records.present? %>
+	<table class="records-table">
+		<thead>
+			<tr>
+				<% columns = @collection.active_languages %>
+				<% columns.each do |lang| %>
+					<th class="lang-column" width="<%= 60 / @collection.num_languages %>%"><%= lang.capitalize %></th>
+				<% end %>
+				<th class="source-column">Source</th>
+				<th class="domain-column">Domain</th>
+				<th class="expander-column"></th>
+			</tr>
+		</thead
+		<tbody>
+			<%= render @collection.term_records %>
+		</tbody>
+<% else %>
+<h5 class="subheader">No results, sorry</h5>
+<% end %>
+	</table>

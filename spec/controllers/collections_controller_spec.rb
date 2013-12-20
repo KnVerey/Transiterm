@@ -68,9 +68,48 @@ describe CollectionsController do
 	end
 
  	describe "GET show" do
-		it "redirects if user not logged in" do
-		  get :show, { user_id: person.to_param, id: person_collection.to_param }
-		  expect(response).to redirect_to("/login")
+		context "when not logged in" do
+			it "redirects if user not logged in" do
+			  get :show, { user_id: person.to_param, id: person_collection.to_param }
+			  expect(response).to redirect_to("/login")
+			end
+		end
+
+		context "when logged in" do
+			before(:each) { login_user(person) }
+
+			context "without a query in params" do
+				it "sets @collection" do
+				  get :show, { user_id: person.id, id: person_collection.id }
+				  assigns(:collection).should_not be_nil
+				end
+
+				it "sets @term_records" do
+				  get :show, { user_id: person.id, id: person_collection.id }
+				  assigns(:term_records).should_not be_nil
+				end
+
+				it "sets @columns and @fields" do
+				  controller.current_user.stub(:active_languages).and_return(["array"])
+				  get :show, { user_id: person.id, id: person_collection.id }
+				  assigns(:fields).should_not be_nil
+				  assigns(:columns).should_not be_nil
+				end
+			end
+
+			context "with a query in params" do
+				it "finds a record that's there" do
+					FactoryGirl.create(:term_record, collection: person_collection, english: "Hello kitty")
+				  get :show, { user_id: person.id, id: person_collection.id, search: "kitty", field: "english" }
+				  assigns(:term_records).should_not be_empty
+				end
+
+				it "respects the exact match param" do
+					FactoryGirl.create(:term_record, collection: person_collection, english: "Hello kitty")
+				  get :show, { user_id: person.id, id: person_collection.id, search: "kitty", field: "english", exact_match: "1"}
+				  assigns(:term_records).should be_empty
+				end
+			end
 		end
 	end
 
