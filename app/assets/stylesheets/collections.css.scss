@@ -7,7 +7,16 @@ p.compact-para {
 	margin-top: 3em;
 	width:95%;
 
-	.header-row {
+	thead {
 		background-color: $c-bg-secondary;
 	}
+
+	.source-column {
+		width: 20%;
+	}
+
+	.domain-column {
+		width: 20%;
+	}
+
 }

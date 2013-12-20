@@ -13,12 +13,12 @@
 	<thead>
 		<tr>
 			<% columns = @collection.active_languages %>
-			<% columns.each do |title| %>
-				<th><%= title.capitalize %></th>
+			<% columns.each do |lang| %>
+				<th class="lang-column" width="<%= 60 / @collection.num_languages %>%"><%= lang.capitalize %></th>
 			<% end %>
-			<th>Source</th>
-			<th>Domain</th>
-			<th></th>
+			<th class="source-column">Source</th>
+			<th class="domain-column">Domain</th>
+			<th class="expander-column"></th>
 		</tr>
 	</thead
 	<tbody>
