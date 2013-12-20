@@ -24,13 +24,6 @@ describe CollectionsController do
 		context "when logged in" do
 			before(:each) { login_user(person) }
 
-			it "uses param to toggle active languages" do
-				person.should_receive(:toggle_language).with("english")
-				User.any_instance.stub(:save)
-				controller.stub(:user).and_return(person)
-				get :index, { user_id: person.id, lang_toggle: "english" }
-			end
-
 			context "without a query in params" do
 				it "sets @collections" do
 				  get :index, { user_id: person.id }

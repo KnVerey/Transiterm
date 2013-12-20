@@ -8,6 +8,15 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
+  def lang_toggle
+    if Collection::LANGUAGES.include?(params[:lang_toggle])
+      current_user.toggle_language(params[:lang_toggle])
+      current_user.save
+    end
+
+    redirect_to user_collections_path(current_user)
+  end
+
   def activate
     if (@user = User.load_from_activation_token(params[:id]))
       @user.activate!

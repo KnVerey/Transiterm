@@ -13,12 +13,13 @@ Transiterm::Application.routes.draw do
       resources :term_records, except: [:index, :show]
     end
   end
+  get 'user_lang_toggle' => 'users#lang_toggle', as: :lang_toggle
 
   resources :password_resets, only: [:create, :edit, :update, :new]
 
   resources :sessions, only: [:create]
-  get 'login' => 'sessions#new', :as => :login
-  post 'logout' => 'sessions#destroy', :as => :logout
+  get 'login' => 'sessions#new', as: :login
+  post 'logout' => 'sessions#destroy', as: :logout
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

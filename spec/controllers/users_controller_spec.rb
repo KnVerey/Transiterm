@@ -31,6 +31,31 @@ describe UsersController do
     end
   end
 
+  describe "GET lang_toggle" do
+    context "when logged out" do
+      it "redirects to the login page" do
+        get :lang_toggle
+        expect(response).to redirect_to(login_path)
+      end
+    end
+
+    context "when logged in" do
+      before(:each) { login_user(person) }
+
+      it "uses param to toggle active languages" do
+        person.should_receive(:toggle_language).with("english")
+        User.any_instance.stub(:save)
+        controller.stub(:user).and_return(person)
+        get :lang_toggle, { user_id: person.id, lang_toggle: "english" }
+      end
+
+      it "redirects to the collections index" do
+        get :lang_toggle, { user_id: person.id, lang_toggle: "english" }
+        expect(response).to redirect_to(user_collections_path(person))
+      end
+    end
+  end
+
   describe "POST create" do
     describe "with valid params" do
 

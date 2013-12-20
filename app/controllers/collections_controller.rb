@@ -2,11 +2,6 @@ class CollectionsController < ApplicationController
 	before_action :find_collection, only: [:update, :edit, :show, :destroy]
 
 	def index
-		if Collection::LANGUAGES.include?(params[:lang_toggle])
-			current_user.toggle_language(params[:lang_toggle])
-			current_user.save
-		end
-
 		set_fields_and_columns
 		@collections = find_relevant_collections
 		@term_records = run_term_record_query
