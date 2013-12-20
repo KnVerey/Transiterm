@@ -3,9 +3,12 @@ class CollectionsController < ApplicationController
 	before_action :find_collection, only: [:update, :edit, :show, :destroy]
 
 	def index
-		@user.toggle_language(params[:lang_toggle]) if Collection::LANGUAGES.include?(params[:lang_toggle])
-		@user.save
-		@collections = @user.collections
+		if Collection::LANGUAGES.include?(params[:lang_toggle])
+			current_user.toggle_language(params[:lang_toggle])
+			current_user.save
+		end
+
+		@collections = Collection.where("user_id = '#{current_user.id}' AND english = '#{current_user.english_active}' AND french = '#{current_user.french_active}' AND spanish = '#{current_user.spanish_active}'")
 	end
 
 	def show

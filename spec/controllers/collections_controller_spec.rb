@@ -35,6 +35,12 @@ describe CollectionsController do
 				controller.stub(:user).and_return(person)
 				get :index, { user_id: person.id, lang_toggle: "english" }
 			end
+
+			it "sets @collections" do
+			  Collection.stub(:where).and_return(person_collection)
+			  get :index, { user_id: person.id }
+			  assigns(:collections).should eq(person_collection)
+			end
 		end
 	end
 
