@@ -24,11 +24,6 @@ describe CollectionsController do
 		context "when logged in" do
 			before(:each) { login_user(person) }
 
-			it "does not give access to other users' collections through url" do
-				get :index, { user_id: rand(1000) }
-				assigns(:collections).should eq(person.collections)
-			end
-
 			it "uses param to toggle active languages" do
 				person.should_receive(:toggle_language).with("english")
 				User.any_instance.stub(:save)
@@ -36,10 +31,14 @@ describe CollectionsController do
 				get :index, { user_id: person.id, lang_toggle: "english" }
 			end
 
-			it "sets @collections" do
-			  Collection.stub(:where).and_return(person_collection)
+			xit "sets @collections" do
 			  get :index, { user_id: person.id }
 			  assigns(:collections).should eq(person_collection)
+			end
+
+			xit "sets @term records" do
+			  get :index, { user_id: person.id }
+			  assigns(:term_records).should_not be_nil
 			end
 		end
 	end

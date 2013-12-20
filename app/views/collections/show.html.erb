@@ -2,10 +2,10 @@
 	<div class="small-8 columns">
 		<h1><%= @collection.title %></h1>
 		<p><%= @collection.description %><br>
-		<%= link_to "Edit collection details", edit_user_collection_path(@user, @collection), class: "regular-link" %></p>
+		<%= link_to "Edit collection details", edit_user_collection_path(current_user, @collection), class: "regular-link" %></p>
 	</div>
 	<div class="small-3 columns add-button-column">
-		<%= link_to "Add record", new_user_collection_term_record_path(@user, @collection), class: "button", id: "add-button" %>
+		<%= link_to "Add record", new_user_collection_term_record_path(current_user, @collection), class: "button", id: "add-button" %>
 	</div>
 </div>
 
