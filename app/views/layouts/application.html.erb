@@ -29,27 +29,27 @@
             <h5>List collections with:</h5>
 
             <div class="small-4 columns no-padding hide-for-large">
-              <%= link_to "EN", "#{user_collections_path(@user)}?lang_toggle=english", class: "language selector #{ 'active' if @user.english_active == true }" %>
+              <%= link_to "EN", "#{user_collections_path(current_user)}?lang_toggle=english", class: "language selector #{ 'active' if current_user.english_active == true }" %>
             </div>
 
             <div class="small-4 columns no-padding hide-for-large">
-              <%= link_to "FR", "#{user_collections_path(@user)}?lang_toggle=french", class: "language selector #{ 'active' if @user.french_active == true }" %>
+              <%= link_to "FR", "#{user_collections_path(current_user)}?lang_toggle=french", class: "language selector #{ 'active' if current_user.french_active == true }" %>
             </div>
 
             <div class="small-4 columns no-padding hide-for-large">
-              <%= link_to "SP", "#{user_collections_path(@user)}?lang_toggle=spanish", class: "language selector #{ 'active' if @user.spanish_active == true }" %>
+              <%= link_to "SP", "#{user_collections_path(current_user)}?lang_toggle=spanish", class: "language selector #{ 'active' if current_user.spanish_active == true }" %>
             </div>
 
             <div class="small-4 columns no-padding show-for-large">
-              <%= link_to "English", "#{user_collections_path(@user)}?lang_toggle=english", class: "language selector #{ 'active' if @user.english_active == true }" %>
+              <%= link_to "English", "#{user_collections_path(current_user)}?lang_toggle=english", class: "language selector #{ 'active' if current_user.english_active == true }" %>
             </div>
 
             <div class="small-4 columns no-padding show-for-large">
-              <%= link_to "French", "#{user_collections_path(@user)}?lang_toggle=french", class: "language selector #{ 'active' if @user.french_active == true }" %>
+              <%= link_to "French", "#{user_collections_path(current_user)}?lang_toggle=french", class: "language selector #{ 'active' if current_user.french_active == true }" %>
             </div>
 
             <div class="small-4 columns no-padding show-for-large">
-              <%= link_to "Spanish", "#{user_collections_path(@user)}?lang_toggle=spanish", class: "language selector #{ 'active' if @user.spanish_active == true }" %>
+              <%= link_to "Spanish", "#{user_collections_path(current_user)}?lang_toggle=spanish", class: "language selector #{ 'active' if current_user.spanish_active == true }" %>
             </div>
           </div>
 
@@ -59,7 +59,7 @@
             <h5>Select collections</h5>
               <a href="<%= user_collections_path %>"><div class="collection selector active" id="select-all">All listed below</div></a>
               <% @collections.each do |c| %>
-                <a href="<%= user_collection_path(@user, c) %>"><div class="collection selector"><%= c.title %></div></a>
+                <a href="<%= user_collection_path(current_user, c) %>"><div class="collection selector"><%= c.title %></div></a>
               <% end %>
             </div>
           </div>
