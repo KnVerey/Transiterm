@@ -1,5 +1,4 @@
 class CollectionsController < ApplicationController
-	before_action :set_user
 	before_action :find_collection, only: [:update, :edit, :show, :destroy]
 
 	def index
@@ -8,24 +7,8 @@ class CollectionsController < ApplicationController
 			current_user.save
 		end
 
-		@collections = Collection.where("user_id = '#{current_user.id}' AND english = '#{current_user.english_active}' AND french = '#{current_user.french_active}' AND spanish = '#{current_user.spanish_active}'")
-
-		if params[:field].present? &&
-			TermRecord.column_names.include?(params[:field].downcase)
-			search_field = params[:field].downcase
-			params[:search].gsub!("*","%")
-			params[:search].prepend("%") << "%" unless params[:exact_match].to_i == 1
-		else
-			params[:search] = "%"
-			search_field = "English"
-		end
-
-		@term_records = TermRecord.find_by_sql(["
-			SELECT collections.title, term_records.*
-			FROM term_records
-			INNER JOIN collections ON term_records.collection_id = collections.id
-			WHERE collections.user_id = '#{current_user.id}' AND collections.english = '#{current_user.english_active}' AND collections.french = '#{current_user.french_active}' AND collections.spanish = '#{current_user.spanish_active}' AND term_records.#{search_field} ilike ? LIMIT 20", "#{params[:search]}"])
-
+		@collections = find_relevant_collections
+		@term_records = run_term_record_query
 		@columns = current_user.active_languages
 		@fields = (current_user.active_languages + Collection::FIELDS).sort.map(&:capitalize)
 	end
@@ -69,6 +52,33 @@ class CollectionsController < ApplicationController
 	end
 
 	private
+	def find_relevant_collections
+		Collection.where("user_id = '#{current_user.id}' AND english = '#{current_user.english_active}' AND french = '#{current_user.french_active}' AND spanish = '#{current_user.spanish_active}'")
+	end
+
+	def configure_search_params
+		if params[:field].present? &&
+			TermRecord.column_names.include?(params[:field].downcase)
+			search_field = params[:field].downcase
+			params[:search].gsub!("*","%")
+			params[:search].prepend("%") << "%" unless params[:exact_match].to_i == 1
+		else
+			params[:search] = "%"
+			search_field = "English"
+		end
+		search_field
+	end
+
+	def run_term_record_query
+		search_field = configure_search_params
+
+		TermRecord.find_by_sql(["
+		SELECT collections.title, term_records.*
+		FROM term_records
+		INNER JOIN collections ON term_records.collection_id = collections.id
+		WHERE collections.user_id = '#{current_user.id}' AND collections.english = '#{current_user.english_active}' AND collections.french = '#{current_user.french_active}' AND collections.spanish = '#{current_user.spanish_active}' AND term_records.#{search_field} ilike ? LIMIT 20", "#{params[:search]}"])
+	end
+
 	def find_collection
 		@collection = Collection.find(params[:id])
 	end
