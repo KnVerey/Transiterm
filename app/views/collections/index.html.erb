@@ -27,7 +27,7 @@
 		      	<%= submit_tag "Go", class: "button postfix radius" %>
 		      </div>
 		      <div class="small-4 large-2 columns right">
-		      	<%= select_tag "field", options_for_select(Collection::FIELDS.map(&:capitalize), "English") %>
+		      	<%= select_tag "field", options_for_select(@fields, "English") %>
 		      	<span class="right" id="match-box"><%= check_box_tag "exact_match" %>
 		      	<%= label_tag "exact_match", "Exact match" %></span>
 		      </div>
