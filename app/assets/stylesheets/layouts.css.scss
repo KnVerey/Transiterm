@@ -168,6 +168,10 @@ form {
 			color: $c-bg-primary;
 		}
 
+		form {
+			margin: 0;
+		}
+
 		#logout-link {
 			background: none;
 			border: none;

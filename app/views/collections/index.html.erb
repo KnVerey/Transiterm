@@ -1,5 +1,11 @@
 <div class="row full-width">
 	<div class="small-12 columns">
 		<h1>Multi-collection search </h1>
+		<h5 class="subheader">You're searching:
+			<% @collections.length.times do |c| %>
+				<% spacer = (c == (@collections.length - 1) ? "" : ", ") %>
+				<%= @collections[c].title + spacer %>
+			<% end %>
+		</h5>
 	</div>
 </div>
