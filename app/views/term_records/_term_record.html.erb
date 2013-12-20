@@ -1,5 +1,5 @@
 <tr class="term-record">
-	<% columns = @collection.active_languages %>
+	<% columns = term_record.collection.active_languages %>
 	<% columns.each do |title| %>
 		<td><%= term_record.send(title.downcase) %></td>
 	<% end %>
