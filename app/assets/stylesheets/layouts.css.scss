@@ -28,6 +28,7 @@ html {
 
 	main {
 		padding-top: 2em;
+		z-index: 100;
 
 		a.regular-link, a.regular-link:visited {
 			color: $c-link-unchanging;
