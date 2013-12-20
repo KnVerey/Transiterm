@@ -27,19 +27,30 @@
         <% if @collections %>
           <div class="row full-width no-margin">
             <h5>List collections with:</h5>
-              <div class="small-4 columns no-padding hide-for-large">
-                <%= link_to "EN", "#{user_collections_path(@user)}?lang_toggle=english", class: "language selector #{ 'active' if @user.english_active == true }" %>
-              </div>
 
-            <a href="#"><div class="small-4 columns no-padding hide-for-large"><span class="language selector active">FR</span></div></a>
+            <div class="small-4 columns no-padding hide-for-large">
+              <%= link_to "EN", "#{user_collections_path(@user)}?lang_toggle=english", class: "language selector #{ 'active' if @user.english_active == true }" %>
+            </div>
 
-            <a href="#"><div class="small-4 columns no-padding hide-for-large"><span class="language selector">SP</span></div></a>
+            <div class="small-4 columns no-padding hide-for-large">
+              <%= link_to "FR", "#{user_collections_path(@user)}?lang_toggle=french", class: "language selector #{ 'active' if @user.french_active == true }" %>
+            </div>
 
-            <a href="#"><div class="small-4 columns no-padding show-for-large"><span class="language selector active">English</span></div></a>
+            <div class="small-4 columns no-padding hide-for-large">
+              <%= link_to "SP", "#{user_collections_path(@user)}?lang_toggle=spanish", class: "language selector #{ 'active' if @user.spanish_active == true }" %>
+            </div>
 
-            <a href="#"><div class="small-4 columns no-padding show-for-large"><span class="language selector active">French</span></div></a>
+            <div class="small-4 columns no-padding show-for-large">
+              <%= link_to "English", "#{user_collections_path(@user)}?lang_toggle=english", class: "language selector #{ 'active' if @user.english_active == true }" %>
+            </div>
 
-            <a href="#"><div class="small-4 columns no-padding show-for-large"><span class="language selector">Spanish</span></div></a>
+            <div class="small-4 columns no-padding show-for-large">
+              <%= link_to "French", "#{user_collections_path(@user)}?lang_toggle=french", class: "language selector #{ 'active' if @user.french_active == true }" %>
+            </div>
+
+            <div class="small-4 columns no-padding show-for-large">
+              <%= link_to "Spanish", "#{user_collections_path(@user)}?lang_toggle=spanish", class: "language selector #{ 'active' if @user.spanish_active == true }" %>
+            </div>
           </div>
 
           <div class="row full-width collections-container">
