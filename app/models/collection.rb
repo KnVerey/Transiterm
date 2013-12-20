@@ -6,7 +6,7 @@ class Collection < ActiveRecord::Base
 	validate :valid_num_languages
 
   LANGUAGES = %w{english french spanish}
-  FIELDS = Collection::LANGUAGES.zip(%w{domain source context comment}).flatten.sort
+  FIELDS = %w{domain source context comment}
 
 
 	def active_languages
