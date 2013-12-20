@@ -15,6 +15,24 @@
 	</div>
 </div>
 
+<div class="row search-bar">
+  <div class="small-11 columns">
+  	<%= form_tag(user_collections_path, method: :get) do %>
+	    <div class="row collapse">
+		      <div class="small-8 columns">
+		      	<%= text_field_tag "search", nil, placeholder: "Search terms" %>
+		      </div>
+		      <div class="small-1 columns">
+		      	<%= submit_tag "Go", class: "button postfix radius" %>
+		      </div>
+		      <div class="small-2 columns right">
+		      	<%= select_tag "field", options_for_select(Collection::FIELDS.map(&:capitalize), "English") %>
+		      </div>
+	    </div>
+    <% end %>
+  </div>
+</div>
+
 <% if @term_records.present? %>
 	<table class="records-table">
 		<thead>
