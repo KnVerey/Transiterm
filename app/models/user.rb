@@ -21,6 +21,15 @@ class User < ActiveRecord::Base
   has_many :sources, dependent: :destroy
   has_many :domains, dependent: :destroy
 
+
+  def active_languages
+    langs = []
+    Collection::LANGUAGES.each do |lang|
+       langs << lang if self.send("#{lang}_active")
+    end
+    langs
+  end
+
   def toggle_language(language)
     if Collection::LANGUAGES.include?(language)
       self.send("#{language}_active=", !self.send("#{language}_active"))

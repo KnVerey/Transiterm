@@ -29,4 +29,30 @@ describe User do
     end
 
   end
+
+  describe "active_languages" do
+    context "with one active language" do
+      it "reports an array of one language" do
+        user = FactoryGirl.build(:user, french_active: true, english_active: false, spanish_active: false)
+        expect(user.active_languages.kind_of? Array).to be_true
+        expect(user.active_languages.length).to eq(1)
+      end
+    end
+
+    context "with two active languages" do
+      it "reports an array of two languages" do
+        user = FactoryGirl.build(:user, french_active: true, english_active: true, spanish_active: false)
+        expect(user.active_languages.kind_of? Array).to be_true
+        expect(user.active_languages.length).to eq(2)
+      end
+    end
+
+    context "with three active languages" do
+      it "reports an array of two languages" do
+        user = FactoryGirl.build(:user, french_active: true, english_active: true, spanish_active: true)
+        expect(user.active_languages.kind_of? Array).to be_true
+        expect(user.active_languages.length).to eq(3)
+      end
+    end
+  end
 end
