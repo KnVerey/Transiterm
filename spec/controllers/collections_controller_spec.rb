@@ -36,7 +36,6 @@ describe CollectionsController do
 				end
 
 				it "sets @columns and @fields" do
-				  controller.current_user.stub(:active_languages).and_return(["array"])
 				  get :index, { user_id: person.id }
 				  assigns(:fields).should_not be_nil
 				  assigns(:columns).should_not be_nil
@@ -119,7 +118,6 @@ describe CollectionsController do
 				end
 
 				it "sets @columns and @fields" do
-				  controller.current_user.stub(:active_languages).and_return(["array"])
 				  get :show, { user_id: person.id, id: person_collection.id }
 				  assigns(:fields).should_not be_nil
 				  assigns(:columns).should_not be_nil
@@ -129,13 +127,13 @@ describe CollectionsController do
 			context "with a query in params" do
 				it "finds a record that's there" do
 					FactoryGirl.create(:term_record, collection: person_collection, english: "Hello kitty")
-				  get :show, { user_id: person.id, id: person_collection.id, search: "kitty", field: "english" }
+				  get :show, { user_id: person.id, id: person_collection.id, search: "kitty", field: "English" }
 				  assigns(:term_records).should_not be_empty
 				end
 
 				it "respects the exact match param" do
 					FactoryGirl.create(:term_record, collection: person_collection, english: "Hello kitty")
-				  get :show, { user_id: person.id, id: person_collection.id, search: "kitty", field: "english", exact_match: "1"}
+				  get :show, { user_id: person.id, id: person_collection.id, search: "kitty", field: "English", exact_match: "1"}
 				  assigns(:term_records).should be_empty
 				end
 			end
