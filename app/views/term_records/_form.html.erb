@@ -1,4 +1,4 @@
-<%= form_for([@user, @collection, @term_record]) do |f| %>
+<%= form_for([current_user, @term_record.collection || @collection, @term_record]) do |f| %>
 
   <% if @term_record.errors.any? %>
     <div id="error_explanation">
@@ -14,7 +14,7 @@
 
 	<div class="row">
     <div class="small-12 columns">
-    	<% lang_fields = @collection.active_languages %>
+    	<% lang_fields = @term_record.collection ? @term_record.collection.active_languages : @collection.active_languages %>
 			<% lang_fields.each do |language| %>
         <div class="row">
           <div class="small-3 medium-1 columns">
@@ -31,7 +31,7 @@
           <%= f.label :source, class: "right inline"  %><br>
         </div>
           <div class="small-9 medium-11 columns">
-          <%= f.text_field :source, placeholder: "Required" %>
+          <%= f.text_field :source, value: (@term_record.source ? @term_record.source.name : nil), placeholder: "Required" %>
         </div>
       </div>
 
@@ -40,7 +40,7 @@
           <%= f.label :domain, class: "right inline"  %><br>
         </div>
           <div class="small-9 medium-11 columns">
-          <%= f.text_field :domain, placeholder: "Required" %>
+          <%= f.text_field :domain, value: (@term_record.domain ? @term_record.domain.name : nil), placeholder: "Required" %>
         </div>
       </div>
 
