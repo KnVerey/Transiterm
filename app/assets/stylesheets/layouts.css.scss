@@ -89,8 +89,10 @@ form {
 	text-align: center;
 	position: absolute;
 	top: 0;
-	bottom: 0;
+	bottom: $h-bottom-bar;
 	left: 0;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
 
 .sidebar {
@@ -152,6 +154,23 @@ form {
 			margin: 0.5em 0.5em;
 		}
 	}
+}
+
+.row.cling-bottom {
+	text-align: center;
+	position: fixed;
+	bottom: 0;
+	margin:0;
+	height: $h-bottom-bar;
+
+	.color-hook {
+		background-color: $c-bg-primary;
+		padding: 1em 0 0 0;
+	}
+
+	.add-button-row {
+		height: $h-bottom-bar/2;
+	}
 
 	.settings {
 		font-size: 0.75em;
@@ -179,14 +198,6 @@ form {
 		  text-decoration: none;
 		  line-height: inherit;
 		}
-	}
-
-	.row.cling-bottom {
-		text-align: center;
-		position: absolute;
-		bottom: 0;
-		margin:0;
-		background-color: $c-bg-primary;
 	}
 }
 
