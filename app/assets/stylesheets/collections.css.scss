@@ -64,7 +64,9 @@ p.compact-para {
 		margin: 0;
 		padding: 0;
 	}
+}
 
+.warning, .records-table {
 	.delete-link, .delete-link:visited, a, a:visited {
 			background: none;
 			border: none;
@@ -72,5 +74,9 @@ p.compact-para {
 		  text-decoration: none;
 		  padding: 2px 6px 3px;
 	}
+}
 
+.warning {
+	border-top: 1px solid $c-bg-primary;
+	font-size: 0.7rem;
 }
