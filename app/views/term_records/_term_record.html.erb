@@ -19,11 +19,7 @@
 		<% end %>
 			<small class="right">Created: <%= term_record.created_at %> |
 			Last updated: <%= term_record.updated_at %>
-				(<%= link_to "Edit",edit_user_collection_term_record_path(current_user.id, term_record.collection.id, term_record.id) %> |
-	        <%= form_tag(user_collection_term_record_path(current_user.id, term_record.collection.id, term_record.id), method: :delete) do %>
-				    <%= submit_tag "Delete", class: "delete-link" %>
-				  <% end %>
-				)
+				&nbsp | <%= link_to "Edit record",edit_user_collection_term_record_path(current_user.id, term_record.collection.id, term_record.id) %>
 			</small>
 	</td>
 </tr>

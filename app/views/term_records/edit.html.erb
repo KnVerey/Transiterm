@@ -1,3 +1,10 @@
 <h2>Edit term record</h2>
 
 <%= render "form" %>
+
+<div class="warning">
+	<strong>WARNING:</strong> The link below will permanently delete your term record. This can't be undone!
+	<%= form_tag(user_collection_term_record_path(current_user.id, @term_record.collection.id, @term_record.id), method: :delete) do %>
+	  <%= submit_tag "Delete record", class: "delete-link" %>
+	<% end %>
+</div>
