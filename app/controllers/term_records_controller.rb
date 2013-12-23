@@ -34,15 +34,16 @@ class TermRecordsController < ApplicationController
 		handle_source_link if params[:term_record][:source].is_a? String
 
 		if @term_record.update(term_record_params)
-			redirect_to user_collection_path(current_user, @term_record.collection),flash: { success: 'Record updated'}
+			redirect_to user_collection_path(current_user, @term_record.collection), flash: { success: 'Record updated'}
 		else
 			render action: "edit"
 		end
 	end
 
 	def destroy
+		parent_collection_id = @term_record.collection_id
 		@term_record.destroy
-		redirect_to request.referer
+		redirect_to user_collection_path(current_user, parent_collection_id), flash: { success: 'Record deleted' }
 	end
 
 

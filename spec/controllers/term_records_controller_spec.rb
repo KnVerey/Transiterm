@@ -277,9 +277,7 @@ describe TermRecordsController do
 		end
 
 		context "when logged in" do
-			before(:each) do login_user(person)
-				request.stub(:referer).and_return("/users/#{person.id}/collections/#{person_collection.id}")
-			end
+			before(:each) { login_user(person) }
 
 			it "identifies the requested record" do
 			  delete :destroy, { user_id: person.id, collection_id: person_collection.id, id: record.id }
@@ -300,7 +298,7 @@ describe TermRecordsController do
 			  }.not_to change(Collection, :count)
 			end
 
-			it "redirects to the referrer (stubbed)" do
+			it "redirects to the parent collection" do
 			  delete :destroy, { user_id: person.id, collection_id: person_collection.id, id: record.id }
 			  expect(response).to redirect_to("/users/#{person.id}/collections/#{person_collection.id}")
 			end
