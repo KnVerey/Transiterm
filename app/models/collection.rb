@@ -9,7 +9,9 @@ class Collection < ActiveRecord::Base
   FIELDS = %w{domain source context comment all}
 
   searchable do
-  	boolean :english, :french, :spanish
+  	boolean :english
+  	boolean :french
+  	boolean :spanish
   	integer :user_id
   end
 

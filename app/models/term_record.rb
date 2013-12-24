@@ -10,10 +10,10 @@ class TermRecord < ActiveRecord::Base
 
 	searchable do
 		text :english, :french, :spanish, :context, :comment
-		text :domain { domain.name }
-		text :source { source.name }
+		text :domain do domain.name end
+		text :source do source.name end
 
-		integer :category_id
+		integer :collection_id
 	end
 
 	private
