@@ -6,7 +6,12 @@ class Collection < ActiveRecord::Base
 	validate :valid_num_languages
 
   LANGUAGES = %w{english french spanish}
-  FIELDS = %w{domain source context comment}
+  FIELDS = %w{domain source context comment all}
+
+  searchable do
+  	boolean :english, :french, :spanish
+  	integer :user_id
+  end
 
 
 	def active_languages

@@ -8,6 +8,14 @@ class TermRecord < ActiveRecord::Base
 
 	validate :correct_languages_present
 
+	searchable do
+		text :english, :french, :spanish, :context, :comment
+		text :domain { domain.name }
+		text :source { source.name }
+
+		integer :category_id
+	end
+
 	private
 	def correct_languages_present
 		result = Collection::LANGUAGES.detect do |language|
