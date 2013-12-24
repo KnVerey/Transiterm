@@ -4,14 +4,12 @@ class CollectionsController < ApplicationController
 	def index
 		set_fields_and_columns
 		@collections = find_relevant_collections
-		binding.pry
 		@term_records = run_term_record_query
 	end
 
 	def show
 		set_fields_and_columns
-		search_field = configure_search_params
-		@term_records = TermRecord.where("collection_id = '#{@collection.id}' AND #{search_field} ilike ?", "#{params[:search]}").limit(20)
+		@term_records = run_term_record_query
 	end
 
 	def new
@@ -53,21 +51,26 @@ class CollectionsController < ApplicationController
 	def find_relevant_collections
 		search = Collection.search do
 			all_of do
+				with(:user_id, current_user.id)
 				with(:french, current_user.french_active)
 				with(:english, current_user.english_active)
 				with(:spanish, current_user.spanish_active)
 			end
 		end
-
 		search.results
 	end
 
 	def run_term_record_query
-		# TermRecord.search do
-		# 	all_of do
-		# 		with(:)
-		# 	end
-		# end
+		rel_collection_ids = @collections ? @collections.map { |c| c.id } : @collection.id
+
+		search = TermRecord.search do
+			keywords (params[:search] || "*")
+			all_of do
+				with(:collection_id, rel_collection_ids)
+			end
+		end
+
+		search.results
 	end
 
 	def find_collection
