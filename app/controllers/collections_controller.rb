@@ -62,14 +62,10 @@ class CollectionsController < ApplicationController
 
 	def run_term_record_query
 		rel_collection_ids = @collections ? @collections.map { |c| c.id } : @collection.id
-		field = @fields.include?(params[:field]) ? params[:field].downcase : "All"
+		field = (@fields.include?(params[:field]) && params[:field] != "All") ? params[:field].downcase : nil
 
 		search = TermRecord.search do
-			if field != "All"
-				keywords (params[:search] || "*"), fields: field.to_sym
-			else
-				keywords (params[:search] || "*")
-			end
+			keywords (params[:search] || "*"), fields: field
 
 			all_of do
 				with(:collection_id, rel_collection_ids)
