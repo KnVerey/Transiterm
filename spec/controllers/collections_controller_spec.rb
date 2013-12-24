@@ -61,13 +61,13 @@ describe CollectionsController do
 				  assigns(:term_records).should_not be_empty
 				end
 
-				xit "retrives existing by domain query" do
+				it "retrives existing by domain query" do
 					FactoryGirl.create(:term_record, collection: person_collection, domain: "Botanical gardens")
 				  get :index, { user_id: person.id, search: "garden", field: "Domain" }
 				  assigns(:term_records).should_not be_empty
 				end
 
-				xit "retrives existing by source query" do
+				it "retrives existing by source query" do
 					FactoryGirl.create(:term_record, collection: person_collection, source: "Historical record")
 				  get :index, { user_id: person.id, search: "record", field: "Source" }
 				  assigns(:term_records).should_not be_empty
@@ -83,12 +83,6 @@ describe CollectionsController do
 					FactoryGirl.create(:term_record, collection: person_collection, context: "Historical record")
 				  get :index, { user_id: person.id, search: "record", field: "Context" }
 				  assigns(:term_records).should_not be_empty
-				end
-
-				it "respects the exact match param" do
-					FactoryGirl.create(:term_record, collection: person_collection, english: "Hello kitty")
-				  get :index, { user_id: person.id, search: "kitty", field: "English", exact_match: "1"}
-				  assigns(:term_records).should be_empty
 				end
 			end
 
