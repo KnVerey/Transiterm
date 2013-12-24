@@ -46,3 +46,5 @@ config/initializers/secret_token.rb
 .rvmrc
 # Ignore application configuration
 /config/application.yml
+
+/solr/
