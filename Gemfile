@@ -37,10 +37,13 @@ group :development, :test do
   gem 'cucumber-rails', :require => false
   gem 'database_cleaner'
   gem 'spork-rails'
+  gem 'sunspot-rails-tester'
 end
 
 gem 'sorcery'
 gem 'figaro'
+gem 'sunspot_rails', '~> 2.1'
+gem 'sunspot_solr'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'

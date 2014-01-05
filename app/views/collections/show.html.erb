@@ -21,9 +21,7 @@
 		      	<%= submit_tag "Go", class: "button postfix radius" %>
 		      </div>
 		      <div class="small-4 large-2 columns right">
-		      	<%= select_tag "field", options_for_select(@fields, params[:field] || "English") %>
-		      	<span class="right" id="match-box"><%= check_box_tag "exact_match" %>
-		      	<%= label_tag "exact_match", "Exact match" %></span>
+		      	<%= select_tag "field", options_for_select(@fields, params[:field] || "All") %>
 		      </div>
 	    </div>
     <% end %>
@@ -44,7 +42,7 @@
 			</tr>
 		</thead
 		<tbody>
-			<%= render @collection.term_records %>
+			<%= render @term_records %>
 		</tbody>
 <% else %>
 <h5 class="subheader">No results, sorry</h5>
