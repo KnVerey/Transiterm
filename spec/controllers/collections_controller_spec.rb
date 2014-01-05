@@ -42,47 +42,41 @@ describe CollectionsController do
 				end
 			end
 
-			context "with a query in params" do
-				it "retrieves exising record by en query" do
-					FactoryGirl.create(:term_record, collection: person_collection, english: "Hello kitty")
+			context "with a query in params", solr: true do
+				it "generates the right solr query with en field" do
 				  get :index, { user_id: person.id, search: "kitty", field: "English" }
-				  assigns(:term_records).should_not be_empty
+				  assigns(:search).inspect.should match(/:q=>\"kitty\", :fl=>\"\* score\", :qf=>\"english_text\"/)
 				end
 
-				it "retrieves exising record by fr query" do
-					FactoryGirl.create(:term_record, collection: person_collection, french: "Croque monsieur")
+				it "generates the correct solr query with fr field" do
 				  get :index, { user_id: person.id, search: "sieur", field: "French" }
-				  assigns(:term_records).should_not be_empty
+				  assigns(:search).inspect.should match(/:q=>\"sieur\", :fl=>\"\* score\", :qf=>\"french_text\"/)
 				end
 
-				it "retrieves exising record by sp query" do
-					FactoryGirl.create(:term_record, collection: person_collection, spanish: "hola los amigos")
+				it "generates correct solr query with sp field" do
+					person.spanish_active = true
 				  get :index, { user_id: person.id, search: "hola", field: "Spanish" }
-				  assigns(:term_records).should_not be_empty
+				  assigns(:search).inspect.should match(/:q=>\"hola\", :fl=>\"\* score\", :qf=>\"spanish_text\"/)
 				end
 
-				it "retrives existing by domain query" do
-					FactoryGirl.create(:term_record, collection: person_collection, domain: "Botanical gardens")
+				it "generates correct solr query with domain field" do
 				  get :index, { user_id: person.id, search: "garden", field: "Domain" }
-				  assigns(:term_records).should_not be_empty
+				  assigns(:search).inspect.should match(/:q=>\"garden\", :fl=>\"\* score\", :qf=>\"domain_text\"/)
 				end
 
-				it "retrives existing by source query" do
-					FactoryGirl.create(:term_record, collection: person_collection, source: "Historical record")
+				it "generates correct solr query with source field" do
 				  get :index, { user_id: person.id, search: "record", field: "Source" }
-				  assigns(:term_records).should_not be_empty
+				  assigns(:search).inspect.should match(/:q=>\"record\", :fl=>\"\* score\", :qf=>\"source_text\"/)
 				end
 
 				it "retrives existing by comment query" do
-					FactoryGirl.create(:term_record, collection: person_collection, comment: "Historical record")
 				  get :index, { user_id: person.id, search: "record", field: "Comment" }
-				  assigns(:term_records).should_not be_empty
+				  assigns(:search).inspect.should match(/:q=>\"record\", :fl=>\"\* score\", :qf=>\"comment_text\"/)
 				end
 
-				it "retrives existing by comment query" do
-					FactoryGirl.create(:term_record, collection: person_collection, context: "Historical record")
+				it "retrives existing by context query" do
 				  get :index, { user_id: person.id, search: "record", field: "Context" }
-				  assigns(:term_records).should_not be_empty
+				  assigns(:search).inspect.should match(/:q=>\"record\", :fl=>\"\* score\", :qf=>\"context_text\"/)
 				end
 			end
 
@@ -118,17 +112,11 @@ describe CollectionsController do
 				end
 			end
 
-			context "with a query in params" do
-				it "finds a record that's there" do
+			context "with a query in params", solr: true do
+				it "generates the right solr query" do
 					FactoryGirl.create(:term_record, collection: person_collection, english: "Hello kitty")
 				  get :show, { user_id: person.id, id: person_collection.id, search: "kitty", field: "English" }
-				  assigns(:term_records).should_not be_empty
-				end
-
-				it "respects the exact match param" do
-					FactoryGirl.create(:term_record, collection: person_collection, english: "Hello kitty")
-				  get :show, { user_id: person.id, id: person_collection.id, search: "kitty", field: "English", exact_match: "1"}
-				  assigns(:term_records).should be_empty
+				  assigns(:search).inspect.should match(/:fq=>\[\"type:TermRecord\", \"collection_id_i:1\"\], :q=>\"kitty\", :fl=>\"\* score\", :qf=>\"english_text\"/)
 				end
 			end
 		end
