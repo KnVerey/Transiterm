@@ -64,7 +64,7 @@ class CollectionsController < ApplicationController
 		rel_collection_ids = @collections ? @collections.map { |c| c.id } : @collection.id
 		field = (@fields.include?(params[:field]) && params[:field] != "All") ? params[:field].downcase : nil
 
-		search = TermRecord.search do
+		@search = TermRecord.search do
 			keywords (params[:search] || "*"), fields: field
 
 			all_of do
@@ -72,7 +72,7 @@ class CollectionsController < ApplicationController
 			end
 		end
 
-		search.results
+		@search.results
 	end
 
 	def find_collection
