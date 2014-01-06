@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:edit, :update, :destroy]
   skip_before_filter :require_login, only: [:new, :create, :activate, :unlock]
 
   layout "pages", only: [:new, :create, :destroy]
@@ -41,6 +40,7 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @user = current_user
   end
 
   def create
@@ -55,26 +55,22 @@ class UsersController < ApplicationController
 
   def update
     respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to edit_user_path(@user), flash: { success: 'Your profile was successfully updated.' }}
+      if current_user.update(user_params)
+        format.html { redirect_to edit_user_path(current_user), flash: { success: 'Your profile was successfully updated.' }}
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.json { render json: current_user.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def destroy
-    @user.destroy
+    current_user.destroy
     redirect_to home_path
   end
 
   private
-    def set_user
-      @user = current_user
-    end
-
     def user_params
       params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
     end

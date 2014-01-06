@@ -24,10 +24,10 @@ describe UsersController do
   end
 
   describe "GET edit" do
-    it "sets @user to current_user" do
+    it "assigns current_user as @user (to share 'new' form)" do
       login_user(person)
       get :edit, { id: person.to_param }
-      assigns(:user).should eq(controller.current_user)
+      assigns(:user).should eq(person)
     end
   end
 
@@ -45,7 +45,7 @@ describe UsersController do
       it "uses param to toggle active languages" do
         person.should_receive(:toggle_language).with("english")
         User.any_instance.stub(:save)
-        controller.stub(:user).and_return(person)
+        controller.stub(:current_user).and_return(person)
         get :lang_toggle, { user_id: person.id, lang_toggle: "english" }
       end
 
@@ -113,10 +113,11 @@ describe UsersController do
   describe "PUT update" do
     describe "with valid params" do
 
-      it "sets @user to current_user" do
+      it "accesses current_user (no @user)" do
         login_user(person)
-        put :update, id: person.to_param, user: { id: person.to_param, email: "test@test.com" }
-        assigns(:user).should eq(controller.current_user)
+        get :edit, { id: person.to_param }
+        assigns(:user).should be_nil
+        assigns(:current_user).should_not be_nil
       end
 
       it "updates the requested user without password" do
@@ -163,10 +164,11 @@ describe UsersController do
 
   describe "DELETE destroy" do
 
-    it "sets @user to current_user" do
+    it "accesses current_user (no @user)" do
       login_user(person)
-      delete :destroy, { id: person.to_param }
-      assigns(:user).should eq(controller.current_user)
+      get :edit, { id: person.to_param }
+      assigns(:user).should be_nil
+      assigns(:current_user).should_not be_nil
     end
 
     it "destroys the requested user" do
