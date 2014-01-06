@@ -111,77 +111,86 @@ describe UsersController do
   end
 
   describe "PUT update" do
-    describe "with valid params" do
+
+    context "when user not logged in" do
+      it "redirects to login page" do
+        put :update, {id: person.to_param, user: valid_attributes}
+        expect(response).to redirect_to("/login")
+      end
+    end
+
+    context "when logged in" do
+      before(:each) { login_user(person) }
 
       it "accesses current_user (no @user)" do
-        login_user(person)
-        get :edit, { id: person.to_param }
+        put :update, id: person.to_param, user: { id: person.to_param, email: "test@test.com" }
         assigns(:user).should be_nil
         assigns(:current_user).should_not be_nil
       end
 
-      it "updates the requested user without password" do
-        login_user(person)
-        person.should_receive(:update).with("email" => "test@test.com")
-        put :update, id: person.to_param, user: { id: person.to_param, email: "test@test.com" }
+      describe "with valid params" do
+
+        it "updates the requested user without password" do
+          person.should_receive(:update).with("email" => "test@test.com")
+          put :update, id: person.to_param, user: { id: person.to_param, email: "test@test.com" }
+        end
+
+        it "redirects to the same page if success" do
+          put :update, {:id => person.to_param, :user => valid_attributes}
+          response.should redirect_to("/users/#{person.id}/edit")
+        end
+
+        it "lets the user know it succeeded" do
+          User.any_instance.stub(:update).and_return(true)
+          put :update, {:id => person.to_param, :user => valid_attributes}
+          expect(flash[:success]).to match(/update/i)
+        end
       end
 
-      it "redirects if user not logged in" do
-        put :update, {id: person.to_param, user: valid_attributes}
-        expect(response).to redirect_to("/login")
-      end
+      describe "with invalid params" do
 
-      it "redirects to the same page if success" do
-        login_user(person)
-        put :update, {:id => person.to_param, :user => valid_attributes}
-        response.should redirect_to("/users/#{person.id}/edit")
-      end
+        it "doesn't update if password but no confirmation" do
+          put :update, id: person.id, user: { id: person.id, email: "test@test.com", password: "test93" }
+          expect(response).to render_template("edit")
+        end
 
-      it "lets the user know it succeeded" do
-        login_user(person)
-        User.any_instance.stub(:update).and_return(true)
-        put :update, {:id => person.to_param, :user => valid_attributes}
-        expect(flash[:success]).to match(/update/i)
-      end
-    end
-
-    describe "with invalid params" do
-
-      it "doesn't update if password but no confirmation" do
-        login_user(person)
-        put :update, id: person.id, user: { id: person.id, email: "test@test.com", password: "test93" }
-        expect(response).to render_template("edit")
-      end
-
-      it "re-renders the 'edit' template" do
-        login_user(person)
-        person.stub(:save).and_return(false)
-        put :update, { id: person.to_param, user: { "email" => "invalid value" }}
-        response.should render_template("edit")
+        it "re-renders the 'edit' template" do
+          person.stub(:save).and_return(false)
+          put :update, { id: person.to_param, user: { "email" => "invalid value" }}
+          response.should render_template("edit")
+        end
       end
     end
   end
 
   describe "DELETE destroy" do
 
-    it "accesses current_user (no @user)" do
-      login_user(person)
-      get :edit, { id: person.to_param }
-      assigns(:user).should be_nil
-      assigns(:current_user).should_not be_nil
+    context "when user not logged in" do
+      it "redirects to login page" do
+        delete :destroy, { id: person.to_param }
+        expect(response).to redirect_to("/login")
+      end
     end
 
-    it "destroys the requested user" do
-      login_user(person)
-      expect {
+    context "when logged in" do
+      before(:each) { login_user(person) }
+
+      it "accesses current_user (no @user)" do
+        delete :destroy, { id: person.to_param }
+        assigns(:user).should be_nil
+        assigns(:current_user).should_not be_nil
+      end
+
+      it "destroys the requested user" do
+        expect {
+          delete :destroy, {:id => person.to_param}
+        }.to change(User, :count).by(-1)
+      end
+
+      it "redirects to the home page" do
         delete :destroy, {:id => person.to_param}
-      }.to change(User, :count).by(-1)
-    end
-
-    it "redirects to the home page" do
-      login_user(person)
-      delete :destroy, {:id => person.to_param}
-      response.should redirect_to("/home")
+        response.should redirect_to("/home")
+      end
     end
   end
 
