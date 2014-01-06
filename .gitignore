@@ -48,3 +48,4 @@ config/initializers/secret_token.rb
 /config/application.yml
 
 /solr/
+coverage

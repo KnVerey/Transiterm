@@ -40,6 +40,8 @@ group :development, :test do
   gem 'sunspot-rails-tester'
 end
 
+gem 'simplecov', :require => false, :group => :test
+
 gem 'sorcery'
 gem 'figaro'
 gem 'sunspot_rails', '~> 2.1'
