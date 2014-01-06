@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
 
 
   has_many :collections, dependent: :destroy
+  has_many :term_records, through: :collections
   has_many :sources, dependent: :destroy
   has_many :domains, dependent: :destroy
 
