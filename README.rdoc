@@ -1,28 +1,11 @@
-== README
+== Transiterm: PROJECT OVERVIEW
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+==== What is Transiterm?
 
-Things you may want to cover:
+Transiterm is a terminology management app designed with translation students in mind. It is also great for anyone who wants an easy way to keep track of their own terminology solutions without having to learn how to use a complicated (and expensive) program that has far more features than they want or need. The original MS Access version (see www.transiterm.ca/about.html) has been included in the Language Technologies Research Centre’s virtual desktop since 2012.
 
-* Ruby version
+==== What is this repo?
+This repository contains an all-new Rails-based expansion on the original MS Access app. My vision is of a more powerful and accessible application that keeps basic functionality as easy to use as in the original. My priorities in early development are testing and progressive enhancement.
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+==== Want to contribute?
+Yay! Please email me at transiterm@gmail.com.
