@@ -38,8 +38,12 @@ class PasswordResetsController < ApplicationController
 
     # the next line makes the password confirmation validation work
     @user.password_confirmation = params[:user][:password_confirmation]
+
+    if params[:user][:password].empty?
+      @user.errors.add(:password, "cannot be blank")
+      render action: "edit"
     # the next line clears the temporary token and updates the password
-    if @user.change_password!(params[:user][:password])
+    elsif @user.change_password!(params[:user][:password])
       auto_login(@user)
       redirect_to(user_collections_path(@user), :notice => 'Password was successfully updated.')
     else
