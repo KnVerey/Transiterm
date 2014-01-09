@@ -21,13 +21,27 @@ describe CollectionsController do
 			end
 		end
 
-		context "when logged in" do
+		context "when logged in", solr: true do
 			before(:each) { login_user(person) }
 
 			context "without a query in params" do
 				it "sets @collections" do
 				  get :index, { user_id: person.id }
 				  assigns(:collections).should_not be_nil
+				end
+
+				xit "sets @collections empty if user has none" do
+					person_collection.reload
+					empty_user = FactoryGirl.create(:user)
+				  get :index, { user_id: empty_user.id }
+				  assigns(:collections).should be_empty
+				end
+
+				xit "sets @term_records empty if user has none" do
+					FactoryGirl.create(:term_record, collection: person_collection)
+					empty_user = FactoryGirl.create(:user)
+				  get :index, { user_id: empty_user.id }
+				  assigns(:term_records).should be_empty
 				end
 
 				it "sets @term_records" do
@@ -42,7 +56,7 @@ describe CollectionsController do
 				end
 			end
 
-			context "with a query in params", solr: true do
+			context "with a query in params" do
 				it "generates the right solr query with en field" do
 				  get :index, { user_id: person.id, search: "kitty", field: "English" }
 				  assigns(:search).inspect.should match(/:q=>\"kitty\", :fl=>\"\* score\", :qf=>\"english_text\"/)
