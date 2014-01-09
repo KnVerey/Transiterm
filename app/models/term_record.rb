@@ -9,10 +9,14 @@ class TermRecord < ActiveRecord::Base
 	validate :correct_languages_present
 
 	searchable do
-		text :english, :french, :spanish, :context, :comment
+		text :english, boost: 5.0
+		text :french, boost: 5.0
+		text :spanish, boost: 5.0
+		text :context, :comment
 		text :domain do domain.name end
 		text :source do source.name end
 
+		integer :user_id do collection.user_id end
 		integer :collection_id
 	end
 

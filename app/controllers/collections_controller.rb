@@ -63,9 +63,8 @@ class CollectionsController < ApplicationController
 	end
 
 	def run_term_record_query
-		if (current_user.term_records.count == 0) || (@collections.empty? && @collection.nil?)
-			return []
-		end
+		#Don't bother if nothing to search
+		return [] if (@collections.empty? && @collection.nil?)
 
 		rel_collection_ids = @collections ? @collections.map { |c| c.id } : @collection.id
 		field = (@fields.include?(params[:field]) && params[:field] != "All") ? params[:field].downcase : nil
@@ -75,6 +74,7 @@ class CollectionsController < ApplicationController
 
 			all_of do
 				with(:collection_id, rel_collection_ids)
+				with(:user_id, current_user.id)
 			end
 		end
 
