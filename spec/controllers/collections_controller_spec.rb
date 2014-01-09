@@ -30,23 +30,25 @@ describe CollectionsController do
 				  assigns(:collections).should_not be_nil
 				end
 
-				xit "sets @collections empty if user has none" do
+				it "sets @collections empty if user has none" do
 					person_collection.reload
 					empty_user = FactoryGirl.create(:user)
 				  get :index, { user_id: empty_user.id }
 				  assigns(:collections).should be_empty
 				end
 
-				xit "sets @term_records empty if user has none" do
+				it "sets @term_records empty if user has none" do
 					FactoryGirl.create(:term_record, collection: person_collection)
 					empty_user = FactoryGirl.create(:user)
 				  get :index, { user_id: empty_user.id }
 				  assigns(:term_records).should be_empty
 				end
 
-				it "sets @term_records" do
+				xit "sets @term_records to all if any" do
+					records_count = Collection.where(user_id: person.id).length
 				  get :index, { user_id: person.id }
-				  assigns(:term_records).should_not be_nil
+
+				  assigns(:term_records).length.should eq(records_count)
 				end
 
 				it "sets @columns and @fields" do
@@ -57,7 +59,9 @@ describe CollectionsController do
 			end
 
 			context "with a query in params" do
-				it "generates the right solr query with en field" do
+				before(:each) { controller.stub(:find_relevant_collections).and_return([] << person_collection) }
+
+				it "generates the correct solr query with en field" do
 				  get :index, { user_id: person.id, search: "kitty", field: "English" }
 				  assigns(:search).inspect.should match(/:q=>\"kitty\", :fl=>\"\* score\", :qf=>\"english_text\"/)
 				end
@@ -67,28 +71,28 @@ describe CollectionsController do
 				  assigns(:search).inspect.should match(/:q=>\"sieur\", :fl=>\"\* score\", :qf=>\"french_text\"/)
 				end
 
-				it "generates correct solr query with sp field" do
+				it "generates the correct solr query with sp field" do
 					person.spanish_active = true
 				  get :index, { user_id: person.id, search: "hola", field: "Spanish" }
 				  assigns(:search).inspect.should match(/:q=>\"hola\", :fl=>\"\* score\", :qf=>\"spanish_text\"/)
 				end
 
-				it "generates correct solr query with domain field" do
+				it "generates the correct solr query with domain field" do
 				  get :index, { user_id: person.id, search: "garden", field: "Domain" }
 				  assigns(:search).inspect.should match(/:q=>\"garden\", :fl=>\"\* score\", :qf=>\"domain_text\"/)
 				end
 
-				it "generates correct solr query with source field" do
+				it "generates the correct solr query with source field" do
 				  get :index, { user_id: person.id, search: "record", field: "Source" }
 				  assigns(:search).inspect.should match(/:q=>\"record\", :fl=>\"\* score\", :qf=>\"source_text\"/)
 				end
 
-				it "retrives existing by comment query" do
+				it "generates the correct solr query with comment field" do
 				  get :index, { user_id: person.id, search: "record", field: "Comment" }
 				  assigns(:search).inspect.should match(/:q=>\"record\", :fl=>\"\* score\", :qf=>\"comment_text\"/)
 				end
 
-				it "retrives existing by context query" do
+				it "generates the correct solr query with context field" do
 				  get :index, { user_id: person.id, search: "record", field: "Context" }
 				  assigns(:search).inspect.should match(/:q=>\"record\", :fl=>\"\* score\", :qf=>\"context_text\"/)
 				end
@@ -127,10 +131,10 @@ describe CollectionsController do
 			end
 
 			context "with a query in params", solr: true do
-				it "generates the right solr query" do
+				it "generates the correct solr query" do
 					FactoryGirl.create(:term_record, collection: person_collection, english: "Hello kitty")
 				  get :show, { user_id: person.id, id: person_collection.id, search: "kitty", field: "English" }
-				  assigns(:search).inspect.should match(/:fq=>\[\"type:TermRecord\", \"collection_id_i:1\"\], :q=>\"kitty\", :fl=>\"\* score\", :qf=>\"english_text\"/)
+				  assigns(:search).inspect.should match(/:fq=>\[\"type:TermRecord\", \"collection_id_i:1\", \"user_id_i:1\"\], :q=>\"kitty\", :fl=>\"\* score\", :qf=>\"english_text\"/)
 				end
 			end
 		end
