@@ -51,7 +51,7 @@ class CollectionsController < ApplicationController
 	def find_relevant_collections
 		return [] if current_user.collections.count == 0
 
-		search = Collection.search do
+		@search = Collection.search do
 			all_of do
 				with(:user_id, current_user.id)
 				with(:french, current_user.french_active)
@@ -59,12 +59,12 @@ class CollectionsController < ApplicationController
 				with(:spanish, current_user.spanish_active)
 			end
 		end
-		search.results
+		@search.results
 	end
 
 	def run_term_record_query
 		#Don't bother if nothing to search
-		return [] if (@collections.empty? && @collection.nil?)
+		return [] unless (@collections.present? || @collection.present?)
 
 		rel_collection_ids = @collections ? @collections.map { |c| c.id } : @collection.id
 		field = (@fields.include?(params[:field]) && params[:field] != "All") ? params[:field].downcase : nil
