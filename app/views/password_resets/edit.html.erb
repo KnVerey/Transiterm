@@ -1,4 +1,6 @@
-<h1>Choose a new password</h1>
+<h2>Choose a new password<br>
+<small>Account: <%= @user.email %></small></h2>
+
 <%= form_for @user, :url => password_reset_path(@user), :html => {:method => :put} do |f| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">
@@ -12,20 +14,30 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= @user.email %>
+  <br><br>
+
+  <div class="row">
+    <div class="small-2 columns">
+      <%= f.label :password, class: "right inline" %><br />
+    </div>
+    <div class="small-10 columns">
+      <%= f.password_field :password %>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password %>
+
+  <div class="row">
+    <div class="small-2 columns">
+      <%= f.label :password_confirmation, class: "right no-padding inline" %><br />
+    </div>
+    <div class="small-10 columns">
+      <%= f.password_field :password_confirmation %>
+      <%= hidden_field_tag :token, @token %>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation %>
-    <%= hidden_field_tag :token, @token %>
-  </div>
-  <div class="actions">
-    <%= f.submit "Update password" %>
+  <br>
+  <div class="row">
+    <div class="small-11 actions">
+    <%= f.submit "Update password", class: "button tiny right" %>
+    </div>
   </div>
 <% end %>
