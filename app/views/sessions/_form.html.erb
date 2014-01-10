@@ -1,17 +1,38 @@
 <%= form_tag sessions_path, method: :post do %>
-  <div class="field">
-    <%= label_tag :email %><br />
-    <%= email_field_tag :email %>
+<br><br>
+
+  <div class="row">
+    <div class="small-1 medium-offset-1 columns">
+      <%= label_tag :email, "Email", class: "right inline" %><br />
+    </div>
+    <div class="small-10 columns">
+      <%= email_field_tag :email %>
+    </div>
   </div>
-  <div class="field">
-    <%= label_tag :password %><br />
-    <%= password_field_tag :password %>
+  <div class="row">
+    <div class="small-1 medium-offset-1 columns">
+      <%= label_tag :password, "Password", class: "right inline" %><br />
+    </div>
+    <div class="small-10 columns">
+      <%= password_field_tag :password %>
+    </div>
   </div>
-  <div class="field">
-    <%= label_tag :remember %>
-    <%= check_box_tag :remember, true, true %>
+  <div class="row">
+    <div class="small-1 medium-offset-1 columns">
+      <%= label_tag :remember, "Remember me?", class: "right inline no-padding" %>
+    </div>
+    <div class="small-10 columns">
+      <%= check_box_tag :remember, true, true %>
+    </div>
   </div>
-  <div class="actions">
-    <%= submit_tag "Login" %>
+  <div class="row">
+    <div class="actions small-12 columns">
+      <%= submit_tag "Log in", class: "button right" %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-12 columns">
+      <%= link_to 'Forgot Password?', new_password_reset_path, class: "right" %>
+    </div>
   </div>
 <% end %>
