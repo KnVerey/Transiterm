@@ -21,7 +21,7 @@ class CollectionsController < ApplicationController
 		@collection.user_id = current_user.id
 
     if @collection.save
-      redirect_to user_collections_path(current_user), flash: { success: 'Collection created'}
+      redirect_to collections_path, flash: { success: 'Collection created'}
     else
       render action: 'new'
     end
@@ -33,7 +33,7 @@ class CollectionsController < ApplicationController
 	def update
 		respond_to do |format|
 			if @collection.update(collection_params)
-				format.html { redirect_to user_collection_path(current_user, @collection), notice: 'Collection details successfully updated' }
+				format.html { redirect_to collection_path(@collection), notice: 'Collection details successfully updated' }
 				format.json {}
 			else
 				format.html { render action: 'edit' }
@@ -44,7 +44,7 @@ class CollectionsController < ApplicationController
 
 	def destroy
 		@collection.destroy
-		redirect_to user_collections_path
+		redirect_to collections_path
 	end
 
 	private
