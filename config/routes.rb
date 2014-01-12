@@ -8,12 +8,12 @@ Transiterm::Application.routes.draw do
       get :activate
       get :unlock
     end
-
-    resources :collections do
-      resources :term_records, except: [:index, :show]
-    end
   end
   get 'user_lang_toggle' => 'users#lang_toggle', as: :lang_toggle
+
+  resources :collections do
+    resources :term_records, shallow:true, except: [:index, :show]
+  end
 
   resources :password_resets, only: [:create, :edit, :update, :new]
 
