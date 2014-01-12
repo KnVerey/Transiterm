@@ -167,10 +167,9 @@ describe CollectionsController do
 					assigns(:collection).user_id.should eq(person.id)
 				end
 
-				it "redirects to the user's collections index" do
-				  Collection.any_instance.stub(:save).and_return(true)
+				it "redirects to the newly create collection" do
 				  post :create, collection: valid_attributes
-				  expect(response).to redirect_to("/collections")
+				  expect(response).to redirect_to("/collections/#{assigns(:collection).id}")
 				end
 			end
 

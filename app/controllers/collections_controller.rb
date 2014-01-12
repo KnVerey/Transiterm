@@ -21,7 +21,7 @@ class CollectionsController < ApplicationController
 		@collection.user_id = current_user.id
 
     if @collection.save
-      redirect_to collections_path, flash: { success: 'Collection created'}
+      redirect_to collection_path(@collection), flash: { success: 'Collection created'}
     else
       render action: 'new'
     end
