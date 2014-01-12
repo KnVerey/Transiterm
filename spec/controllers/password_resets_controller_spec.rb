@@ -6,7 +6,7 @@ describe PasswordResetsController do
 			# This is a problem because if user is updating on their profile page, they are allowed to not change their password (leave both fields blank). This and that are both update methods, so same validations. Added custom code to controller, since save actually happens deep inside Sorcery.
 
 			before(:each) do
-				person = FactoryGirl.create(:user)
+				person = FactoryGirl.create(:active_user)
 				User.stub(:load_from_reset_password_token).and_return(person)
 			end
 

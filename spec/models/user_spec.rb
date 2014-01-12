@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe User do
-	let!(:katrina) { FactoryGirl.create(:user) }
+	let!(:katrina) { FactoryGirl.create(:active_user) }
 
   it 'must have a first name' do
   	user = User.new

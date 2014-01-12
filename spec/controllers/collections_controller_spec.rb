@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe CollectionsController do
 
-  let(:person) { FactoryGirl.create(:user) }
+  let(:person) { FactoryGirl.create(:active_user) }
   let!(:person_collection) { FactoryGirl.create(:collection, user: person) }
 
   let(:valid_attributes) { {

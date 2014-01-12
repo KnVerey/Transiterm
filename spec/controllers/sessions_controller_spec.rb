@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SessionsController do
-  let!(:user) { FactoryGirl.create(:user) }
+  let!(:user) { FactoryGirl.create(:active_user) }
 
   describe "GET new" do
     it "assigns a virtual user" do

@@ -9,7 +9,7 @@ describe PagesController do
 		end
 
 		it 'should redirect when logged in' do
-			user = FactoryGirl.create(:user)
+			user = FactoryGirl.create(:active_user)
 			login_user(user)
 
 			get :home
@@ -25,7 +25,7 @@ describe PagesController do
 		end
 
 		it "should render access template when logged in" do
-			user = FactoryGirl.create(:user)
+			user = FactoryGirl.create(:active_user)
 			login_user(user)
 
 			get :msaccess

@@ -6,33 +6,24 @@ FactoryGirl.define do
     french true
     spanish false
     user
-  end
 
-  factory :one_lang_collection, class: Collection do
-    title "Animals"
-    description "Fuzzy things on paws"
-    english true
-    french false
-    spanish false
-    user
-  end
+    factory :one_lang_collection do
+      english true
+      french false
+      spanish false
+    end
 
-  factory :two_lang_collection, class: Collection do
-    title "Animals"
-    description "Fuzzy things on paws"
-    english true
-    french false
-    spanish true
-    user
-  end
+    factory :two_lang_collection do
+      english true
+      french false
+      spanish true
+    end
 
-  factory :three_lang_collection, class: Collection do
-    title "Animals"
-    description "Fuzzy things on paws"
-    english true
-    french true
-    spanish true
-    user
+    factory :three_lang_collection do
+      english true
+      french true
+      spanish true
+    end
   end
 
 end

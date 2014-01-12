@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe UsersController do
 
-  let(:person) { FactoryGirl.create(:user) }
+  let(:person) { FactoryGirl.create(:active_user) }
   let(:valid_attributes) { {
     first_name: "Test",
     last_name: "Test",
@@ -196,7 +196,7 @@ describe UsersController do
 
   describe "GET activate" do
     before(:each) do
-      @activate_me = FactoryGirl.create(:inactive_user)
+      @activate_me = FactoryGirl.create(:user)
     end
 
     describe "with a valid token" do

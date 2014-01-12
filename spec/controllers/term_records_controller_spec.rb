@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe TermRecordsController do
 
-  let(:person) { FactoryGirl.create(:user) }
+  let(:person) { FactoryGirl.create(:active_user) }
 
   let(:person_collection) { FactoryGirl.create(:three_lang_collection, user: person) }
 
