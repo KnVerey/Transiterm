@@ -51,7 +51,7 @@ describe UsersController do
 
       it "redirects to the collections index" do
         get :lang_toggle, { user_id: person.id, lang_toggle: "english" }
-        expect(response).to redirect_to(user_collections_path(person))
+        expect(response).to redirect_to('/collections')
       end
     end
   end
@@ -207,7 +207,7 @@ describe UsersController do
 
       it "redirects to the user's collections" do
         get :activate, {:id => @activate_me.activation_token}
-        expect(response).to redirect_to("/users/#{@activate_me.id}/collections")
+        expect(response).to redirect_to("/collections")
       end
     end
 
@@ -239,7 +239,7 @@ describe UsersController do
 
       it "redirects to the user's collections" do
         get :unlock, {:id => @unlock_me.unlock_token}
-        expect(response).to redirect_to("/users/#{@unlock_me.id}/collections")
+        expect(response).to redirect_to("/collections")
       end
     end
 
