@@ -19,7 +19,7 @@
         <!-- Icon row -->
         <div class="row">
           <div class="small-11 small-offset-1 small-centered columns">
-            <%= link_to image_tag("T.png", class: "logo", alt:"Transiterm logo"), user_collections_path(current_user) %>
+            <%= link_to image_tag("T.png", class: "logo", alt:"Transiterm logo"), collections_path %>
           </div>
         </div>
 
@@ -57,14 +57,14 @@
             <div class="small-12 small-centered columns full-width no-margin no-padding">
 
             <h5>Select collections</h5>
-              <a href="<%= user_collections_path %>"><div class="collection selector active" id="select-all">All listed below</div></a>
+              <a href="<%= collections_path %>"><div class="collection selector active" id="select-all">All listed below</div></a>
               <% @collections.each do |c| %>
-                <a href="<%= user_collection_path(current_user, c) %>"><div class="collection selector"><%= c.title %></div></a>
+                <a href="<%= collection_path(c) %>"><div class="collection selector"><%= c.title %></div></a>
               <% end %>
             </div>
           </div>
         <% else %>
-          <strong><%= link_to "←  Back to collections", user_collections_path(current_user), class: "button tiny c-secondary" %></strong>
+          <strong><%= link_to "←  Back to collections", collections_path, class: "button tiny c-secondary" %></strong>
         <% end %>
       </div>
 
@@ -103,7 +103,7 @@
         <div class="row no-margin">
           <div class="small-12 columns add-button-row">
             <% if @collections %>
-              <%= link_to "Add collection", new_user_collection_path(current_user), class: "button tiny c-secondary" %>
+              <%= link_to "Add collection", new_collection_path, class: "button tiny c-secondary" %>
             <% end %>
           </div>
         </div>

@@ -2,16 +2,16 @@
 	<div class="small-8 columns">
 		<h1><%= @collection.title %></h1>
 		<p><%= @collection.description %><br>
-		<%= link_to "Edit collection details", edit_user_collection_path(current_user, @collection), class: "regular-link" %></p>
+		<%= link_to "Edit collection details", edit_collection_path(@collection), class: "regular-link" %></p>
 	</div>
 	<div class="small-3 columns add-button-column">
-		<%= link_to "Add record", new_user_collection_term_record_path(current_user, @collection), class: "button", id: "add-button" %>
+		<%= link_to "Add record", new_collection_term_record_path(@collection), class: "button", id: "add-button" %>
 	</div>
 </div>
 
 <div class="row search-bar">
   <div class="small-11 columns">
-  	<%= form_tag(user_collection_path(current_user, @collection), method: :get) do %>
+  	<%= form_tag(collection_path(@collection), method: :get) do %>
 	    <div class="row collapse">
 		      <div class="small-6 large-8 columns">
 		      	<%= text_field_tag "search", nil, placeholder: "Search terms" %>
