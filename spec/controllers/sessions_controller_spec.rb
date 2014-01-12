@@ -17,7 +17,7 @@ describe SessionsController do
 
         post :create, email: user.email, password: user.password
 
-        expect(response).to redirect_to("/users/#{user.id}/collections")
+        expect(response).to redirect_to("/collections")
       end
 
       it "flashes login success message" do
