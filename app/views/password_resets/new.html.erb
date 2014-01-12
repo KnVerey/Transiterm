@@ -1,6 +1,18 @@
+<h2>Reset your password</h2>
+<p>Enter your email address below and we'll send you a message with instructions.</p><br><br>
+
 <%= form_tag password_resets_path, :method => :post do %>
-  <div class="field">
-    <%= label_tag :email %><br />
-    <%= text_field_tag :email %> <%= submit_tag "Reset my password!" %>
+  <div class="row">
+  	<div class="small-1 columns">
+	    <%= label_tag :email %>
+		</div>
+		<div class="small-11 columns">
+	    <%= text_field_tag :email %>
+	  </div>
+  </div>
+  <div class="row">
+	  <div class="small-12 columns">
+	    <%= submit_tag "Reset my password!", class: "small button right" %>
+	  </div>
   </div>
 <% end %>
