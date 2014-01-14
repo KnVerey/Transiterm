@@ -22,9 +22,18 @@ describe QueriesController do
 
 			it "creates a new query object" do
 				get :show
-				expect(assigns(:queries)).not_to be_nil
+				expect(assigns(:query)).not_to be_nil
+			end
+
+			it "sets @fields" do
+			  get :show
+			  assigns(:fields).should_not be_nil
+			end
+
+			it "sets @columns" do
+			  get :show
+			  assigns(:columns).should_not be_nil
 			end
 		end
-
 	end
 end
