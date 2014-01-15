@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131224061343) do
+ActiveRecord::Schema.define(version: 20140115184925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 20131224061343) do
     t.boolean  "french_active",                   default: true
     t.boolean  "english_active",                  default: true
     t.boolean  "spanish_active",                  default: false
+    t.integer  "active_collection_ids",           default: [],    array: true
   end
 
   add_index "users", ["activation_token"], name: "index_users_on_activation_token", using: :btree

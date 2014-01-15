@@ -13,10 +13,7 @@ class QueriesController < ApplicationController
 	def configure_new_query
 		user_id = current_user.id
 		languages = current_user.active_languages
-
-		#this doesn't exist yet
-		collection_ids = current_user.active_collections
-
+		collection_ids = current_user.active_collection_ids
 		search_field = sanitize_search_field
 		keywords = params[:search]
 
