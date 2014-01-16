@@ -7,11 +7,15 @@ module QueriesHelper
 		(current_user.active_languages + Collection::FIELDS).sort.map(&:capitalize)
 	end
 
-	def collection_active?(collection)
+	def lang_active_class(language)
+
+	end
+
+	def collection_active_class(collection)
 		"active" if @selected_collections.include?(collection) && current_user.active_collection_ids.present?
 	end
 
-	def all_active?
+	def all_active_class
 		"active" if current_user.active_collection_ids.empty?
 	end
 

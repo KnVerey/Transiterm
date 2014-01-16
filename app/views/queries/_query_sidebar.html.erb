@@ -32,7 +32,7 @@
   <h5>Select collections</h5>
     <% if @sidebar_collections.present? %>
       <a href='<%= "#{collection_toggle_path}?collection_id=all" %>'>
-        <div class="collection selector <%= all_active? %>" id="select-all">
+        <div class="collection selector <%= all_active_class %>" id="select-all">
           All <%= format_active_langs %>
         </div>
       </a>
@@ -44,7 +44,7 @@
 
     <% @sidebar_collections.each do |c| %>
       <a href='<%= "#{collection_toggle_path}?collection_id=#{c.id}" %>'>
-        <div class="collection selector <%= collection_active?(c) %>">
+        <div class="collection selector <%= collection_active_class(c) %>">
           <%= c.title %>
         </div>
       </a>
