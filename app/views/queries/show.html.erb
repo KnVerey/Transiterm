@@ -1,9 +1,17 @@
+<% content_for :sidebar_meat do %>
+	<%= render 'query_sidebar' %>
+<% end %>
+
+<% content_for :add_button_area do %>
+  <%= link_to "Add collection", new_collection_path, class: "button tiny c-secondary" %>
+<% end %>
+
 <div class="row full-width">
 	<div class="small-8 columns">
 		<!-- <h1>Transiterm search </h1> -->
 		<h5 class="subheader">
 			<% if @selected_collections.empty? %>
-				&larr; Use sidebar to choose collections to search
+				&larr; Use sidebar to activate languages and choose collections to search
 			<% else %>
 				You're searching:
 			<% end %>

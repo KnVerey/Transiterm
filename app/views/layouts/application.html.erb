@@ -23,49 +23,8 @@
           </div>
         </div>
 
-        <!-- Collections list row -->
-        <% if @collections %>
-          <div class="row full-width no-margin">
-            <h5>List collections with:</h5>
-
-            <div class="small-4 columns no-padding hide-for-large">
-              <%= link_to "EN", "#{lang_toggle_path}?lang_toggle=english", class: "language selector #{ 'active' if current_user.english_active == true }" %>
-            </div>
-
-            <div class="small-4 columns no-padding hide-for-large">
-              <%= link_to "FR", "#{lang_toggle_path}?lang_toggle=french", class: "language selector #{ 'active' if current_user.french_active == true }" %>
-            </div>
-
-            <div class="small-4 columns no-padding hide-for-large">
-              <%= link_to "SP", "#{lang_toggle_path}?lang_toggle=spanish", class: "language selector #{ 'active' if current_user.spanish_active == true }" %>
-            </div>
-
-            <div class="small-4 columns no-padding show-for-large-up">
-              <%= link_to "English", "#{lang_toggle_path}?lang_toggle=english", class: "language selector #{ 'active' if current_user.english_active == true }" %>
-            </div>
-
-            <div class="small-4 columns no-padding show-for-large-up">
-              <%= link_to "French", "#{lang_toggle_path}?lang_toggle=french", class: "language selector #{ 'active' if current_user.french_active == true }" %>
-            </div>
-
-            <div class="small-4 columns no-padding show-for-large-up">
-              <%= link_to "Spanish", "#{lang_toggle_path}?lang_toggle=spanish", class: "language selector #{ 'active' if current_user.spanish_active == true }" %>
-            </div>
-          </div>
-
-          <div class="row full-width collections-container">
-            <div class="small-12 small-centered columns full-width no-margin no-padding">
-
-            <h5>Select collections</h5>
-              <a href="<%= collections_path %>"><div class="collection selector active" id="select-all">All listed below</div></a>
-              <% @collections.each do |c| %>
-                <a href="<%= collection_path(c) %>"><div class="collection selector"><%= c.title %></div></a>
-              <% end %>
-            </div>
-          </div>
-        <% else %>
-          <strong><%= link_to "←  Back to collections", collections_path, class: "button tiny c-secondary" %></strong>
-        <% end %>
+        <!-- Collections list or back button row -->
+        <%= yield :sidebar_meat %>
       </div>
 
       <main class="small-8 medium-8 medium-offset-1 large-9 columns full-height">
@@ -102,9 +61,7 @@
 
         <div class="row no-margin">
           <div class="small-12 columns add-button-row">
-            <% if @collections %>
-              <%= link_to "Add collection", new_collection_path, class: "button tiny c-secondary" %>
-            <% end %>
+            <%= yield :add_button_area %>
           </div>
         </div>
 
