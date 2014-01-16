@@ -30,11 +30,17 @@
   <div class="small-12 small-centered columns full-width no-margin no-padding">
 
   <h5>Select collections</h5>
-    <a href='<%= "#{collection_toggle_path}?collection_id=all" %>'>
-      <div class="collection selector <%= all_active? %>" id="select-all">
-        All <%= format_active_langs %>
-      </div>
-    </a>
+    <% if @sidebar_collections.present? %>
+      <a href='<%= "#{collection_toggle_path}?collection_id=all" %>'>
+        <div class="collection selector <%= all_active? %>" id="select-all">
+          All <%= format_active_langs %>
+        </div>
+      </a>
+    <% elsif current_user.active_languages.length == 0 %>
+      <div class="message">&uarr; <br>Please activate at least one language above</div>
+    <% else %>
+      <div class="message">No collections for <%= "this language".pluralize(current_user.active_languages.length) %> yet. Use the button below to add one.<br>&darr; </div>
+    <% end %>
 
     <% @sidebar_collections.each do |c| %>
       <a href='<%= "#{collection_toggle_path}?collection_id=#{c.id}" %>'>
