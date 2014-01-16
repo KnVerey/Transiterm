@@ -1,28 +1,30 @@
 <div class="row full-width no-margin">
   <h5>List collections with:</h5>
 
+  <!-- Show links as initials if screen is small or medium -->
   <div class="small-4 columns no-padding hide-for-large">
-    <%= link_to "EN", "#{lang_toggle_path}?lang_toggle=english", class: "language selector #{ 'active' if current_user.english_active == true }" %>
-  </div>
-
-  <div class="small-4 columns no-padding hide-for-large">
-    <%= link_to "FR", "#{lang_toggle_path}?lang_toggle=french", class: "language selector #{ 'active' if current_user.french_active == true }" %>
+    <%= link_to "EN", "#{lang_toggle_path}?lang_toggle=english", class: "language selector #{ lang_active_class("english") }" %>
   </div>
 
   <div class="small-4 columns no-padding hide-for-large">
-    <%= link_to "SP", "#{lang_toggle_path}?lang_toggle=spanish", class: "language selector #{ 'active' if current_user.spanish_active == true }" %>
+    <%= link_to "FR", "#{lang_toggle_path}?lang_toggle=french", class: "language selector #{ lang_active_class("french") }" %>
+  </div>
+
+  <div class="small-4 columns no-padding hide-for-large">
+    <%= link_to "SP", "#{lang_toggle_path}?lang_toggle=spanish", class: "language selector #{ lang_active_class("spanish") }" %>
+  </div>
+
+  <!-- Show links as full words if screen is large or larger -->
+  <div class="small-4 columns no-padding show-for-large-up">
+    <%= link_to "English", "#{lang_toggle_path}?lang_toggle=english", class: "language selector #{ lang_active_class("english") }" %>
   </div>
 
   <div class="small-4 columns no-padding show-for-large-up">
-    <%= link_to "English", "#{lang_toggle_path}?lang_toggle=english", class: "language selector #{ 'active' if current_user.english_active == true }" %>
+    <%= link_to "French", "#{lang_toggle_path}?lang_toggle=french", class: "language selector #{ lang_active_class("french") }" %>
   </div>
 
   <div class="small-4 columns no-padding show-for-large-up">
-    <%= link_to "French", "#{lang_toggle_path}?lang_toggle=french", class: "language selector #{ 'active' if current_user.french_active == true }" %>
-  </div>
-
-  <div class="small-4 columns no-padding show-for-large-up">
-    <%= link_to "Spanish", "#{lang_toggle_path}?lang_toggle=spanish", class: "language selector #{ 'active' if current_user.spanish_active == true }" %>
+    <%= link_to "Spanish", "#{lang_toggle_path}?lang_toggle=spanish", class: "language selector #{ lang_active_class("spanish") }" %>
   </div>
 </div>
 
@@ -36,7 +38,7 @@
           All <%= format_active_langs %>
         </div>
       </a>
-    <% elsif current_user.active_languages.length == 0 %>
+    <% elsif no_languages_active? %>
       <div class="message">&uarr; <br>Please activate at least one language above</div>
     <% else %>
       <div class="message">No collections for <%= "this language".pluralize(current_user.active_languages.length) %> yet. Use the button below to add one.<br>&darr; </div>

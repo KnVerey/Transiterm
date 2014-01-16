@@ -31,13 +31,23 @@ describe QueriesHelper do
 	end
 
 	describe "#lang_active_class" do
-		it "returns a string if french active"
+		it "returns a string if french active" do
+			expect(helper.lang_active_class("French")).to be_a(String)
+		end
 
-		it "returns a string if english active"
+		it "returns a string if english active" do
+			expect(helper.lang_active_class("English")).to be_a(String)
+		end
 
-		it "returns a string if spanish active"
+		it "returns a string if spanish active" do
+			person.spanish_active = true
+			expect(helper.lang_active_class("Spanish")).to be_a(String)
+		end
 
-		it "returns nil if lang not active"
+		it "returns nil if lang not active" do
+			person.spanish_active = false
+			expect(helper.lang_active_class("Spanish")).to be_nil
+		end
 	end
 
 	describe "#collection_active_class" do
@@ -83,6 +93,18 @@ describe QueriesHelper do
 	describe "#format_active_langs" do
 		it "returns a string" do
 		  expect(helper.format_active_langs).to be_a(String)
+		end
+	end
+
+	describe "#no_languages_active?" do
+		it "returns false if any languages active" do
+		  expect(helper.no_languages_active?).to eq(false)
+		end
+
+		it "returns true if no languages active" do
+			person.french_active = false
+			person.english_active = false
+		  expect(helper.no_languages_active?).to eq(true)
 		end
 	end
 
