@@ -49,9 +49,9 @@ describe UsersController do
         get :lang_toggle, { user_id: person.id, lang_toggle: "english" }
       end
 
-      it "redirects to the collections index" do
+      it "redirects to the query page" do
         get :lang_toggle, { user_id: person.id, lang_toggle: "english" }
-        expect(response).to redirect_to('/collections')
+        expect(response).to redirect_to('/query')
       end
     end
   end

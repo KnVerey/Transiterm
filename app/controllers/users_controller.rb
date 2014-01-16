@@ -13,7 +13,7 @@ class UsersController < ApplicationController
       current_user.save
     end
 
-    redirect_to collections_path
+    redirect_to query_path
   end
 
   def collection_toggle
