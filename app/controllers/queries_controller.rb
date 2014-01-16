@@ -31,7 +31,7 @@ class QueriesController < ApplicationController
 	end
 
 	def sanitize_search_field
-		(@fields.include?(params[:field]) && params[:field] != "All") ? params[:field].downcase : nil
+		((Collection::LANGUAGES + Collection::FIELDS).include?(params[:field]) && params[:field] != "All") ? params[:field].downcase : nil
 	end
 
 	def find_term_record_matches
