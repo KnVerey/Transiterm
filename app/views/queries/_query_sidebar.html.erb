@@ -32,8 +32,8 @@
   <h5>Select collections</h5>
     <a href="#"><div class="collection selector active" id="select-all">All listed below</div></a>
     <% @sidebar_collections.each do |c| %>
-      <div class="collection selector">
-        <%= link_to c.title, "#{collection_toggle_path}?collection=#{c.id}", class: insert_activity_class(c) %>
+      <div class="collection selector <%= insert_activity_class(c) %>">
+        <%= link_to c.title, "#{collection_toggle_path}?collection_id=#{c.id}" %>
       </div>
     <% end %>
   </div>
