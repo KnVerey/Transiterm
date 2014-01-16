@@ -19,7 +19,9 @@ class UsersController < ApplicationController
   def collection_toggle
     id_to_toggle = params[:collection_id].to_i
 
-    if current_user.active_collection_ids.include?(id_to_toggle)
+    if params[:collection_id] == "all"
+      current_user.active_collection_ids.clear
+    elsif current_user.active_collection_ids.include?(id_to_toggle)
       current_user.active_collection_ids.delete(id_to_toggle)
     else
       current_user.active_collection_ids.push(id_to_toggle)

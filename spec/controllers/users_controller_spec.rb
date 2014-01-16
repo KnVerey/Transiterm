@@ -82,6 +82,14 @@ describe UsersController do
         }.to change(person.active_collection_ids, :length).by(-1)
       end
 
+      it "clears the list when 'all' is received" do
+        person_collection = FactoryGirl.create(:collection)
+        person.active_collection_ids << person_collection.id
+
+        get :collection_toggle, { collection_id: "all" }
+        expect(person.active_collection_ids).to be_empty
+      end
+
       it "redirects to the query page" do
         get :collection_toggle
         expect(response).to redirect_to('/query')
