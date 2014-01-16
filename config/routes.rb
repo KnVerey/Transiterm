@@ -10,7 +10,7 @@ Transiterm::Application.routes.draw do
     end
   end
   get 'user_lang_toggle' => 'users#lang_toggle', as: :lang_toggle
-  get 'collection_toggle' => 'users#collction_toggle', as: :collection_toggle
+  get 'collection_toggle' => 'users#collection_toggle', as: :collection_toggle
 
   resources :collections do
     resources :term_records, shallow:true, except: [:index, :show]
