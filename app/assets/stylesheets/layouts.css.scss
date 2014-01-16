@@ -176,6 +176,10 @@ form {
 
 	.add-button-row {
 		height: $h-bottom-bar/2;
+
+		.button {
+			border-radius: 3px;
+		}
 	}
 
 	.settings {

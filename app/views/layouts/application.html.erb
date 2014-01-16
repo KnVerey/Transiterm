@@ -59,17 +59,15 @@
     <div class="row cling-bottom">
       <div class="small-4 medium-3 large-2 color-hook">
 
-        <div class="row no-margin">
-          <div class="small-12 columns add-button-row">
+        <div class="row no-margin add-button-row">
             <%= yield :add_button_area %>
-          </div>
         </div>
 
         <div class="row settings full-width no-margin">
           <div class="small-12 columns">
             <div class="row">
               <div class="small-6 columns">
-                <%= link_to "My Transiterm", edit_user_path(current_user) %>
+                <%= link_to "My Account", edit_user_path(current_user) %>
               </div>
               <div class="small-6 columns">
                 <%= form_tag(logout_path) do %>
