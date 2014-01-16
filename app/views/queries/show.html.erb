@@ -13,8 +13,9 @@
 			<% if @selected_collections.empty? %>
 				&larr; Use sidebar to activate languages and choose collections to search
 			<% else %>
-				You're searching:
+				Searching <%= @selected_collections.length.to_s + " collection".pluralize(@selected_collections.length) %>:<br>
 			<% end %>
+
 			<% @selected_collections.length.times do |c| %>
 				<% spacer = (c == (@selected_collections.length - 1) ? "" : ", ") %>
 				<%= link_to(@selected_collections[c].title, collection_path(@selected_collections[c])) + spacer %>
