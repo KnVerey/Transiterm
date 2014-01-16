@@ -7,8 +7,12 @@ module QueriesHelper
 		(current_user.active_languages + Collection::FIELDS).sort.map(&:capitalize)
 	end
 
-	def insert_activity_class(collection)
-		@selected_collections.include?(collection) ? "active" : "inactive"
+	def collection_active?(collection)
+		"active" if @selected_collections.include?(collection) && current_user.active_collection_ids.present?
+	end
+
+	def all_active?
+		"active" if current_user.active_collection_ids.empty?
 	end
 
 	def format_active_langs
