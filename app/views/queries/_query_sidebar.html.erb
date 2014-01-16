@@ -30,7 +30,8 @@
   <div class="small-12 small-centered columns full-width no-margin no-padding">
 
   <h5>Select collections</h5>
-    <a href="#"><div class="collection selector active" id="select-all">All listed below</div></a>
+    <a href="#"><div class="collection selector active" id="select-all">All <%= format_active_langs %></div></a>
+
     <% @sidebar_collections.each do |c| %>
       <div class="collection selector <%= insert_activity_class(c) %>">
         <%= link_to c.title, "#{collection_toggle_path}?collection_id=#{c.id}" %>

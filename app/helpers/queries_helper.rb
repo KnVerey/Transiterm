@@ -10,4 +10,8 @@ module QueriesHelper
 	def insert_activity_class(collection)
 		@selected_collections.include?(collection) ? "active" : "inactive"
 	end
+
+	def format_active_langs
+		current_user.active_languages.map{ |l| l.capitalize }.join("-")
+	end
 end
