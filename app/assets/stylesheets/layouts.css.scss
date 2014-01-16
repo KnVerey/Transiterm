@@ -148,6 +148,11 @@ form {
 		.collection {
 			margin: 0.5em 1em;
 			padding: 0.25em;
+
+			a, a:hover, a:focus {
+				color: $c-text-primary;
+				background-color: inherit;
+			}
 		}
 
 		#select-all {
