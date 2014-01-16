@@ -1,27 +1,14 @@
 class QueriesController < ApplicationController
 
 	def show
-		@fields = set_fields
-		@columns = set_columns
 		@sidebar_collections = find_collections_for_sidebar
 
 		@selected_collections = find_collections_for_search
-		@term_record_results = find_term_record_matches
+		@term_records = find_term_record_matches
 	end
 
 
 	private
-	def set_columns
-		@columns = current_user.active_languages
-	end
-
-	def set_fields
-		(current_user.active_languages + Collection::FIELDS).sort.map(&:capitalize)
-	end
-
-	def sanitize_search_field
-		(@fields.include?(params[:field]) && params[:field] != "All") ? params[:field].downcase : nil
-	end
 
 	def find_collections_for_sidebar
 		return [] if current_user.collections.count == 0
@@ -41,6 +28,10 @@ class QueriesController < ApplicationController
 		@sidebar_collections.select do |collection|
 			current_user.active_collection_ids.include?(collection.id)
 		end
+	end
+
+	def sanitize_search_field
+		(@fields.include?(params[:field]) && params[:field] != "All") ? params[:field].downcase : nil
 	end
 
 	def find_term_record_matches
