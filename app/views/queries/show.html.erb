@@ -52,6 +52,6 @@
 			<%= render @term_records %>
 		</tbody>
 	</table>
-<% else %>
-<h5 class="subheader">No results, sorry</h5>
+<% elsif @selected_collections.present? %>
+	<h5 class="subheader">No results, sorry</h5>
 <% end %>
