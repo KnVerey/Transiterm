@@ -7,23 +7,16 @@
 <% end %>
 
 <div class="row full-width">
-	<div class="small-8 columns">
+	<div class="small-12 columns">
 		<!-- <h1>Transiterm search </h1> -->
-		<h5 class="subheader">
+		<h3 class="subheader">
 			<% if @selected_collections.empty? %>
-				&larr; Use sidebar to activate languages and choose collections to search
+				&larr; Use the sidebar to activate languages and choose collections to search
 			<% else %>
-				Searching <%= @selected_collections.length.to_s + " collection".pluralize(@selected_collections.length) %>:<br>
+				Transiterm: Searching <%= @selected_collections.length.to_s + " collection".pluralize(@selected_collections.length) %><br>
 			<% end %>
-
-			<% @selected_collections.length.times do |c| %>
-				<% spacer = (c == (@selected_collections.length - 1) ? "" : ", ") %>
-				<%= link_to(@selected_collections[c].title, collection_path(@selected_collections[c])) + spacer %>
-			<% end %>
-		</h5>
+		</h3>
 	</div>
-
-	<!-- NEW TERM RECORD BUTTON HERE -->
 </div>
 
 <div class="row search-bar">
