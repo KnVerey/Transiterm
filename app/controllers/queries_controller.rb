@@ -25,9 +25,14 @@ class QueriesController < ApplicationController
 	end
 
 	def find_collections_for_search
-		@sidebar_collections.select do |collection|
-			current_user.active_collection_ids.include?(collection.id)
+		if current_user.active_collection_ids.empty?
+			@sidebar_collections
+		else
+			@sidebar_collections.select do |collection|
+				current_user.active_collection_ids.include?(collection.id)
+			end
 		end
+
 	end
 
 	def sanitize_search_field
