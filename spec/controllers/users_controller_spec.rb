@@ -56,6 +56,39 @@ describe UsersController do
     end
   end
 
+  describe "GET collection_toggle" do
+    context "when logged out" do
+      it "redirects to the login page" do
+        get :collection_toggle
+        expect(response).to redirect_to(login_path)
+      end
+    end
+
+    context "when logged in" do
+      before(:each) { login_user(person) }
+      it "adds the collection to the list if it isn't there" do
+        person_collection = FactoryGirl.create(:collection)
+        expect {
+          get :collection_toggle, { collection_id: person_collection.id }
+        }.to change(person.active_collection_ids, :length).by(1)
+      end
+
+      it "removes the collection from the list if it is there" do
+        person_collection = FactoryGirl.create(:collection)
+        person.active_collection_ids << person_collection.id
+
+        expect {
+          get :collection_toggle, { collection_id: person_collection.id }
+        }.to change(person.active_collection_ids, :length).by(-1)
+      end
+
+      it "redirects to the query page" do
+        get :collection_toggle
+        expect(response).to redirect_to('/query')
+      end
+    end
+  end
+
   describe "POST create" do
     describe "with valid params" do
 

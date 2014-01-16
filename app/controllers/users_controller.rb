@@ -16,6 +16,20 @@ class UsersController < ApplicationController
     redirect_to collections_path
   end
 
+  def collection_toggle
+    id_to_toggle = params[:collection_id].to_i
+
+    if current_user.active_collection_ids.include?(id_to_toggle)
+      current_user.active_collection_ids.delete(id_to_toggle)
+    else
+      current_user.active_collection_ids.push(id_to_toggle)
+    end
+
+    current_user.active_collection_ids_will_change!
+    current_user.save
+    redirect_to query_path
+  end
+
   def activate
     if (@user = User.load_from_activation_token(params[:id]))
       @user.activate!
