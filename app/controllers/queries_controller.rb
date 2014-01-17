@@ -1,7 +1,7 @@
-require 'queries_service.rb'
-include QueriesService
-
 class QueriesController < ApplicationController
+
+	include QueriesService
+
 	def show
 		@sidebar_collections = find_collections_by_langs_active
 
