@@ -33,11 +33,11 @@
 
   <h5>Select collections</h5>
     <% if @sidebar_collections.present? %>
-      <a href='<%= "#{collection_toggle_path}?collection_id=all" %>'>
+      <%= link_to "#{collection_toggle_path}?collection_id=all" do %>
         <div class="collection selector <%= all_active_class %>" id="select-all">
           All <%= format_active_langs %>
         </div>
-      </a>
+      <% end %>
     <% elsif no_languages_active? %>
       <div class="message">&uarr; <br>Please activate at least one language above</div>
     <% else %>
@@ -46,13 +46,15 @@
 
     <% @sidebar_collections.each do |c| %>
       <div class="row collection selector clearfix <%= collection_active_class(c) %>">
-        <a href='<%= "#{collection_toggle_path}?collection_id=#{c.id}" %>'>
+        <%= link_to "#{collection_toggle_path}?collection_id=#{c.id}" do %>
           <div class="small-11 columns no-padding">
             <%= c.title %>
           </div>
-        </a>
+        <% end %>
         <div class="small-1 columns no-padding">
-          <a href="<%= edit_collection_path(c) %>"><i class="fa fa-info-circle fa-lg"></i></a>
+          <%= link_to edit_collection_path(c) do %>
+            <i class="fa fa-info-circle fa-lg"></i>
+          <% end %>
         </div>
       </div>
     <% end %>
