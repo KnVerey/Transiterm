@@ -45,12 +45,16 @@
     <% end %>
 
     <% @sidebar_collections.each do |c| %>
-      <a href='<%= "#{collection_toggle_path}?collection_id=#{c.id}" %>'>
-        <div class="collection selector clearfix <%= collection_active_class(c) %>">
-          <%= c.title %>
-          <a href="<%= new_collection_term_record_path(c) %>"><%= image_tag("Add-New-24.png", class: "add-button right") %></a>
+      <div class="row collection selector clearfix <%= collection_active_class(c) %>">
+        <a href='<%= "#{collection_toggle_path}?collection_id=#{c.id}" %>'>
+          <div class="small-11 columns no-padding">
+            <%= c.title %>
+          </div>
+        </a>
+        <div class="small-1 columns no-padding">
+          <a href="<%= edit_collection_path(c) %>"><i class="fa fa-info-circle fa-lg"></i></a>
         </div>
-      </a>
+      </div>
     <% end %>
   </div>
 </div>
