@@ -246,9 +246,9 @@ describe UsersController do
         expect(controller.current_user).to_not be_false
       end
 
-      it "redirects to the user's collections" do
+      it "redirects to the query page" do
         get :activate, {:id => @activate_me.activation_token}
-        expect(response).to redirect_to("/collections")
+        expect(response).to redirect_to("/query")
       end
     end
 
@@ -278,9 +278,9 @@ describe UsersController do
         expect(controller.current_user).to_not be_false
       end
 
-      it "redirects to the user's collections" do
+      it "redirects to the query page" do
         get :unlock, {:id => @unlock_me.unlock_token}
-        expect(response).to redirect_to("/collections")
+        expect(response).to redirect_to("/query")
       end
     end
 

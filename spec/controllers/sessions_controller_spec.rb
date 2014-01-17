@@ -12,12 +12,12 @@ describe SessionsController do
 
   describe "POST create" do
     describe "when account found" do
-      it "redirects to users's collections on login success" do
+      it "redirects to query page on login success" do
         controller.stub(:login).and_return(User.last)
 
         post :create, email: user.email, password: user.password
 
-        expect(response).to redirect_to("/collections")
+        expect(response).to redirect_to("/query")
       end
 
       it "flashes login success message" do

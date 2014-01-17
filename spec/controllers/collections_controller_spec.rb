@@ -55,7 +55,7 @@ describe CollectionsController do
 					assigns(:collection).user_id.should eq(person.id)
 				end
 
-				it "redirects to the newly create collection" do
+				it "redirects to the query page" do
 				  post :create, collection: valid_attributes
 				  expect(response).to redirect_to("/query")
 				end
@@ -114,7 +114,7 @@ describe CollectionsController do
 				  put :update, id: person_collection.id, collection: {id: person_collection.id, title: "Ornithology"}
 				end
 
-				it "redirects to the updated collection if success" do
+				it "redirects to the query page if success" do
 				  Collection.any_instance.stub(:update).and_return(true)
 				  put :update, id: person_collection.to_param, collection: {title: "Coin collecting", description: "New hobby"}
 				  expect(response).to redirect_to("/query")
@@ -153,9 +153,9 @@ describe CollectionsController do
 	      }.to change(Collection, :count).by(-1)
 	    end
 
-	    it "redirects to the user's collections page" do
+	    it "redirects to the user's query page" do
 	      delete :destroy, {:user_id => person.to_param, id: person_collection.to_param}
-	      response.should redirect_to("/collections")
+	      response.should redirect_to("/query")
 	    end
 	  end
   end
