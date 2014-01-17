@@ -47,6 +47,8 @@ gem 'figaro'
 gem 'sunspot_rails', '~> 2.1'
 gem 'sunspot_solr'
 
+gem 'font-awesome-sass'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
