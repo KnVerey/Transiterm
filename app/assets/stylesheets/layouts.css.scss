@@ -152,7 +152,21 @@ form {
 
 		.collection {
 			margin: 0.5em 1em;
-			padding: 0.25em;
+			padding: 0.5em;
+
+			a {
+				color: inherit;
+				background-color: inherit;
+			}
+		}
+
+		.add-button {
+			height: 1rem;
+		}
+
+		.add-button:hover, .add-button:active {
+			height: 1.5rem;
+			float: right;
 		}
 
 		#select-all {
