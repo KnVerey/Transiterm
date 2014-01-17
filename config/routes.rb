@@ -22,7 +22,7 @@ Transiterm::Application.routes.draw do
   get 'login' => 'sessions#new', as: :login
   post 'logout' => 'sessions#destroy', as: :logout
 
-  get 'query' => 'queries#show', as: :query
+  get 'query' => 'queries#index', as: :query
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

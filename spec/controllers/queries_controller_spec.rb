@@ -9,10 +9,10 @@ describe QueriesController do
   let(:record) { FactoryGirl.create(:term_record, collection: person_collection) }
 
 
-	describe "GET show" do
+	describe "GET index" do
 		context "when not logged in" do
 			it "redirects to the login page" do
-			  get :show
+			  get :index
 			  expect(response).to redirect_to("/login")
 			end
 		end
@@ -21,17 +21,17 @@ describe QueriesController do
 			before(:each) { login_user(person) }
 
 			it "sets @sidebar_collections" do
-			  get :show
+			  get :index
 			  expect(assigns(:sidebar_collections)).not_to be_nil
 			end
 
 			it "sets @selected_collections" do
-			  get :show
+			  get :index
 			  expect(assigns(:selected_collections)).not_to be_nil
 			end
 
 			it "sets @term_records" do
-			  get :show
+			  get :index
 			  expect(assigns(:term_records)).not_to be_nil
 			end
 

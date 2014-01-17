@@ -2,7 +2,7 @@ class QueriesController < ApplicationController
 
 	include QueriesService
 
-	def show
+	def index
 		@sidebar_collections = find_collections_by_langs_active
 
 		@selected_collections = filter_collections_by_active_ids(@sidebar_collections)
