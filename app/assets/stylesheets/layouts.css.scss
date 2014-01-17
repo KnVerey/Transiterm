@@ -191,8 +191,21 @@ form {
 	.add-button-row {
 		height: $h-bottom-bar/2;
 
-		.button {
+		.button, .button:visited {
 			border-radius: 3px;
+			width: 90%;
+			height: 90%;
+			text-align: center;
+			background-color: lighten($c-bg-secondary, 10%);
+			padding-right: 1em;
+			padding-left: 1em;
+			color: $c-text-secondary;
+		}
+
+		#new-term {
+			font-size: 0.75rem;
+			padding-top: 0.5rem;
+			padding-bottom: 0.5rem;
 		}
 	}
 

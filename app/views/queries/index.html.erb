@@ -3,8 +3,15 @@
 <% end %>
 
 <% content_for :add_button_area do %>
-	<div class="small-12 columns">
-	  <%= link_to "New Collection", new_collection_path, class: "button tiny c-secondary" %>
+	<div class="small-5 columns no-padding">
+	  <%= link_to new_collection_path, class: "button tiny", id: "new-collection" do %>
+	  	New Collection
+	  <% end %>
+	</div>
+	<div class="small-7 columns no-padding">
+	  <%= link_to new_term_record_path, class: "button tiny", id: "new-term" do %>
+	  	New Term Record
+	  <% end %>
 	</div>
 <% end %>
 
