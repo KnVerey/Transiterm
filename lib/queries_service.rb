@@ -47,6 +47,8 @@ module QueriesService
 	end
 
 	def sanitize_search_field
-		((Collection::LANGUAGES + Collection::FIELDS).include?(params[:field]) && params[:field] != "All") ? params[:field].downcase : nil
+		return nil unless params[:field]
+
+		params[:field].downcase if (Collection::LANGUAGES + Collection::FIELDS).include?(params[:field].downcase) && params[:field] != "All"
 	end
 end
