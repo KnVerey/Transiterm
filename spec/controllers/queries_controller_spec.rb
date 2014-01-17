@@ -20,34 +20,14 @@ describe QueriesController do
 		context "when logged in" do
 			before(:each) { login_user(person) }
 
-			it "sets @fields" do
-			  get :show
-			  assigns(:fields).should_not be_nil
-			end
-
-			it "sets @columns" do
-			  get :show
-			  assigns(:columns).should_not be_nil
-			end
-
-			xit "sanitizes the search field" do
-				get :show, field: "Garbage"
-				expect(assigns(:query).search_field).to be_nil
-			end
-
-			xit "downcases valid search fields" do
-			  get :show, field: "English"
-				expect(assigns(:query).search_field).to eq("english")
-			end
-
 			it "sets @sidebar_collections" do
 			  get :show
 			  expect(assigns(:sidebar_collections)).not_to be_nil
 			end
 
-			it "sets @collections_for_search" do
+			it "sets @selected_collections" do
 			  get :show
-			  expect(assigns(:collections_for_search)).not_to be_nil
+			  expect(assigns(:selected_collections)).not_to be_nil
 			end
 
 			it "sets @term_records" do
