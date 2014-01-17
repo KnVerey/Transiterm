@@ -33,7 +33,7 @@ class CollectionsController < ApplicationController
 
 	def destroy
 		@collection.destroy
-		redirect_to collections_path
+		redirect_to query_path
 	end
 
 	private

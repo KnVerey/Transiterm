@@ -45,7 +45,7 @@ class PasswordResetsController < ApplicationController
     # the next line clears the temporary token and updates the password
     elsif @user.change_password!(params[:user][:password])
       auto_login(@user)
-      redirect_to(collections_path, :notice => 'Password was successfully updated.')
+      redirect_to(query_path, :notice => 'Password was successfully updated.')
     else
       render :action => "edit"
     end
