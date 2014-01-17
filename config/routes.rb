@@ -13,9 +13,8 @@ Transiterm::Application.routes.draw do
   get 'collection_toggle' => 'users#collection_toggle', as: :collection_toggle
 
   resources :collections do
-    resources :term_records, shallow:true, except: [:index, :show, :new]
+    resources :term_records, shallow:true, except: [:index, :show]
   end
-  resources :term_records, only: [:new]
 
   resources :password_resets, only: [:create, :edit, :update, :new]
 
