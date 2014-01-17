@@ -14,7 +14,7 @@ describe PagesController do
 
 			get :home
 
-			expect(response).to redirect_to("/collections")
+			expect(response).to redirect_to("/query")
 		end
 	end
 
