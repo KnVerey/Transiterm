@@ -17,7 +17,7 @@ class TermRecordsController < ApplicationController
 		@term_record.collection_id = @collection.id
 
 		if @term_record.save
-			redirect_to collection_path(@collection), flash: { success: 'Record created'}
+			redirect_to query_path, flash: { success: 'Record created'}
 		else
 			render action: "new"
 		end
@@ -33,16 +33,15 @@ class TermRecordsController < ApplicationController
 		handle_source_link if params[:term_record][:source].is_a? String
 
 		if @term_record.update(term_record_params)
-			redirect_to collection_path(@term_record.collection), flash: { success: 'Record updated'}
+			redirect_to query_path, flash: { success: 'Record updated'}
 		else
 			render action: "edit"
 		end
 	end
 
 	def destroy
-		parent_collection_id = @term_record.collection_id
 		@term_record.destroy
-		redirect_to collection_path(parent_collection_id), flash: { success: 'Record deleted' }
+		redirect_to query_path, flash: { success: 'Record deleted' }
 	end
 
 

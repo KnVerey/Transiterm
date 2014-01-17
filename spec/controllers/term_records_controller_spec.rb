@@ -117,7 +117,7 @@ describe TermRecordsController do
 				it "redirects to the parent collection" do
 				  post :create, collection_id: person_collection.id, term_record: valid_attributes
 
-				  expect(response).to redirect_to("/collections/#{person_collection.id}")
+				  expect(response).to redirect_to("/query")
 				end
 			end
 
@@ -204,7 +204,7 @@ describe TermRecordsController do
 
 				it "redirects to the parent collection" do
 				  put :update, { collection_id: person_collection.id, id: record.id, term_record: { english: "Good day", domain: "Travel" } }
-				  expect(response).to redirect_to("/collections/#{person_collection.id}")
+				  expect(response).to redirect_to("/query")
 				end
 
 				it "updates the correct record" do
@@ -295,7 +295,7 @@ describe TermRecordsController do
 
 			it "redirects to the parent collection" do
 			  delete :destroy, { collection_id: person_collection.id, id: record.id }
-			  expect(response).to redirect_to("/collections/#{person_collection.id}")
+			  expect(response).to redirect_to("/query")
 			end
 		end
 	end

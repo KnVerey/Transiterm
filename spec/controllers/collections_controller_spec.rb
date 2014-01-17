@@ -57,7 +57,7 @@ describe CollectionsController do
 
 				it "redirects to the newly create collection" do
 				  post :create, collection: valid_attributes
-				  expect(response).to redirect_to("/collections/#{assigns(:collection).id}")
+				  expect(response).to redirect_to("/query")
 				end
 			end
 
@@ -117,7 +117,7 @@ describe CollectionsController do
 				it "redirects to the updated collection if success" do
 				  Collection.any_instance.stub(:update).and_return(true)
 				  put :update, id: person_collection.to_param, collection: {title: "Coin collecting", description: "New hobby"}
-				  expect(response).to redirect_to("/collections/#{person_collection.id}")
+				  expect(response).to redirect_to("/query")
 				end
 			end
 
