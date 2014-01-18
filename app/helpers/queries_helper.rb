@@ -19,10 +19,6 @@ module QueriesHelper
 		"active" if current_user.active_collection_ids.empty?
 	end
 
-	def format_active_langs
-		current_user.active_languages.map{ |l| l.capitalize }.join("-")
-	end
-
 	def no_languages_active?
 		current_user.active_languages.length == 0
 	end

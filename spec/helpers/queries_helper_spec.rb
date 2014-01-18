@@ -90,12 +90,6 @@ describe QueriesHelper do
 		end
 	end
 
-	describe "#format_active_langs" do
-		it "returns a string" do
-		  expect(helper.format_active_langs).to be_a(String)
-		end
-	end
-
 	describe "#no_languages_active?" do
 		it "returns false if any languages active" do
 		  expect(helper.no_languages_active?).to eq(false)
