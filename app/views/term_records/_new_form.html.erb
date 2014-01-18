@@ -1,0 +1,85 @@
+<%= form_for([@default_collection, @term_record]) do |f| %>
+
+  <% if @term_record.errors.any? %>
+    <div id="error_explanation">
+      <h2>Oh no! I couldn't save your term record!</h2>
+
+      <ul>
+      <% @term_record.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+	<div class="row">
+    <div class="small-12 columns">
+      <div class="row emphasis-box">
+        <div class="small-3 columns">
+          <%= f.label :collection_id, class: "right inline no-margin" do %>
+            <strong>Add to collection <br>
+              (<%= format_active_langs %>):</strong>
+          <% end %>
+        </div>
+        <div class="small-9 columns">
+          <%= f.collection_select :collection_id, @collections, :id, :title, selected: @default_collection.id, class: "no-margin" %>
+        </div>
+      </div>
+
+    	<% lang_fields = current_user.active_languages %>
+			<% lang_fields.each do |language| %>
+        <div class="row">
+          <div class="small-3 medium-1 columns">
+            <%= f.label language.to_sym, language.capitalize, class: "right inline" %><br>
+          </div>
+          <div class="small-9 medium-11 columns">
+            <%= f.text_field language.to_sym, placeholder: "Required" %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="row">
+          <div class="small-3 medium-1 columns">
+          <%= f.label :source, class: "right inline"  %><br>
+        </div>
+          <div class="small-9 medium-11 columns">
+          <%= f.text_field :source, value: nil, placeholder: "Required" %>
+        </div>
+      </div>
+
+      <div class="row">
+          <div class="small-3 medium-1 columns">
+          <%= f.label :domain, class: "right inline"  %><br>
+        </div>
+          <div class="small-9 medium-11 columns">
+          <%= f.text_field :domain, value: nil, placeholder: "Required" %>
+        </div>
+      </div>
+
+      <div class="row">
+          <div class="small-3 medium-1 columns">
+          <%= f.label :context, class: "right inline"  %><br>
+        </div>
+          <div class="small-9 medium-11 columns">
+          <%= f.text_area :context, placeholder: "Optional" %>
+        </div>
+      </div>
+
+      <div class="row">
+          <div class="small-3 medium-1 columns">
+          <%= f.label :comment, class: "right inline"  %><br>
+        </div>
+          <div class="small-9 medium-11 columns">
+          <%= f.text_area :comment, placeholder: "Optional" %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="small-12 columns">
+          <%= f.submit "Save", class: "right button tiny"  %><br>
+        </div>
+      </div>
+
+    </div>
+  </div>
+<% end %>
