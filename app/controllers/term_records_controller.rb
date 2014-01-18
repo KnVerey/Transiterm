@@ -1,10 +1,12 @@
 class TermRecordsController < ApplicationController
 
+	include QueriesService
 	before_action :find_term_record, only: [:edit, :update, :destroy]
 
 	def new
-		@collection = Collection.find(params[:collection_id])
 		@term_record = TermRecord.new
+		@collections = find_collections_by_langs_active
+		@default_collection = Collection.order(updated_at: :desc).limit(1).first
 	end
 
 	def create

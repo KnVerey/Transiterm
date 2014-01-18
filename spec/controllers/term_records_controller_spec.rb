@@ -22,13 +22,22 @@ describe TermRecordsController do
 			before(:each) { login_user(person) }
 
 			it "assigns a new term record as @record" do
-			  get :new, { collection_id: person_collection.id }
+			  get :new
 			  assigns(:term_record).should be_a_new(TermRecord)
 			end
 
-			it "assigns current collection as @collection" do
-			  get :new, { collection_id: person_collection.id }
-			  assigns(:collection).should eq(person_collection)
+			it "assigns most recently modified collection as @default_collection" do
+				a = FactoryGirl.create(:collection, user: person)
+				b = FactoryGirl.create(:collection, user: person)
+				t = FactoryGirl.create(:term_record, collection: a)
+
+				get :new
+				expect(assigns(:default_collection)).to eq(a)
+			end
+
+			it "assigns @collections" do
+				get :new
+				expect(assigns(:collections)).not_to be_nil
 			end
 		end
 	end
