@@ -26,6 +26,6 @@ class TermRecord < ActiveRecord::Base
 			self.collection.send(language) && self.send(language).empty?
 		end
 
-		errors.add(:base, "Please fill in all langauge fields") if result
+		errors.add(:base, "Please fill in all language fields") if result
 	end
 end
