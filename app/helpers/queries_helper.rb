@@ -22,4 +22,12 @@ module QueriesHelper
 	def no_languages_active?
 		current_user.active_languages.length == 0
 	end
+
+	def any_collections_active?
+		@sidebar_collections.present?
+	end
+
+	def new_rec_title_or_instr
+		any_collections_active? ? "New Record" : nil
+	end
 end

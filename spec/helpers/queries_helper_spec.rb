@@ -102,4 +102,28 @@ describe QueriesHelper do
 		end
 	end
 
+	describe "#any_collections_active?" do
+		it "returns false if @sidebar_collections is empty" do
+			helper.instance_variable_set(:@sidebar_collections, [])
+			expect(helper.any_collections_active?).to eq(false)
+		end
+
+		it "returns true if @sidebar_collections not empty" do
+			helper.instance_variable_set(:@sidebar_collections, [c])
+			expect(helper.any_collections_active?).to eq(true)
+		end
+	end
+
+	describe "#new_rec_title_or_instr" do
+		it "says 'New Record' if any collections active" do
+			helper.instance_variable_set(:@sidebar_collections, [c])
+			expect(helper.new_rec_title_or_instr).to match(/New Record/)
+		end
+
+		it "tells user to add collection if none active" do
+			helper.instance_variable_set(:@sidebar_collections, [])
+			expect(helper.new_rec_title_or_instr).to match(/collection/)
+		end
+	end
+
 end
