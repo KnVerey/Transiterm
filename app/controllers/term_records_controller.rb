@@ -15,9 +15,6 @@ class TermRecordsController < ApplicationController
 
 		@term_record = TermRecord.new(term_record_params)
 
-		@collection = Collection.find(params[:collection_id])
-		@term_record.collection_id = @collection.id
-
 		if @term_record.save
 			redirect_to query_path, flash: { success: 'Record created'}
 		else
@@ -26,7 +23,8 @@ class TermRecordsController < ApplicationController
 	end
 
 	def edit
-
+		@default_collection = @term_record.collection
+		@collections = find_collections_by_langs_active
 	end
 
 	def update
@@ -50,7 +48,7 @@ class TermRecordsController < ApplicationController
 	private
 
 	def term_record_params
-		params.require(:term_record).permit(:english, :french, :spanish, :context, :comment, :domain_id, :source_id)
+		params.require(:term_record).permit(:english, :french, :spanish, :context, :comment, :domain_id, :source_id, :collection_id)
 	end
 
 	def find_term_record

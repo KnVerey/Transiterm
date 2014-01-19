@@ -182,8 +182,18 @@ describe TermRecordsController do
 			before(:each) { login_user(person) }
 
 			it "sets @term_record to the requested record" do
-			  get :edit, { collection_id: person_collection.id, id: record.id }
-			  assigns(:term_record).should eq(record)
+			  get :edit, { id: record.id }
+			  expect(assigns(:term_record)).to eq(record)
+			end
+
+			it "assigns @collections" do
+				get :edit, { id: record.id }
+				expect(assigns(:collections)).not_to be_nil
+			end
+
+			it "sets @default_collection to the record's current collection" do
+			  get :edit, { id: record.id }
+			  expect(assigns(:default_collection)).to eq(record.collection)
 			end
 
 			it "renders the edit view" do
