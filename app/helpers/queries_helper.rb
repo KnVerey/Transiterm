@@ -27,7 +27,7 @@ module QueriesHelper
 		@sidebar_collections.present?
 	end
 
-	def new_rec_title_or_instr
-		any_collections_active? ? "New Record" : nil
+	def collection_button_size
+		any_collections_active? ? "small-5" : "small-12"
 	end
 end

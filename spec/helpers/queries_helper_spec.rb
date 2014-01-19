@@ -114,15 +114,15 @@ describe QueriesHelper do
 		end
 	end
 
-	describe "#new_rec_title_or_instr" do
-		it "says 'New Record' if any collections active" do
+	describe "#collection_button_size" do
+		it "returns 'small-5' if existing collections active" do
 			helper.instance_variable_set(:@sidebar_collections, [c])
-			expect(helper.new_rec_title_or_instr).to match(/New Record/)
+			expect(helper.collection_button_size).to eq("small-5")
 		end
 
-		it "tells user to add collection if none active" do
+		it "returns 'small-12' if no existing collections active" do
 			helper.instance_variable_set(:@sidebar_collections, [])
-			expect(helper.new_rec_title_or_instr).to match(/collection/)
+			expect(helper.collection_button_size).to eq("small-12")
 		end
 	end
 

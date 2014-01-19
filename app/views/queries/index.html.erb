@@ -3,14 +3,18 @@
 <% end %>
 
 <% content_for :add_button_area do %>
-	<div class="small-5 columns no-padding">
+	<div class="<%= collection_button_size %> columns no-padding">
 	  <%= link_to new_collection_path, class: "button tiny", id: "new-collection" do %>
 	  	New Collection
 	  <% end %>
 	</div>
-	<div class="small-7 columns no-padding">
-	  <%= link_to_if any_collections_active?, new_rec_title_or_instr, new_term_record_path, class: "button tiny", id: "new-term" %>
-	</div>
+	<% if any_collections_active? %>
+		<div class="small-7 columns no-padding">
+		  <%= link_to new_term_record_path, class: "button tiny", id: "new-term" do %>
+		  	New Term Record
+		  <% end %>
+		</div>
+	<% end %>
 <% end %>
 
 <div class="row full-width">
