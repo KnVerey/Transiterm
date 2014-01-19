@@ -10,7 +10,7 @@ describe TermRecordsHelper do
 
 		it "returns appropriate heading if edit view" do
 			helper.instance_variable_set(:@term_record, FactoryGirl.create(:term_record))
-			expect(helper.add_or_change_collection_heading).to match(/move/)
+			expect(helper.add_or_change_collection_heading).not_to match(/Add/)
 		end
 	end
 
