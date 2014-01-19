@@ -12,10 +12,9 @@ Transiterm::Application.routes.draw do
   get 'user_lang_toggle' => 'users#lang_toggle', as: :lang_toggle
   get 'collection_toggle' => 'users#collection_toggle', as: :collection_toggle
 
-  resources :collections, except: [:index, :show] do
-    resources :term_records, shallow:true, except: [:index, :show, :new]
-  end
-  resources :term_records, only: [:new]
+  resources :collections, except: [:index, :show]
+
+  resources :term_records, except: [:index, :show]
 
   resources :password_resets, only: [:create, :edit, :update, :new]
 
