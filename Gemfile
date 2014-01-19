@@ -48,6 +48,7 @@ gem 'sunspot_rails', '~> 2.1'
 gem 'sunspot_solr'
 
 gem 'font-awesome-sass'
+gem 'redcarpet', '~> 3.0'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
