@@ -160,6 +160,19 @@ describe TermRecordsController do
 					  }.not_to change(TermRecord, :count)
 				end
 
+				it "sets @collections" do
+					TermRecord.any_instance.stub(:save).and_return(false)
+				  post :create, term_record: {}
+				  expect(assigns(:collections)).not_to be_nil
+				end
+
+				it "sets @default_collection" do
+					TermRecord.any_instance.stub(:save).and_return(false)
+					person_collection.reload
+				  post :create, term_record: {}
+				  expect(assigns(:default_collection)).not_to be_nil
+				end
+
 				it "re-renders the 'new' template" do
 				  TermRecord.any_instance.stub(:save).and_return(false)
 				  post :create, term_record: { isnt: "valid" }
@@ -276,6 +289,19 @@ describe TermRecordsController do
 				it "re-renders edit if blank source submitted with other valid params" do
 					put :update, { collection_id: person_collection.id, id: record.id, term_record: { source: "", english: "Good day"}}
 					expect(response).to render_template("edit")
+				end
+
+				it "sets @collections" do
+					TermRecord.any_instance.stub(:save).and_return(false)
+					put :update, { collection_id: person_collection.id, id: record.id, term_record: { source: "", english: "Good day"}}
+				  expect(assigns(:collections)).not_to be_nil
+				end
+
+				it "sets @default_collection" do
+					TermRecord.any_instance.stub(:save).and_return(false)
+					person_collection.reload
+					put :update, { collection_id: person_collection.id, id: record.id, term_record: { source: "", english: "Good day"}}
+				  expect(assigns(:default_collection)).not_to be_nil
 				end
 			end
 		end

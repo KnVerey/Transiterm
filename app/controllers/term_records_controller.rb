@@ -18,6 +18,9 @@ class TermRecordsController < ApplicationController
 		if @term_record.save
 			redirect_to query_path, flash: { success: 'Record created'}
 		else
+			@collections = find_collections_by_langs_active
+			@default_collection = Collection.order(updated_at: :desc).limit(1).first
+
 			render action: "new"
 		end
 	end
@@ -35,6 +38,9 @@ class TermRecordsController < ApplicationController
 		if @term_record.update(term_record_params)
 			redirect_to query_path, flash: { success: 'Record updated'}
 		else
+			@collections = find_collections_by_langs_active
+			@default_collection = Collection.order(updated_at: :desc).limit(1).first
+
 			render action: "edit"
 		end
 	end
