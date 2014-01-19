@@ -8,7 +8,7 @@ describe TermRecordsController do
 
   let(:record) { FactoryGirl.create(:term_record, collection: person_collection) }
 
-  let(:valid_attributes) {{ english: "Test", french: "test", spanish: "TEST", source: "A SOURCE", domain: "A DOMAIN" }}
+  let(:valid_attributes) {{ english: "Test", french: "test", spanish: "TEST", source: "A SOURCE", domain: "A DOMAIN", collection_id: person_collection.id }}
 
 	describe "GET new" do
 		context "when not logged in" do
@@ -45,7 +45,7 @@ describe TermRecordsController do
 	describe "POST create" do
 		context "when not logged in" do
 			it "redirects if user not logged in" do
-				post :create, { collection_id: person_collection.id, term_record: valid_attributes }
+				post :create, { term_record: valid_attributes }
 				expect(response).to redirect_to("/login")
 			end
 		end
@@ -56,7 +56,7 @@ describe TermRecordsController do
 			context "with valid params" do
 
 				it "assigns the record to the active collection" do
-					post :create, { collection_id: person_collection.id, term_record: valid_attributes }
+					post :create, { term_record: valid_attributes }
 
 					assigns(:term_record).collection_id.should eq(person_collection.id)
 				end
@@ -65,34 +65,34 @@ describe TermRecordsController do
 					domain = FactoryGirl.create(:domain, name: "Greetings", user_id: person.id)
 
 						expect {
-							post :create, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "Common knowledge" }
+							post :create, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "Common knowledge" }
 							}.not_to change(Domain, :count)
 				end
 
 				it "adds domain id for existing domains" do
 					domain = FactoryGirl.create(:domain, name: "Greetings", user_id: person.id)
 
-					post :create, { collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "Common knowledge" } }
+					post :create, { term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "Common knowledge" } }
 
 					assigns(:term_record).domain_id.should eq(domain.id)
 				end
 
 				it "creates nonexisting domains" do
 						expect {
-							post :create, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "New-domain-name", source: "Common knowledge" }
+							post :create, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "New-domain-name", source: "Common knowledge" }
 							}.to change(Domain, :count).by(1)
 				end
 
 				it "assigns newly created domains to term record" do
 					name = "Also a new domain"
-					post :create, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: name, source: "Common knowledge" }
+					post :create, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: name, source: "Common knowledge" }
 					assigns(:term_record).domain.name.should eq(name)
 				end
 
 				it "adds source id for existing sources" do
 					source = FactoryGirl.create(:source, name: "Common knowledge", user_id: person.id)
 
-					post :create, { collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "Common knowledge" } }
+					post :create, { term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "Common knowledge" } }
 
 					assigns(:term_record).source_id.should eq(source.id)
 				end
@@ -101,30 +101,30 @@ describe TermRecordsController do
 					source = FactoryGirl.create(:source, name: "Common knowledge", user_id: person.id)
 
 						expect {
-							post :create, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "Common knowledge" }
+							post :create, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "Common knowledge" }
 							}.not_to change(Source, :count)
 				end
 
 				it "creates nonexisting sources" do
 						expect {
-							post :create, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "A novel source" }
+							post :create, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "A novel source" }
 							}.to change(Source, :count).by(1)
 				end
 
 				it "assigns newly created sources to term record" do
 					name = "Also a new source"
-					post :create, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: name }
+					post :create, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: name }
 					assigns(:term_record).source.name.should eq(name)
 				end
 
 				it "creates a new term record" do
 				  expect {
-				  	post :create, collection_id: person_collection.id, term_record: valid_attributes
+				  	post :create, term_record: valid_attributes
 				  }.to change(TermRecord, :count).by(1)
 				end
 
 				it "redirects to the parent collection" do
-				  post :create, collection_id: person_collection.id, term_record: valid_attributes
+				  post :create, term_record: valid_attributes
 
 				  expect(response).to redirect_to("/query")
 				end
@@ -135,35 +135,35 @@ describe TermRecordsController do
 
 				it "assigns a newly created but unsaved record as @term_record" do
 				  TermRecord.any_instance.stub(:save).and_return(false)
-				  post :create, collection_id: person_collection.id, term_record: { isnt: "valid" }
+				  post :create, term_record: { isnt: "valid" }
 				  assigns(:term_record).should be_a_new(TermRecord)
 				end
 
 				it "does not set blank domains" do
-				  post :create, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "", source: "Common knowledge" }
+				  post :create, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "", source: "Common knowledge" }
 				  assigns(:term_record).domain_id.should be_nil
 				end
 
 				it "does not save records with blank domains" do
 				  expect {
-					  post :create, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "", source: "Common knowledge" }
+					  post :create, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "", source: "Common knowledge" }
 					  }.not_to change(TermRecord, :count)
 				end
 
 				it "does not set blank sources" do
-				  post :create, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "" }
+				  post :create, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "" }
 				  assigns(:term_record).source_id.should be_nil
 				end
 
 				it "does not save records with blank sources" do
 				  expect {
-					  post :create, collection_id: person_collection.id, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "" }
+					  post :create, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain: "Greetings", source: "" }
 					  }.not_to change(TermRecord, :count)
 				end
 
 				it "re-renders the 'new' template" do
 				  TermRecord.any_instance.stub(:save).and_return(false)
-				  post :create, collection_id: person_collection.id, term_record: { isnt: "valid" }
+				  post :create, term_record: { isnt: "valid" }
 				  expect(response).to render_template("new")
 				end
 			end
