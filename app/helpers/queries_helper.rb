@@ -30,4 +30,12 @@ module QueriesHelper
 	def collection_button_size
 		any_collections_active? ? "small-5" : "small-12"
 	end
+
+	def pluralized_this_language
+		if current_user.active_languages.count == 1
+			"this language"
+		else
+			"these languages"
+		end
+	end
 end

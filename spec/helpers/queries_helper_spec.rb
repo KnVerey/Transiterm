@@ -126,4 +126,15 @@ describe QueriesHelper do
 		end
 	end
 
+	describe "#pluralized_this_language" do
+		it "returns 'this language' if one lang active" do
+			person.stub(:active_languages).and_return(["English"])
+			expect(helper.pluralized_this_language).to eq("this language")
+		end
+
+		it "returns 'these languages' if multiple langs active" do
+			expect(helper.pluralized_this_language).to eq("these languages")
+		end
+	end
+
 end

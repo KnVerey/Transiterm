@@ -41,7 +41,7 @@
     <% elsif no_languages_active? %>
       <div class="message">&uarr; <br>Please activate at least one language above</div>
     <% else %>
-      <div class="message">No collections for <%= "this language".pluralize(current_user.active_languages.length) %> yet. Use the button below to add one.<br>&darr; </div>
+      <div class="message">No collections for <%= pluralized_this_language %> yet. Use the button below to add one.<br>&darr; </div>
     <% end %>
 
     <% @sidebar_collections.each do |c| %>
