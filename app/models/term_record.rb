@@ -3,8 +3,8 @@ class TermRecord < ActiveRecord::Base
 	belongs_to :domain
 	belongs_to :source
 
-	validates :domain_id, presence: { message: "Please specify a domain" }
-	validates :source_id, presence: { message: "Please specify a source" }
+	validates :domain_id, presence: { message: "must be specified" }
+	validates :source_id, presence: { message: "must be specified" }
 
 	validate :correct_languages_present
 
