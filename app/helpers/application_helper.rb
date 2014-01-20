@@ -6,6 +6,7 @@ module ApplicationHelper
 
 	def render_markdown(content)
 		renderer = Redcarpet::Render::HTML.new(render_options = {
+				filter_html: true,
 		    no_images: true,
 		    hard_wrap: true,
 		    safe_links_only: true
