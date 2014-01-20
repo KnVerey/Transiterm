@@ -3,3 +3,11 @@
 	margin-top: 3em;
 	padding-right: 3em;
 }
+
+.term p {
+	font-size: 1.0rem;
+}
+
+.optional-field p, .term p, .mandatory-field p {
+	margin: 0;
+}
