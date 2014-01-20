@@ -12,6 +12,10 @@ module TermRecordsHelper
 		@default_collection.active_languages
 	end
 
+	def lang_columns(term_record)
+		term_record.collection.active_languages
+	end
+
 	def source_name
 		@term_record.source ? @term_record.source.name : nil
 	end

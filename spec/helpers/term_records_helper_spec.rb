@@ -45,4 +45,12 @@ describe TermRecordsHelper do
 			expect(helper.domain_name).to be_nil
 		end
 	end
+
+	describe "#lang_columns" do
+		it "returns an array with length equal to term record's collection's active languages" do
+			t = FactoryGirl.create(:term_record)
+			expect(helper.lang_columns(t)).to be_an(Array)
+			expect(helper.lang_columns(t).length).to eq(2)
+		end
+	end
 end
