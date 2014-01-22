@@ -12,7 +12,7 @@ module QueriesHelper
 	end
 
 	def collection_active_class(collection)
-		"active" if @selected_collections.include?(collection) && current_user.active_collection_ids.present?
+		"active" if @selected_collections.include?(collection)
 	end
 
 	def all_active_class
@@ -37,5 +37,11 @@ module QueriesHelper
 		else
 			"these languages"
 		end
+	end
+
+	def all_displayed_active?
+		all_ids = @sidebar_collections.map { |c| c.id }.sort
+		selected_ids = @selected_collections.map { |c| c.id }.sort
+		all_ids == selected_ids
 	end
 end

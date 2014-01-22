@@ -51,42 +51,40 @@ describe QueriesHelper do
 	end
 
 	describe "#collection_active_class" do
-		it "returns a string if the collection is active by user" do
-			person.active_collection_ids << c.id
-			helper.instance_variable_set(:@selected_collections, [c])
-
-		  expect(helper.collection_active_class(c)).to be_a(String)
+		context "when not all collections displayed active" do
+			it "returns a string if collection is active"
+			it "returns nil if collection is not active"
 		end
 
-		it "returns nil if collection is active by default (none selected)" do
-			person.active_collection_ids = []
-			helper.instance_variable_set(:@selected_collections, [c])
-
-		  expect(helper.collection_active_class(c)).to be_nil
-		end
-
-		it "returns nil if collection not active" do
-			d = FactoryGirl.create(:collection, user: person)
-			person.active_collection_ids << d.id
-			helper.instance_variable_set(:@selected_collections, [d])
-
-		  expect(helper.collection_active_class(c)).to be_nil
+		context "when all collections displayed are active" do
+			it "returns nil"
 		end
 	end
 
 	describe "#all_active_class" do
-		it "returns a string if all active by default" do
-			person.active_collection_ids = []
-			helper.instance_variable_set(:@selected_collections, [c])
+		it "returns a string if all collections displayed are active"
+		it "returns nil when not all collections displayed are active"
+	end
 
-		  expect(helper.all_active_class).to be_a(String)
+	describe "#all_displayed_active?" do
+		it "returns true if all collections displayed are active" do
+			c2 = FactoryGirl.create(:collection, user: person)
+			c3 = FactoryGirl.create(:collection, user: person)
+
+			helper.instance_variable_set(:@sidebar_collections, [c3, c2, c])
+			helper.instance_variable_set(:@selected_collections, [c, c3, c2])
+
+			expect(helper.all_displayed_active?).to eq(true)
 		end
 
-		it "returns nil if all active by user" do
-			person.active_collection_ids << c.id
+		it "returns false if not all collections displayed are active" do
+			c2 = FactoryGirl.create(:collection, user: person)
+			c3 = FactoryGirl.create(:collection, user: person)
+
+			helper.instance_variable_set(:@sidebar_collections, [c3, c, c2])
 			helper.instance_variable_set(:@selected_collections, [c])
 
-		  expect(helper.all_active_class).to be_nil
+			expect(helper.all_displayed_active?).to eq(false)
 		end
 	end
 
