@@ -15,12 +15,10 @@ module QueriesService
 	end
 
 	def filter_collections_by_active_ids(collection_set)
-		if no_active_ids?
-			collection_set
-		else
-			collection_set.select do |collection|
-				current_user.active_collection_ids.include?(collection.id)
-			end
+		return [] if current_user.active_collection_ids.empty?
+
+		collection_set.select do |collection|
+			current_user.active_collection_ids.include?(collection.id)
 		end
 	end
 
@@ -42,10 +40,6 @@ module QueriesService
 	end
 
 	private
-	def no_active_ids?
-		current_user.active_collection_ids.empty?
-	end
-
 	def sanitize_search_field
 		return nil unless params[:field]
 
