@@ -51,14 +51,28 @@ describe User do
     end
 
     context "when 'all' is received" do
-      it "removes all collections from the list that match all the user's currently active languages"
+      it "removes collections returned by the finder method from the list" do
+        person.active_collection_ids.push(1, 2, 3)
+        User.any_instance.stub(:find_ids_to_remove).and_return([1, 2])
 
-      it "does not remove collections from the list that partially match the user's active languages"
+        person.toggle_collection("all")
+        expect(person.active_collection_ids).not_to include(1)
+        expect(person.active_collection_ids).not_to include(2)
+      end
 
-      it "does not remove collections from the list that match none of the user's active languages"
+      it "does not remove collections not returned by the finder method from the list" do
+        person.active_collection_ids.push(1, 2, 3)
+        User.any_instance.stub(:find_ids_to_remove).and_return([1, 2])
 
+        person.toggle_collection("all")
+        expect(person.active_collection_ids).to include(3)
+      end
     end
 
+  end
+
+  describe "find_ids_to_remove" do
+    it "exists"
   end
 
   describe "active_languages" do

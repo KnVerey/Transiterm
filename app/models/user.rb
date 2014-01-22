@@ -40,16 +40,26 @@ class User < ActiveRecord::Base
 
   def toggle_collection(collection_id_param)
     toggle_me = collection_id_param.to_i
+    self.active_collection_ids_will_change!
 
-    if self.active_collection_ids.include?(toggle_me)
+    if toggle_me == 0 # it was the string passed by the 'all' button
+      removable_ids = find_ids_to_remove
+      self.active_collection_ids.delete_if { |x| removable_ids.include?(x) }
+    elsif self.active_collection_ids.include?(toggle_me)
       self.active_collection_ids.delete(toggle_me)
     else
       self.active_collection_ids.push(toggle_me)
     end
+
+    save
   end
 
   private
   def password_present?
     self.password.present? || self.password_confirmation.present?
+  end
+
+  def find_ids_to_remove
+    #sunspot query
   end
 end
