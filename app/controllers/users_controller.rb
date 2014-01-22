@@ -8,11 +8,7 @@ class UsersController < ApplicationController
   end
 
   def lang_toggle
-    if Collection::LANGUAGES.include?(params[:lang_toggle])
-      current_user.toggle_language(params[:lang_toggle])
-      current_user.save
-    end
-
+    current_user.toggle_language(params[:lang_toggle])
     redirect_to query_path
   end
 

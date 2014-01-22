@@ -34,6 +34,7 @@ class User < ActiveRecord::Base
   def toggle_language(language)
     if Collection::LANGUAGES.include?(language)
       self.send("#{language}_active=", !self.send("#{language}_active"))
+      save
     end
   end
 

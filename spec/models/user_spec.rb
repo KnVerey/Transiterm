@@ -28,6 +28,12 @@ describe User do
       expect(user.french_active).to be_false
     end
 
+    it "persists the change" do
+      user = FactoryGirl.create(:user, french_active: true)
+      expect(user).to receive(:save)
+      user.toggle_language("french")
+    end
+
   end
 
   describe "active_languages" do
