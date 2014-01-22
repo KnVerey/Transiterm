@@ -42,14 +42,16 @@ describe UsersController do
     context "when logged in" do
       before(:each) { login_user(person) }
 
-      it "uses param to toggle active languages" do
+      it "calls toggle_language on the current_user" do
         person.should_receive(:toggle_language).with("english")
-        User.any_instance.stub(:save)
+        User.any_instance.stub(:toggle_language)
         controller.stub(:current_user).and_return(person)
         get :lang_toggle, { user_id: person.id, lang_toggle: "english" }
       end
 
       it "redirects to the query page" do
+        User.any_instance.stub(:toggle_language)
+        controller.stub(:current_user).and_return(person)
         get :lang_toggle, { user_id: person.id, lang_toggle: "english" }
         expect(response).to redirect_to('/query')
       end
