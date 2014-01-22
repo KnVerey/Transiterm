@@ -72,7 +72,18 @@ describe User do
   end
 
   describe "find_ids_to_remove" do
-    it "exists"
+    it "finds all collections with lang combo matching user's currently active langs" do
+      en_fr1 = FactoryGirl.create(:collection, user: person)
+      en_fr2 = FactoryGirl.create(:collection, user: person)
+      en_fr_sp = FactoryGirl.create(:three_lang_collection, user: person)
+      en_sp = FactoryGirl.create(:collection, english: true, spanish: true, french: false, user: person)
+      sp = FactoryGirl.create(:collection, english: false, french: false, spanish: true, user: person)
+
+      person.active_collection_ids.push(sp.id, en_fr1.id, en_fr2.id, en_fr_sp.id, en_sp.id)
+
+      expect(person.active_collection_ids.length).to eq(5)
+      expect(person.send(:find_ids_to_remove)).to eq([en_fr1.id, en_fr2.id])
+    end
   end
 
   describe "active_languages" do

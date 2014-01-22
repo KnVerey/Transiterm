@@ -60,6 +60,13 @@ class User < ActiveRecord::Base
   end
 
   def find_ids_to_remove
-    #sunspot query
+    return [] if self.active_collection_ids.empty?
+
+    Collection.select("id").where(
+      id: self.active_collection_ids,
+      french: self.french_active,
+      english: self.english_active,
+      spanish: self.spanish_active
+      ).map { |c| c.id }
   end
 end
