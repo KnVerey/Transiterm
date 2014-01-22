@@ -43,8 +43,9 @@ class User < ActiveRecord::Base
     self.active_collection_ids_will_change!
 
     if toggle_me == 0 # it was the string passed by the 'all' button
-      removable_ids = find_ids_to_remove
-      self.active_collection_ids.delete_if { |x| removable_ids.include?(x) }
+      relevant_ids = find_ids_for_toggle_all
+      self.active_collection_ids += relevant_ids
+      self.active_collection_ids.uniq!
     elsif self.active_collection_ids.include?(toggle_me)
       self.active_collection_ids.delete(toggle_me)
     else
@@ -59,7 +60,7 @@ class User < ActiveRecord::Base
     self.password.present? || self.password_confirmation.present?
   end
 
-  def find_ids_to_remove
+  def find_ids_for_toggle_all
     return [] if self.active_collection_ids.empty?
 
     Collection.select("id").where(
