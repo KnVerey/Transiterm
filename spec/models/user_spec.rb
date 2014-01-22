@@ -51,35 +51,55 @@ describe User do
     end
 
     context "when 'all' is received" do
-      it "adds the ids returned by the finder method to the list" do
-        person.active_collection_ids.push(3)
-        User.any_instance.stub(:find_ids_for_toggle_all).and_return([1, 2])
+      context "when all are not already active" do
+        it "adds the ids returned by the finder method to the list" do
+          person.active_collection_ids.push(3)
+          User.any_instance.stub(:find_all_ids_in_lang_combo).and_return([1, 2])
 
-        person.toggle_collection("all")
-        expect(person.active_collection_ids).to include(1)
-        expect(person.active_collection_ids).to include(2)
+          person.toggle_collection("all")
+          expect(person.active_collection_ids).to include(1)
+          expect(person.active_collection_ids).to include(2)
+        end
+
+        it "does not add additional collections to the list" do
+          person.active_collection_ids.push(3)
+          User.any_instance.stub(:find_all_ids_in_lang_combo).and_return([1])
+
+          person.toggle_collection("all")
+          expect(person.active_collection_ids.sort).to eq([1, 3])
+        end
+
+        it "does not allow duplicates in the list" do
+          person.active_collection_ids.push(3)
+          User.any_instance.stub(:find_all_ids_in_lang_combo).and_return([1, 3])
+
+          person.toggle_collection("all")
+          expect(person.active_collection_ids.sort).to eq([1, 3])
+        end
       end
 
-      it "does not add additional collections to the list" do
-        person.active_collection_ids.push(3)
-        User.any_instance.stub(:find_ids_for_toggle_all).and_return([1])
+      context "when all are already active" do
+        it "removes the ids returned by the finder method from the list" do
+          person.active_collection_ids.push(1, 2, 3)
+          User.any_instance.stub(:find_all_ids_in_lang_combo).and_return([1, 2, 3])
 
-        person.toggle_collection("all")
-        expect(person.active_collection_ids.sort).to eq([1, 3])
-      end
+          person.toggle_collection("all")
+          expect(person.active_collection_ids).to be_empty
+        end
 
-      it "does not allow duplicates in the list" do
-        person.active_collection_ids.push(3)
-        User.any_instance.stub(:find_ids_for_toggle_all).and_return([1, 3])
+        it "leaves any other collections in the list" do
+          person.active_collection_ids.push(1, 2, 3)
+          User.any_instance.stub(:find_all_ids_in_lang_combo).and_return([2, 3])
 
-        person.toggle_collection("all")
-        expect(person.active_collection_ids.sort).to eq([1, 3])
+          person.toggle_collection("all")
+          expect(person.active_collection_ids).to eq([1])
+        end
       end
     end
 
   end
 
-  describe "find_ids_for_toggle_all" do
+  describe "find_all_ids_in_lang_combo" do
     it "finds all collections with lang combo matching user's currently active langs" do
       en_fr1 = FactoryGirl.create(:collection, user: person)
       en_fr2 = FactoryGirl.create(:collection, user: person)
@@ -87,7 +107,7 @@ describe User do
       en_sp = FactoryGirl.create(:collection, english: true, spanish: true, french: false, user: person)
       sp = FactoryGirl.create(:collection, english: false, french: false, spanish: true, user: person)
 
-      expect(person.send(:find_ids_for_toggle_all)).to eq([en_fr1.id, en_fr2.id])
+      expect(person.send(:find_all_ids_in_lang_combo)).to eq([en_fr1.id, en_fr2.id])
     end
   end
 

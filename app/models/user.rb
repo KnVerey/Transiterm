@@ -42,10 +42,8 @@ class User < ActiveRecord::Base
     toggle_me = collection_id_param.to_i
     self.active_collection_ids_will_change!
 
-    if toggle_me == 0 # it was the string passed by the 'all' button
-      relevant_ids = find_ids_for_toggle_all
-      self.active_collection_ids += relevant_ids
-      self.active_collection_ids.uniq!
+    if toggle_me == 0 # i.e. it was the "all" string
+      toggle_all
     elsif self.active_collection_ids.include?(toggle_me)
       self.active_collection_ids.delete(toggle_me)
     else
@@ -60,7 +58,19 @@ class User < ActiveRecord::Base
     self.password.present? || self.password_confirmation.present?
   end
 
-  def find_ids_for_toggle_all
+  def toggle_all
+    relevant_ids = find_all_ids_in_lang_combo
+
+    # Next line: if all relevant ids are already active
+    if (relevant_ids & self.active_collection_ids).sort == relevant_ids.sort
+      self.active_collection_ids = self.active_collection_ids - relevant_ids
+    else
+      self.active_collection_ids += relevant_ids
+      self.active_collection_ids.uniq!
+    end
+  end
+
+  def find_all_ids_in_lang_combo
     Collection.select("id").where(
       user_id: self.id,
       french: self.french_active,
