@@ -51,34 +51,28 @@ describe QueriesHelper do
 	end
 
 	describe "#collection_active_class" do
-		context "when not all collections displayed are active" do
-			before(:each) { helper.stub(:all_displayed_active?).and_return(false) }
-
-			it "returns a string if collection is active" do
-				helper.instance_variable_set(:@selected_collections, [c])
-				expect(helper.collection_active_class(c)).to be_a(String)
-			end
-
-			it "returns nil if collection is not active" do
-				c2 = FactoryGirl.build(:collection, user: person)
-				helper.instance_variable_set(:@selected_collections, [c2])
-				expect(helper.collection_active_class(c)).to be_nil
-			end
+		it "returns a string if collection is active" do
+			helper.instance_variable_set(:@selected_collections, [c])
+			expect(helper.collection_active_class(c)).to be_a(String)
 		end
 
-		context "when all collections displayed are active" do
-			before(:each) { helper.stub(:all_displayed_active?).and_return(true) }
-
-			it "returns nil" do
-				helper.instance_variable_set(:@selected_collections, [c])
-				expect(helper.collection_active_class(c)).to be_nil
-			end
+		it "returns nil if collection is not active" do
+			c2 = FactoryGirl.build(:collection, user: person)
+			helper.instance_variable_set(:@selected_collections, [c2])
+			expect(helper.collection_active_class(c)).to be_nil
 		end
 	end
 
 	describe "#all_active_class" do
-		it "returns a string if all collections displayed are active"
-		it "returns nil when not all collections displayed are active"
+		it "returns a string if all collections displayed are active" do
+			helper.stub(:all_displayed_active?).and_return(true)
+			expect(helper.all_active_class).to be_a(String)
+		end
+
+		it "returns nil when not all collections displayed are active" do
+			helper.stub(:all_displayed_active?).and_return(false)
+			expect(helper.all_active_class).to be_nil
+		end
 	end
 
 	describe "#all_displayed_active?" do

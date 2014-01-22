@@ -12,11 +12,11 @@ module QueriesHelper
 	end
 
 	def collection_active_class(collection)
-		"active" if @selected_collections.include?(collection) && !all_displayed_active?
+		"active" if @selected_collections.include?(collection)
 	end
 
 	def all_active_class
-		"active" if current_user.active_collection_ids.empty?
+		"active" if all_displayed_active?
 	end
 
 	def no_languages_active?
