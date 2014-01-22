@@ -12,7 +12,7 @@ module QueriesHelper
 	end
 
 	def collection_active_class(collection)
-		"active" if @selected_collections.include?(collection)
+		"active" if @selected_collections.include?(collection) && !all_displayed_active?
 	end
 
 	def all_active_class
