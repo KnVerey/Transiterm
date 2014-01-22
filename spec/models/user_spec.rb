@@ -87,9 +87,6 @@ describe User do
       en_sp = FactoryGirl.create(:collection, english: true, spanish: true, french: false, user: person)
       sp = FactoryGirl.create(:collection, english: false, french: false, spanish: true, user: person)
 
-      person.active_collection_ids.push(sp.id, en_fr1.id, en_fr2.id, en_fr_sp.id, en_sp.id)
-
-      expect(person.active_collection_ids.length).to eq(5)
       expect(person.send(:find_ids_for_toggle_all)).to eq([en_fr1.id, en_fr2.id])
     end
   end
