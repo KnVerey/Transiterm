@@ -38,6 +38,17 @@ class User < ActiveRecord::Base
     end
   end
 
+  def toggle_collection(collection_id_param)
+    toggle_me = collection_id_param.to_i
+
+    if self.active_collection_ids.include?(toggle_me)
+      self.active_collection_ids.delete(toggle_me)
+    else
+      self.active_collection_ids.push(toggle_me)
+    end
+  end
+
+  private
   def password_present?
     self.password.present? || self.password_confirmation.present?
   end

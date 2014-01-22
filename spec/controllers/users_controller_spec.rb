@@ -68,31 +68,19 @@ describe UsersController do
 
     context "when logged in" do
       before(:each) { login_user(person) }
-      it "adds the collection to the list if it isn't there" do
+
+      it "calls toggle_collection on the current_user" do
+        User.any_instance.stub(:toggle_collection)
+        controller.stub(:current_user).and_return(person)
         person_collection = FactoryGirl.create(:collection)
-        expect {
-          get :collection_toggle, { collection_id: person_collection.id }
-        }.to change(person.active_collection_ids, :length).by(1)
-      end
 
-      it "removes the collection from the list if it is there" do
-        person_collection = FactoryGirl.create(:collection)
-        person.active_collection_ids << person_collection.id
+        expect(person).to receive(:toggle_collection).with(person_collection.id.to_s)
 
-        expect {
-          get :collection_toggle, { collection_id: person_collection.id }
-        }.to change(person.active_collection_ids, :length).by(-1)
-      end
-
-      it "clears the list when 'all' is received" do
-        person_collection = FactoryGirl.create(:collection)
-        person.active_collection_ids << person_collection.id
-
-        get :collection_toggle, { collection_id: "all" }
-        expect(person.active_collection_ids).to be_empty
+        get :collection_toggle, { collection_id: person_collection.id }
       end
 
       it "redirects to the query page" do
+        User.any_instance.stub(:toggle_collection)
         get :collection_toggle
         expect(response).to redirect_to('/query')
       end

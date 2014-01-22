@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe User do
-	let!(:katrina) { FactoryGirl.create(:active_user) }
+	let!(:person) { FactoryGirl.create(:active_user) }
 
   it 'must have a first name' do
   	user = User.new
@@ -11,27 +11,52 @@ describe User do
   end
 
   it 'should have saved user to db if valid fields provided' do
-  	katrina.first_name.should_not == nil
+  	person.first_name.should_not == nil
   end
 
   it 'should have default active languages set' do
-    expect(katrina.french_active).to be_true
-    expect(katrina.english_active).to be_true
-    expect(katrina.spanish_active).to be_false
+    expect(person.french_active).to be_true
+    expect(person.english_active).to be_true
+    expect(person.spanish_active).to be_false
   end
 
   describe "toggle_language" do
 
     it "toggles the language specified as arg" do
-      user = FactoryGirl.build(:user, french_active: true)
+      user = FactoryGirl.build(:active_user, french_active: true)
       user.toggle_language("french")
       expect(user.french_active).to be_false
     end
 
     it "persists the change" do
-      user = FactoryGirl.create(:user, french_active: true)
+      user = FactoryGirl.create(:active_user, french_active: true)
       expect(user).to receive(:save)
       user.toggle_language("french")
+    end
+  end
+
+  describe "toggle_collection" do
+    it "adds the collection to the list if it isn't there" do
+      expect {
+        person.toggle_collection("1")
+      }.to change(person.active_collection_ids, :length).by(1)
+    end
+
+    it "removes the collection from the list if it is there" do
+      person.active_collection_ids << 1
+
+      expect {
+        person.toggle_collection("1")
+      }.to change(person.active_collection_ids, :length).by(-1)
+    end
+
+    context "when 'all' is received" do
+      it "removes all collections from the list that match all the user's currently active languages"
+
+      it "does not remove collections from the list that partially match the user's active languages"
+
+      it "does not remove collections from the list that match none of the user's active languages"
+
     end
 
   end
