@@ -71,11 +71,6 @@ class User < ActiveRecord::Base
   end
 
   def find_all_ids_in_lang_combo
-    Collection.select("id").where(
-      user_id: self.id,
-      french: self.french_active,
-      english: self.english_active,
-      spanish: self.spanish_active
-      ).map { |c| c.id }
+    Collection.find_by_user_active_langs(self).map(&:id)
   end
 end

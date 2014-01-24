@@ -8,13 +8,14 @@ class Collection < ActiveRecord::Base
   LANGUAGES = %w{english french spanish}
   FIELDS = %w{domain source context comment all}
 
-  searchable do
-  	boolean :english
-  	boolean :french
-  	boolean :spanish
-  	integer :user_id
-  end
-
+  scope :find_by_user_active_langs, lambda { |current_user|
+		where(
+      user_id: current_user.id,
+      french: current_user.french_active,
+      english: current_user.english_active,
+      spanish: current_user.spanish_active
+      )
+  }
 
 	def active_languages
 		langs = []

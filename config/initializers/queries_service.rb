@@ -1,19 +1,5 @@
 module QueriesService
 
-	def find_collections_by_langs_active
-		return [] if current_user.collections.count == 0
-
-		solr_query = Collection.search do
-			all_of do
-				with(:user_id, current_user.id)
-				with(:french, current_user.french_active)
-				with(:english, current_user.english_active)
-				with(:spanish, current_user.spanish_active)
-			end
-		end
-		solr_query.results
-	end
-
 	def filter_collections_by_active_ids(collection_set)
 		return [] if current_user.active_collection_ids.empty?
 

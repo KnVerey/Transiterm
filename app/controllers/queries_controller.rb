@@ -3,7 +3,7 @@ class QueriesController < ApplicationController
 	include QueriesService
 
 	def index
-		@sidebar_collections = find_collections_by_langs_active
+		@sidebar_collections = Collection.find_by_user_active_langs(current_user)
 
 		@selected_collections = filter_collections_by_active_ids(@sidebar_collections)
 
