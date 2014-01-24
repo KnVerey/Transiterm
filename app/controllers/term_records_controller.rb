@@ -5,7 +5,7 @@ class TermRecordsController < ApplicationController
 
 	def new
 		@term_record = TermRecord.new
-		@collections = Collection.find_by_user_active_langs(current_user)
+		@collections = Collection.currently_visible(current_user)
 		@default_collection = Collection.order(updated_at: :desc).limit(1).first
 	end
 
@@ -18,7 +18,7 @@ class TermRecordsController < ApplicationController
 		if @term_record.save
 			redirect_to query_path, flash: { success: 'Record created'}
 		else
-			@collections = Collection.find_by_user_active_langs(current_user)
+			@collections = Collection.currently_visible(current_user)
 			@default_collection = Collection.order(updated_at: :desc).limit(1).first
 
 			render action: "new"
@@ -27,7 +27,7 @@ class TermRecordsController < ApplicationController
 
 	def edit
 		@default_collection = @term_record.collection
-		@collections = Collection.find_by_user_active_langs(current_user)
+		@collections = Collection.currently_visible(current_user)
 	end
 
 	def update
@@ -38,7 +38,7 @@ class TermRecordsController < ApplicationController
 		if @term_record.update(term_record_params)
 			redirect_to query_path, flash: { success: 'Record updated'}
 		else
-			@collections = Collection.find_by_user_active_langs(current_user)
+			@collections = Collection.currently_visible(current_user)
 			@default_collection = Collection.order(updated_at: :desc).limit(1).first
 
 			render action: "edit"

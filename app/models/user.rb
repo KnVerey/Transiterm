@@ -71,6 +71,6 @@ class User < ActiveRecord::Base
   end
 
   def find_all_ids_in_lang_combo
-    Collection.find_by_user_active_langs(self).map(&:id)
+    Collection.currently_visible(self).map(&:id)
   end
 end

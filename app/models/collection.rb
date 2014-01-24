@@ -8,12 +8,18 @@ class Collection < ActiveRecord::Base
   LANGUAGES = %w{english french spanish}
   FIELDS = %w{domain source context comment all}
 
-  scope :find_by_user_active_langs, lambda { |current_user|
+  scope :currently_visible, -> (current_user) {
 		where(
       user_id: current_user.id,
       french: current_user.french_active,
       english: current_user.english_active,
       spanish: current_user.spanish_active
+      )
+  }
+
+  scope :fully_active, -> (current_user) {
+		currently_visible(current_user).where(
+      id: current_user.active_collection_ids
       )
   }
 
