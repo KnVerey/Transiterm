@@ -12,9 +12,13 @@ class FullTextSearch
 	end
 
 	def sunspot
+		collection_ids = @collections.map(&:id)
+		field = @field
+		search_terms = @keywords
+
 		TermRecord.search do
-			keywords @keywords, fields: @field
-			with(:collection_id, @collections.map(&:id))
+			keywords search_terms, fields: field
+			with(:collection_id, collection_ids)
 		end
 	end
 end
