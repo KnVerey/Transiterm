@@ -1,9 +1,13 @@
 class FullTextSearch
-	attr_reader :collections, :field, :keyword
+	attr_reader :collections, :field, :keywords
 
 	def initialize(collections, options = {})
 		@collections = collections
 		@field = options[:field]
-		@keyword = options[:keyword]
+		@keywords = options[:keywords]
+	end
+
+	def results
+		[]
 	end
 end
