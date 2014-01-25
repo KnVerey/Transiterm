@@ -1,9 +1,9 @@
 class FullTextSearch
-	attr_reader :collections, :field, :keywords
+	attr_accessor :collections, :field, :keywords
 
 	def initialize(collections, options = {})
 		@collections = collections
-		@field = options[:field]
+		@field = sanitize_search_field(options[:field])
 		@keywords = options[:keywords]
 	end
 
@@ -22,10 +22,10 @@ class FullTextSearch
 		end
 	end
 
-	# private
-	# def sanitize_search_field
-	# 	return nil unless params[:field]
+	private
+	def sanitize_search_field(field)
+		return nil unless field
 
-	# 	params[:field].downcase if (Collection::LANGUAGES + Collection::FIELDS).include?(params[:field].downcase) && params[:field] != "All"
-	# end
+		field.downcase if (Collection::LANGUAGES + Collection::FIELDS).include?(field.downcase) && field != "All"
+	end
 end

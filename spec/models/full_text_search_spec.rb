@@ -20,6 +20,11 @@ describe FullTextSearch do
 		expect(search.field).to be_a(String)
 	end
 
+	it "sanitizes the search field" do
+		expect(search).to receive(:sanitize_search_field)
+		search.send(:initialize, collections)
+	end
+
 	describe "#sunspot", solr: true do
 		it "sets up a sunspot query" do
 			expect(search.sunspot).to be_a(Sunspot::Search::StandardSearch)
@@ -60,8 +65,23 @@ describe FullTextSearch do
 
 	describe "#sanitize search field" do
 		it "returns nil if no field specified" do
-			expect(min_search.send(:sanitize_search_field)).to be_nil
+			expect(min_search.send(:sanitize_search_field, nil)).to be_nil
 		end
+
+		it "returns downcase name if valid field" do
+			(Collection::LANGUAGES + Collection::FIELDS).each do |f|
+				expect(search.send(:sanitize_search_field, f)).to eq(f.downcase)
+			end
+		end
+
+		it "returns nil if invalid field specified" do
+			expect(search.send(:sanitize_search_field, "jibberish")).to be_nil
+		end
+
+		it "returns nil if All field specified" do
+			expect(search.send(:sanitize_search_field, "All")).to be_nil
+		end
+
 	end
 
 	describe "#results", solr: true do
