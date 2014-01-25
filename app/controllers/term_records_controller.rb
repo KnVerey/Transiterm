@@ -1,6 +1,5 @@
 class TermRecordsController < ApplicationController
 
-	include QueriesService
 	before_action :find_term_record, only: [:edit, :update, :destroy]
 
 	def new
