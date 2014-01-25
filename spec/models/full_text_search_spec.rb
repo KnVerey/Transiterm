@@ -22,7 +22,7 @@ describe FullTextSearch do
 
 	describe "#sunspot" do
 		it "sets up a sunspot query" do
-			expect(search.sunspot).not_to be_nil
+			expect(search.sunspot).to be_a(Sunspot::Rails::StubSessionProxy::Search)
 		end
 
 		context "with no keywords specified" do
@@ -42,12 +42,18 @@ describe FullTextSearch do
 		end
 	end
 
+	describe "#sanitize search field" do
+		it "exists"
+	end
+
 	describe "#results" do
 		xit "returns an array of collections" do
 			search = FullTextSearch.new(collections, { keywords: "fox", field: "french" })
 			expect(search.results).to be_an(Array)
 			expect(search.results).not_to be_empty
 		end
+
+		it "uses the sunspot query"
 	end
 
 end

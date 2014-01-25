@@ -10,4 +10,11 @@ class FullTextSearch
 	def results
 		[]
 	end
+
+	def sunspot
+		TermRecord.search do
+			keywords @keywords, fields: @field
+			with(:collection_id, @collections.map(&:id))
+		end
+	end
 end
