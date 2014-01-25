@@ -8,7 +8,7 @@ class FullTextSearch
 	end
 
 	def results
-		[]
+		self.send(:sunspot).try(:results) || []
 	end
 
 	def sunspot
@@ -21,4 +21,11 @@ class FullTextSearch
 			with(:collection_id, collection_ids)
 		end
 	end
+
+	# private
+	# def sanitize_search_field
+	# 	return nil unless params[:field]
+
+	# 	params[:field].downcase if (Collection::LANGUAGES + Collection::FIELDS).include?(params[:field].downcase) && params[:field] != "All"
+	# end
 end

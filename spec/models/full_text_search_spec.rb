@@ -59,17 +59,20 @@ describe FullTextSearch do
 	end
 
 	describe "#sanitize search field" do
-		it "exists"
+		it "returns nil if no field specified" do
+			expect(min_search.send(:sanitize_search_field)).to be_nil
+		end
 	end
 
-	describe "#results" do
-		xit "returns an array of collections" do
-			search = FullTextSearch.new(collections, { keywords: "fox", field: "french" })
+	describe "#results", solr: true do
+		it "returns an array of collections" do
 			expect(search.results).to be_an(Array)
-			expect(search.results).not_to be_empty
 		end
 
-		it "uses the sunspot query"
+		it "uses the sunspot query" do
+			expect(search).to receive(:sunspot)
+			search.results
+		end
 	end
 
 end
