@@ -5,25 +5,24 @@ describe FullTextSearch do
 	let(:c) { FactoryGirl.build(:collection) }
 	let(:c2) { FactoryGirl.build(:collection) }
 	let(:collections) { [c, c2] }
-	let(:search) { FactoryGirl.build(:full_text_search) }
+	let(:search) { FactoryGirl.build(:complete_full_text_search) }
 
 	it "accepts at minimum an array of collections to search and stores this" do
-		expect(search.collections).to be_an(Array)
+		min_search = FactoryGirl.build(:full_text_search)
+		expect(min_search.collections).to be_an(Array)
 	end
 
 	it "accepts a hash with keys keywords and field and stores these" do
-		search = FullTextSearch.new(collections, { keywords: "fox", field: "french" })
-		expect(search.keywords).to eq("fox")
+		expect(search.keywords).to be_a(String)
 	end
 
 	it "accepts a hash with key field and stores this" do
-		search = FullTextSearch.new(collections, { keywords: "fox", field: "french" })
-		expect(search.field).to eq("french")
+		expect(search.field).to be_a(String)
 	end
 
 	describe "#sunspot" do
 		it "sets up a sunspot query" do
-
+			expect(search.sunspot).not_to be_nil
 		end
 
 		context "with no keywords specified" do
