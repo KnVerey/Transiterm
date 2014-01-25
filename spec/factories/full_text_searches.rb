@@ -9,9 +9,9 @@ FactoryGirl.define do
 		after(:build) do |full_text_search|
 			2.times { full_text_search.collections << FactoryGirl.build(:collection) }
 		end
-	end
 
-	factory :complete_full_text_search do
-		initialize_with { new(collections, { keywords: "fennec fox", field: "english" }) }
+		factory :complete_full_text_search do
+			initialize_with { new(collections, { keywords: "fennec fox", field: "english" }) }
+		end
 	end
 end
