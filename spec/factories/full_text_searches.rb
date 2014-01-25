@@ -7,7 +7,7 @@ FactoryGirl.define do
 		initialize_with { new(collections) }
 
 		after(:build) do |full_text_search|
-			2.times { full_text_search.collections << FactoryGirl.build(:collection) }
+			2.times { full_text_search.collections << FactoryGirl.create(:collection) }
 		end
 
 		factory :complete_full_text_search do
