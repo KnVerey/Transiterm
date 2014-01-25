@@ -8,7 +8,7 @@ class FullTextSearch
 	end
 
 	def results
-		self.send(:sunspot).try(:results) || []
+		sunspot.results || []
 	end
 
 	def sunspot

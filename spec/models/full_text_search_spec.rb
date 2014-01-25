@@ -90,7 +90,8 @@ describe FullTextSearch do
 		end
 
 		it "uses the sunspot query" do
-			expect(search).to receive(:sunspot)
+			# This happens inside the sunspot method, which the test refuses to call if I set an expectation straight on search
+			expect(search.collections).to receive(:map)
 			search.results
 		end
 	end
