@@ -8,6 +8,8 @@ class Collection < ActiveRecord::Base
   LANGUAGES = %w{english french spanish}
   FIELDS = %w{domain source context comment all}
 
+  default_scope { order(title: :asc) }
+
   scope :currently_visible, -> (current_user) {
 		where(
       user_id: current_user.id,
