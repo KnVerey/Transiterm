@@ -96,4 +96,35 @@ describe FullTextSearch do
 		end
 	end
 
+	# testing separate from public interface b/c sunspot doesn't properly return results in test env
+	describe "#sort_results" do
+		let(:r1) { FactoryGirl.build(:term_record, english: "bb", french: "aa", spanish: "bb" ) }
+		let(:r2) { FactoryGirl.build(:term_record, english: "cc", french: "cc", spanish: "aa" ) }
+		let(:r3) { FactoryGirl.build(:term_record, english: "aa", french: "bb", spanish: "cc" ) }
+
+		it "sorts alphabetically by english if no field selected" do
+			search.field = nil
+			expect(search.send("sort_results",[r1, r2, r3]).first).to eq(r3)
+			expect(search.send("sort_results",[r1, r2, r3]).last).to eq(r2)
+		end
+
+		it "sorts alphabetically by french if selected" do
+			search.field = "french"
+			expect(search.send("sort_results",[r1, r2, r3]).first).to eq(r1)
+			expect(search.send("sort_results",[r1, r2, r3]).last).to eq(r2)
+		end
+
+		it "sorts alphabetically by spanish if selected" do
+			search.field = "spanish"
+			expect(search.send("sort_results",[r1, r2, r3]).first).to eq(r2)
+			expect(search.send("sort_results",[r1, r2, r3]).last).to eq(r3)
+		end
+
+		it "is case insensitive"
+		it "is not derailed by html tags"
+		it "is not derailed by markdown"
+		it "strips out commentless records if @field is comments"
+		it "strips out contextless records if @field is context"
+	end
+
 end
