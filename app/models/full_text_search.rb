@@ -8,7 +8,13 @@ class FullTextSearch
 	end
 
 	def results
-		sunspot.results || []
+		if @keywords.present?
+			return sunspot.results # sorted by relevance
+		else
+			results = sunspot.results
+			# binding.pry
+			sunspot.results.sort_by { |r| r.english.downcase.gsub(/\W/, "") }
+		end
 	end
 
 	def sunspot
@@ -16,7 +22,7 @@ class FullTextSearch
 		field = @field
 		search_terms = @keywords
 
-		TermRecord.search do
+		Sunspot.search(TermRecord) do
 			keywords search_terms, fields: field
 			with(:collection_id, collection_ids)
 		end
