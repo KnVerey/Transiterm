@@ -36,7 +36,7 @@
   	<%= form_tag(query_path, method: :get) do %>
 	    <div class="row collapse">
 		      <div class="small-6 large-8 columns">
-		      	<%= text_field_tag "search", nil, placeholder: "Search terms" %>
+		      	<%= text_field_tag "search", nil, placeholder: "Search terms", autofocus: true %>
 
 		      </div>
 		      <div class="small-1 columns">
