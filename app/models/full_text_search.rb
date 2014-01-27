@@ -8,11 +8,16 @@ class FullTextSearch
 	end
 
 	def results
-		if @keywords.present?
-			return sunspot.results # sorted by relevance
-		else
-			results = sunspot.results
-			# binding.pry
+		if @keywords.present? # leave sorted by relevance if user entered keywords
+			sunspot.results
+
+		elsif Collection::LANGUAGES.include?(@field) # sort by field name if lang field selected
+			sunspot.results.sort_by { |r| r.send(@field).downcase.gsub(/\W/, "") }
+
+		elsif Collection::FIELDS.include?(@field) # sort (differently) by field name if non-lang field selected
+			sunspot.results.sort_by { |r| r.send(@field).name.downcase.gsub(/\W/, "") }
+
+		else # sort by English if no keywords and "All" field selected
 			sunspot.results.sort_by { |r| r.english.downcase.gsub(/\W/, "") }
 		end
 	end
