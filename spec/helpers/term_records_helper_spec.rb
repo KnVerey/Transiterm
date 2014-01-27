@@ -53,4 +53,23 @@ describe TermRecordsHelper do
 			expect(helper.lang_columns(t).length).to eq(2)
 		end
 	end
+
+	describe "#current_or_default_collection" do
+		it "returns the record's collection id if any" do
+			t = FactoryGirl.build(:term_record)
+			helper.instance_variable_set(:@term_record, t)
+			expect(helper.current_or_default_collection).to eq(t.collection_id)
+		end
+
+		it "returns the default collection's id if record has no collection" do
+			t = FactoryGirl.build(:term_record)
+			t.collection_id = nil
+			helper.instance_variable_set(:@term_record, t)
+
+			default = FactoryGirl.build(:collection)
+			helper.instance_variable_set(:@default_collection, default)
+
+			expect(helper.current_or_default_collection).to eq(default.id)
+		end
+	end
 end
