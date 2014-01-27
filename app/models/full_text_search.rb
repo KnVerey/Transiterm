@@ -36,10 +36,10 @@ class FullTextSearch
 			results.select! { |r| r.send(@field).present? } if ["context", "comment"].include?(@field)
 
 			# the sorter gets the field value, downcases, removes html tags and strips markdown
-			results.sort_by { |r| ActionView::Base.full_sanitizer.sanitize(field_value(r).downcase).gsub(/\W/, "") }
+			results.sort_by { |r| ActionView::Base.full_sanitizer.sanitize(field_value(r).downcase).gsub(/[\W_]/, "") }
 
 		else # default sort, i.e. if "All" field selected
-			results.sort_by { |r| ActionView::Base.full_sanitizer.sanitize(r.english.downcase).gsub(/\W/, "") }
+			results.sort_by { |r| ActionView::Base.full_sanitizer.sanitize(r.english.downcase).gsub(/[\W_]/, "") }
 		end
 	end
 

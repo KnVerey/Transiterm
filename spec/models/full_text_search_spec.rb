@@ -120,9 +120,73 @@ describe FullTextSearch do
 			expect(search.send("sort_results",[r1, r2, r3]).last).to eq(r3)
 		end
 
-		it "is case insensitive"
-		it "is not derailed by html tags"
-		it "is not derailed by markdown"
+		it "sorts alphabetically by source if selected" do
+			r1.source.name = "cc"
+			r2.source.name = "bb"
+			r3.source.name = "aa"
+			search.field = "source"
+
+			expect(search.send("sort_results",[r1, r2, r3]).first).to eq(r3)
+			expect(search.send("sort_results",[r1, r2, r3]).last).to eq(r1)
+		end
+
+		it "sorts alphabetically by domain if selected" do
+			r1.domain.name = "ab"
+			r2.domain.name = "bc"
+			r3.domain.name = "cd"
+			search.field = "domain"
+
+			expect(search.send("sort_results",[r2, r1, r3]).first).to eq(r1)
+			expect(search.send("sort_results",[r2, r1, r3]).last).to eq(r3)
+		end
+
+		it "sorts alphabetically by comment if selected" do
+			r1.comment = "ab"
+			r2.comment = "bc"
+			r3.comment = "cd"
+			search.field = "comment"
+
+			expect(search.send("sort_results",[r2, r1, r3]).first).to eq(r1)
+			expect(search.send("sort_results",[r2, r1, r3]).last).to eq(r3)
+		end
+
+		it "sorts alphabetically by context if selected" do
+			r1.context = "ab"
+			r2.context = "bc"
+			r3.context = "cd"
+			search.field = "context"
+
+			expect(search.send("sort_results",[r2, r1, r3]).first).to eq(r1)
+			expect(search.send("sort_results",[r2, r1, r3]).last).to eq(r3)
+		end
+
+		it "is case insensitive" do
+			r1.english = "Pear"
+			r2.english = "public"
+			r3.english = "pat"
+
+			expect(search.send("sort_results",[r2, r1, r3]).first).to eq(r3)
+			expect(search.send("sort_results",[r2, r1, r3]).last).to eq(r2)
+		end
+
+		it "is not derailed by html tags" do
+			r1.english = "<strong>Pear</strong>"
+			r2.english = "public"
+			r3.english = "pat"
+
+			expect(search.send("sort_results",[r2, r1, r3]).first).to eq(r3)
+			expect(search.send("sort_results",[r2, r1, r3]).last).to eq(r2)
+		end
+
+		it "is not derailed by markdown" do
+			r1.english = "**Pear**"
+			r2.english = "_public_"
+			r3.english = "pat"
+
+			expect(search.send("sort_results",[r2, r1, r3]).first).to eq(r3)
+			expect(search.send("sort_results",[r2, r1, r3]).last).to eq(r2)
+		end
+
 		it "strips out commentless records if @field is comments"
 		it "strips out contextless records if @field is context"
 	end
