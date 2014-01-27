@@ -187,8 +187,23 @@ describe FullTextSearch do
 			expect(search.send("sort_results",[r2, r1, r3]).last).to eq(r2)
 		end
 
-		it "strips out commentless records if @field is comments"
-		it "strips out contextless records if @field is context"
+		it "strips out commentless records if @field is comments" do
+			r1.comment = "type of bird"
+			r2.comment = ""
+			r3.comment = ""
+			search.field = "comment"
+
+			expect(search.send("sort_results",[r2, r1, r3]).length).to eq(1)
+		end
+
+		it "strips out contextless records if @field is context" do
+			r1.context = "example"
+			r2.context = ""
+			r3.context = "another example"
+			search.field = "context"
+
+			expect(search.send("sort_results",[r2, r1, r3]).length).to eq(2)
+		end
 	end
 
 end
