@@ -32,14 +32,18 @@ class FullTextSearch
 
 	def sort_results(results)
 		if @field.present?
-			results.sort_by { |r| field_value(r).downcase.gsub(/\W/, "") }
+			# if sorting by context or comment, only show records that have one
+			results.select! { |r| r.send(@field).present? } if ["context", "comment"].include?(@field)
 
-		else # i.e. default sort if "All" field selected
-			results.sort_by { |r| r.english.downcase.gsub(/\W/, "") }
+			# the sorter gets the field value, downcases, removes html tags and strips markdown
+			results.sort_by { |r| ActionView::Base.full_sanitizer.sanitize(field_value(r).downcase).gsub(/\W/, "") }
+
+		else # default sort, i.e. if "All" field selected
+			results.sort_by { |r| ActionView::Base.full_sanitizer.sanitize(r.english.downcase).gsub(/\W/, "") }
 		end
 	end
 
-	def field_value(record) #because domain and source names are in lookup table
+	def field_value(record) # handles the fact that domain and source names are in lookup table
 		field = record.send(@field)
 		field.try(:name) ? field.name : field
 	end
