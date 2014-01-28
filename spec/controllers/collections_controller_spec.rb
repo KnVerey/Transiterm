@@ -83,6 +83,13 @@ describe CollectionsController do
 		  expect(response).to redirect_to("/login")
 		end
 
+		it "redirects if the collection does not belong to the user" do
+			login_user(person)
+			collection = FactoryGirl.create(:collection)
+		  get :edit, { id: collection.to_param }
+			expect(response).to redirect_to("/query")
+		end
+
     it "sets @collection to requested collection" do
       login_user(person)
       get :edit, { id: person_collection.to_param }
@@ -106,6 +113,15 @@ describe CollectionsController do
 
 		context "when user logged in" do
 			before(:each) { login_user(person) }
+
+			it "will not update someone else's record" do
+				collection = FactoryGirl.create(:collection)
+				controller.stub(:current_user).and_return(person)
+				Collection.stub(:find).and_return(collection)
+
+				expect(collection).not_to receive(:update)
+				put :update, id: collection.to_param, collection: { title: "Coin collecting" }
+			end
 
 			context "with valid params" do
 				it "updates the current user's specified collection" do

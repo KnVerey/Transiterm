@@ -1,5 +1,5 @@
 class CollectionsController < ApplicationController
-	before_action :find_collection, only: [:update, :edit, :show, :destroy]
+	before_action :find_collection, only: [:update, :edit, :destroy]
 
 	def new
 		@collection = Collection.new
@@ -17,11 +17,12 @@ class CollectionsController < ApplicationController
 	end
 
 	def edit
+		redirect_to query_path unless user_is_creator?(@collection)
 	end
 
 	def update
 		respond_to do |format|
-			if @collection.update(collection_params)
+			if user_is_creator?(@collection) && @collection.update(collection_params)
 				format.html { redirect_to query_path, notice: 'Collection details successfully updated' }
 				format.json {}
 			else
