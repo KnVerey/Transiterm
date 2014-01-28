@@ -14,7 +14,7 @@ class FullTextSearch
 	end
 
 	def sunspot
-		collection_ids = @collections.map(&:id)
+		collection_ids = @collections.empty? ? [0] : @collections.map(&:id)
 		field = @field
 		search_terms = @keywords
 
