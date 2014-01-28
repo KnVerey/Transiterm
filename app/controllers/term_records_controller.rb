@@ -21,7 +21,6 @@ class TermRecordsController < ApplicationController
 	end
 
 	def edit
-		# @default_collection = @term_record.collection
 	end
 
 	def update
