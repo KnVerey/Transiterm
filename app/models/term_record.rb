@@ -8,7 +8,8 @@ class TermRecord < ActiveRecord::Base
 
 	validate :correct_languages_present
 
-	after_destroy :destroy_lookup_orphans
+	after_destroy :handle_lookup_orphaning
+	after_update :handle_lookup_orphaning
 
 	searchable do
 		text :english, boost: 5.0
@@ -31,16 +32,30 @@ class TermRecord < ActiveRecord::Base
 		errors.add(:base, "Please fill in all language fields") if result
 	end
 
-	def destroy_lookup_orphans
-		Source.find(self.source_id).destroy if source_orphaned?
-		Domain.find(self.domain_id).destroy if domain_orphaned?
+	def handle_lookup_orphaning
+		["source", "domain"].each do |field|
+			self.send("destroy_#{field}") if (self.send("#{field}_id_changed?") || !self.persisted?) && self.send("#{field}_orphaned?")
+		end
 	end
 
 	def source_orphaned?
-		TermRecord.where(source_id: self.source_id).limit(1).empty?
+		TermRecord.where(source_id: self.source_id_was).limit(1).empty?
 	end
 
 	def domain_orphaned?
-		TermRecord.where(domain_id: self.domain_id).limit(1).empty?
+		TermRecord.where(domain_id: self.source_id_was).limit(1).empty?
 	end
+
+	def destroy_source
+		Source.find(self.source_id_was).destroy
+	end
+
+	def destroy_domain
+		Domain.find(self.domain_id_was).destroy
+	end
+
+	# def handle_lookup_orphaning
+	# 	destroy_source(self.source_id_was) if (self.source_id_changed? || !self.persisted?) && source_orphaned?(self.source_id_was)
+	# 	destroy_domain(self.domain_id_was) if (self.domain_id_changed? || !self.persisted?) && domain_orphaned?(self.domain_id_was)
+	# end
 end
