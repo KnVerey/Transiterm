@@ -32,7 +32,7 @@ class CollectionsController < ApplicationController
 	end
 
 	def destroy
-		@collection.destroy
+		remove_from_active_ids if @collection.destroy
 		redirect_to query_path
 	end
 
@@ -44,5 +44,13 @@ class CollectionsController < ApplicationController
 
 	def collection_params
 		params.require(:collection).permit(:title, :description, :english, :french, :spanish)
+	end
+
+	def remove_from_active_ids
+		if current_user.active_collection_ids.include?(@collection.id)
+			current_user.active_collection_ids_will_change!
+			current_user.active_collection_ids.delete(@collection.id)
+			current_user.save
+		end
 	end
 end
