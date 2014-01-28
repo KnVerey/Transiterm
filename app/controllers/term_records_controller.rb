@@ -1,11 +1,10 @@
 class TermRecordsController < ApplicationController
 
 	before_action :find_term_record, only: [:edit, :update, :destroy]
+	before_action :set_collections_and_default, except: [:destroy]
 
 	def new
 		@term_record = TermRecord.new
-		@collections = Collection.currently_visible(current_user)
-		@default_collection = Collection.order(updated_at: :desc).limit(1).first
 	end
 
 	def create
@@ -17,16 +16,11 @@ class TermRecordsController < ApplicationController
 		if @term_record.save
 			redirect_to query_path, flash: { success: 'Record created'}
 		else
-			@collections = Collection.currently_visible(current_user)
-			@default_collection = Collection.order(updated_at: :desc).limit(1).first
-
 			render action: "new"
 		end
 	end
 
 	def edit
-		@default_collection = @term_record.collection
-		@collections = Collection.currently_visible(current_user)
 	end
 
 	def update
@@ -37,9 +31,6 @@ class TermRecordsController < ApplicationController
 		if @term_record.update(term_record_params)
 			redirect_to query_path, flash: { success: 'Record updated'}
 		else
-			@collections = Collection.currently_visible(current_user)
-			@default_collection = Collection.order(updated_at: :desc).limit(1).first
-
 			render action: "edit"
 		end
 	end
@@ -58,6 +49,11 @@ class TermRecordsController < ApplicationController
 
 	def find_term_record
 		@term_record = TermRecord.find(params[:id])
+	end
+
+	def set_collections_and_default
+		@collections = Collection.currently_visible(current_user)
+		@default_collection = @term_record ? @term_record.collection : @collections.order(updated_at: :desc).limit(1).first
 	end
 
 	def handle_domain_link

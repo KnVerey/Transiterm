@@ -153,6 +153,22 @@ describe CollectionsController do
 	      }.to change(Collection, :count).by(-1)
 	    end
 
+	    it "removes the collection from the active list, if there" do
+				person.active_collection_ids_will_change!
+				person.active_collection_ids << person_collection.id
+				person.save
+
+				expect {
+					delete :destroy, {id: person_collection.to_param, user_id: person.to_param}
+				}.to change(person.active_collection_ids, :length).by(-1)
+	    end
+
+	    it "leaves the collections active list alone if not in it" do
+				expect {
+					delete :destroy, {id: person_collection.to_param, user_id: person.to_param}
+				}.not_to change(person.active_collection_ids, :length)
+	    end
+
 	    it "redirects to the user's query page" do
 	      delete :destroy, {:user_id => person.to_param, id: person_collection.to_param}
 	      response.should redirect_to("/query")

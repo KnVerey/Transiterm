@@ -8,6 +8,9 @@ class TermRecord < ActiveRecord::Base
 
 	validate :correct_languages_present
 
+	around_destroy :handle_lookup_orphaning
+	around_update :handle_lookup_orphaning
+
 	searchable do
 		text :english, boost: 5.0
 		text :french, boost: 5.0
@@ -27,5 +30,15 @@ class TermRecord < ActiveRecord::Base
 		end
 
 		errors.add(:base, "Please fill in all language fields") if result
+	end
+
+	def handle_lookup_orphaning
+		stale_record = TermRecord.find(self.id)
+		yield
+		["source", "domain"].each do |field|
+			next if self.persisted? && !self.send("#{field}_id_changed?")
+			potential_orphan = stale_record.send(field)
+			potential_orphan.destroy if potential_orphan.term_records.empty?
+		end
 	end
 end

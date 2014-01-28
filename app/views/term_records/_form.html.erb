@@ -23,7 +23,7 @@
           <% end %>
         </div>
         <div class="small-9 columns">
-          <%= f.collection_select :collection_id, @collections, :id, :title, selected: @default_collection.id, class: "no-margin" %>
+          <%= f.collection_select :collection_id, @collections, :id, :title, selected: current_or_default_collection, class: "no-margin" %>
         </div>
       </div>
 

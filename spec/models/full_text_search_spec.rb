@@ -61,6 +61,14 @@ describe FullTextSearch do
 				expect(search.sunspot.inspect).to match(/:qf=>\"english_text\"/)
 			end
 		end
+
+		context "with no collections to search" do
+			it "never runs a search unfiltered by collection ids" do
+				search.collections = []
+				expect(search.sunspot.inspect).to match(/collection_id_i:/)
+				expect(search.sunspot.inspect).not_to match(/collection_id_i:\[\* TO \*\]/)
+			end
+		end
 	end
 
 	describe "#sanitize search field" do
@@ -93,6 +101,11 @@ describe FullTextSearch do
 			# This happens inside the sunspot method, which the test refuses to call if I set an expectation straight on search
 			expect(search.collections).to receive(:map)
 			search.results
+		end
+
+		it "simply returns an empty array if no collections" do
+			search.collections = []
+			expect(search.results).to eq([])
 		end
 	end
 

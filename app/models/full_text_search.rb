@@ -8,12 +8,13 @@ class FullTextSearch
 	end
 
 	def results
+		return [] if @collections.empty?
 		# leave sorted by relevance if user entered keywords
 		@keywords.present? ? sunspot.results : sort_results(sunspot.results)
 	end
 
 	def sunspot
-		collection_ids = @collections.map(&:id)
+		collection_ids = @collections.empty? ? [0] : @collections.map(&:id)
 		field = @field
 		search_terms = @keywords
 
