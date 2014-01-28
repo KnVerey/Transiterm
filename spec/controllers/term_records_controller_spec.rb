@@ -213,6 +213,14 @@ describe TermRecordsController do
 			  expect(assigns(:term_record)).to eq(record)
 			end
 
+			it "redirects if the parent collection does not belong to the user" do
+				f_collection = FactoryGirl.create(:collection)
+				f_record = FactoryGirl.create(:term_record, collection: f_collection)
+
+				get :edit, { id: f_record.id }
+				expect(response).to redirect_to("/query")
+			end
+
 			it "assigns @collections" do
 				get :edit, { id: record.id }
 				controller.stub(:current_user).and_return(person)
@@ -248,6 +256,15 @@ describe TermRecordsController do
 				it "locates the correct record" do
 				  put :update, { collection_id: person_collection.id, id: record.id, term_record: { english: "Good day", domain: "Travel" } }
 				  assigns(:term_record).should eq(record)
+				end
+
+				it "does not update record unless parent collection belongs to user" do
+					f_collection = FactoryGirl.create(:collection)
+					f_record = FactoryGirl.create(:term_record, collection: f_collection)
+					TermRecord.stub(:find).and_return(f_record)
+
+					expect(f_record).not_to receive(:update)
+					put :update, { collection_id: f_collection, id: f_record.id, term_record: { english: "changeme" }}
 				end
 
 				it "redirects to the parent collection" do

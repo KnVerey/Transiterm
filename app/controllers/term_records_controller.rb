@@ -21,6 +21,7 @@ class TermRecordsController < ApplicationController
 	end
 
 	def edit
+		redirect_to query_path unless user_is_owner?(@term_record)
 	end
 
 	def update
@@ -28,7 +29,7 @@ class TermRecordsController < ApplicationController
 		handle_domain_link if params[:term_record][:domain].is_a? String
 		handle_source_link if params[:term_record][:source].is_a? String
 
-		if @term_record.update(term_record_params)
+		if user_is_owner?(@term_record) && @term_record.update(term_record_params)
 			redirect_to query_path, flash: { success: 'Record updated'}
 		else
 			render action: "edit"
