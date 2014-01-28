@@ -36,6 +36,7 @@ class TermRecord < ActiveRecord::Base
 		stale_record = TermRecord.find(self.id)
 		yield
 		["source", "domain"].each do |field|
+			next if self.persisted? && !self.send("#{field}_id_changed?")
 			potential_orphan = stale_record.send(field)
 			potential_orphan.destroy if potential_orphan.term_records.empty?
 		end
