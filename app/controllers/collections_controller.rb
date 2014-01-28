@@ -17,12 +17,12 @@ class CollectionsController < ApplicationController
 	end
 
 	def edit
-		redirect_to query_path unless user_is_creator?(@collection)
+		redirect_to query_path unless user_is_owner?(@collection)
 	end
 
 	def update
 		respond_to do |format|
-			if user_is_creator?(@collection) && @collection.update(collection_params)
+			if user_is_owner?(@collection) && @collection.update(collection_params)
 				format.html { redirect_to query_path, notice: 'Collection details successfully updated' }
 				format.json {}
 			else
@@ -33,7 +33,7 @@ class CollectionsController < ApplicationController
 	end
 
 	def destroy
-		remove_from_active_ids if @collection.destroy
+		remove_from_active_ids if user_is_owner?(@collection) && @collection.destroy
 		redirect_to query_path
 	end
 

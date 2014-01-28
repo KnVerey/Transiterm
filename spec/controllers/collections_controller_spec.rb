@@ -163,6 +163,13 @@ describe CollectionsController do
 	      assigns(:collection).should eq(person_collection)
 	    end
 
+	    it "does not destroy anything unless collection belongs to user" do
+	    	collection = FactoryGirl.create(:collection)
+	      expect {
+  	      delete :destroy, { id: collection.to_param }
+  	      }.not_to change(Collection, :count)
+	    end
+
 	    it "destroys the requested collection" do
 	      expect {
 	        delete :destroy, {id: person_collection.to_param, user_id: person.to_param}
