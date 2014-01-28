@@ -8,8 +8,8 @@ class TermRecord < ActiveRecord::Base
 
 	validate :correct_languages_present
 
-	after_destroy :handle_lookup_orphaning
-	after_update :handle_lookup_orphaning
+	around_destroy :handle_lookup_orphaning
+	around_update :handle_lookup_orphaning
 
 	searchable do
 		text :english, boost: 5.0
@@ -33,23 +33,11 @@ class TermRecord < ActiveRecord::Base
 	end
 
 	def handle_lookup_orphaning
-		destroy_orphaned_source if source_orphaned?
-		destroy_orphaned_domain if domain_orphaned?
-	end
-
-	def source_orphaned?
-		TermRecord.where(source_id: self.source_id_was).limit(1).empty?
-	end
-
-	def domain_orphaned?
-		TermRecord.where(domain_id: self.domain_id_was).limit(1).empty?
-	end
-
-	def destroy_orphaned_source
-		Source.find(self.source_id_was).destroy
-	end
-
-	def destroy_orphaned_domain
-		Domain.find(self.domain_id_was).destroy
+		stale_record = TermRecord.find(self.id)
+		yield
+		["source", "domain"].each do |field|
+			potential_orphan = stale_record.send(field)
+			potential_orphan.destroy if potential_orphan.term_records.empty?
+		end
 	end
 end
