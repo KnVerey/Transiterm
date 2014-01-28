@@ -8,6 +8,7 @@ class FullTextSearch
 	end
 
 	def results
+		return [] if @collections.empty?
 		# leave sorted by relevance if user entered keywords
 		@keywords.present? ? sunspot.results : sort_results(sunspot.results)
 	end

@@ -85,6 +85,13 @@ describe FullTextSearch do
 	end
 
 	describe "#results", solr: true do
+
+		#this test doesn't really work... solr query in test env never returning results
+		it "returns empty array if no collections to search" do
+			search.collections = []
+			expect(search.results).to eq([])
+		end
+
 		it "returns an array of collections" do
 			expect(search.results).to be_an(Array)
 		end
