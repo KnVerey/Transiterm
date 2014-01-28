@@ -55,6 +55,14 @@ describe TermRecordsController do
 		context "when logged in" do
 			before(:each) { login_user(person) }
 
+			it "will not save a record in someone else's collection" do
+				collection = FactoryGirl.create(:collection)
+				expect {
+					post :create, { term_record: { english: "Test", french: "test", spanish: "TEST", source: "A SOURCE", domain: "A DOMAIN", collection_id: collection.id } }
+				}.not_to change(TermRecord, :count)
+
+			end
+
 			context "with valid params" do
 
 				it "assigns the record to the active collection" do

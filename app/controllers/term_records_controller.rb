@@ -13,7 +13,7 @@ class TermRecordsController < ApplicationController
 
 		@term_record = TermRecord.new(term_record_params)
 
-		if @term_record.save
+		if user_is_owner?(@term_record.collection) && @term_record.save
 			redirect_to query_path, flash: { success: 'Record created'}
 		else
 			render action: "new"
