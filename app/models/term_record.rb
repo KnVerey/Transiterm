@@ -33,9 +33,8 @@ class TermRecord < ActiveRecord::Base
 	end
 
 	def handle_lookup_orphaning
-		["source", "domain"].each do |field|
-			self.send("destroy_#{field}") if (self.send("#{field}_id_changed?") || !self.persisted?) && self.send("#{field}_orphaned?")
-		end
+		destroy_orphaned_source if source_orphaned?
+		destroy_orphaned_domain if domain_orphaned?
 	end
 
 	def source_orphaned?
@@ -43,19 +42,14 @@ class TermRecord < ActiveRecord::Base
 	end
 
 	def domain_orphaned?
-		TermRecord.where(domain_id: self.source_id_was).limit(1).empty?
+		TermRecord.where(domain_id: self.domain_id_was).limit(1).empty?
 	end
 
-	def destroy_source
+	def destroy_orphaned_source
 		Source.find(self.source_id_was).destroy
 	end
 
-	def destroy_domain
+	def destroy_orphaned_domain
 		Domain.find(self.domain_id_was).destroy
 	end
-
-	# def handle_lookup_orphaning
-	# 	destroy_source(self.source_id_was) if (self.source_id_changed? || !self.persisted?) && source_orphaned?(self.source_id_was)
-	# 	destroy_domain(self.domain_id_was) if (self.domain_id_changed? || !self.persisted?) && domain_orphaned?(self.domain_id_was)
-	# end
 end
