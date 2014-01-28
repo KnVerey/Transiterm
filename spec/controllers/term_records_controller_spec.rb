@@ -27,6 +27,7 @@ describe TermRecordsController do
 			end
 
 			it "assigns most recently modified collection as @default_collection" do
+				controller.stub(:current_user).and_return(person)
 				a = FactoryGirl.create(:collection, user: person)
 				b = FactoryGirl.create(:collection, user: person)
 				t = FactoryGirl.create(:term_record, collection: a)
@@ -36,6 +37,7 @@ describe TermRecordsController do
 			end
 
 			it "assigns @collections" do
+				controller.stub(:current_user).and_return(person)
 				get :new
 				expect(assigns(:collections)).not_to be_nil
 			end
@@ -162,12 +164,17 @@ describe TermRecordsController do
 
 				it "sets @collections" do
 					TermRecord.any_instance.stub(:save).and_return(false)
+					controller.stub(:current_user).and_return(person)
+
 				  post :create, term_record: {}
 				  expect(assigns(:collections)).not_to be_nil
 				end
 
 				it "sets @default_collection" do
 					TermRecord.any_instance.stub(:save).and_return(false)
+					controller.stub(:current_user).and_return(person)
+					person.spanish_active = true
+
 					person_collection.reload
 				  post :create, term_record: {}
 				  expect(assigns(:default_collection)).not_to be_nil
@@ -200,10 +207,12 @@ describe TermRecordsController do
 
 			it "assigns @collections" do
 				get :edit, { id: record.id }
+				controller.stub(:current_user).and_return(person)
 				expect(assigns(:collections)).not_to be_nil
 			end
 
 			it "sets @default_collection to the record's current collection" do
+				controller.stub(:current_user).and_return(person)
 			  get :edit, { id: record.id }
 			  expect(assigns(:default_collection)).to eq(record.collection)
 			end
@@ -293,13 +302,17 @@ describe TermRecordsController do
 
 				it "sets @collections" do
 					TermRecord.any_instance.stub(:save).and_return(false)
+					controller.stub(:current_user).and_return(person)
+
 					put :update, { collection_id: person_collection.id, id: record.id, term_record: { source: "", english: "Good day"}}
 				  expect(assigns(:collections)).not_to be_nil
 				end
 
 				it "sets @default_collection" do
 					TermRecord.any_instance.stub(:save).and_return(false)
+					controller.stub(:current_user).and_return(person)
 					person_collection.reload
+
 					put :update, { collection_id: person_collection.id, id: record.id, term_record: { source: "", english: "Good day"}}
 				  expect(assigns(:default_collection)).not_to be_nil
 				end
