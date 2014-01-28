@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 	  redirect_to login_path, flash: { notice: "Please log in first" }
 	end
 
-	def user_is_creator?(object)
+	def user_is_owner?(object)
 		if object.respond_to?(:user_id)
 			object.user_id == current_user.id
 		elsif object.is_a? TermRecord

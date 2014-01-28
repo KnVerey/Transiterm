@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe ApplicationController do
-	describe "user_is_creator?" do
+	describe "user_is_owner?" do
 		context "when passed a collection" do
 			it "returns true if the collection belongs to current_user" do
 				person = FactoryGirl.build(:user)
 				person_collection = FactoryGirl.build(:collection, user: person)
 				controller.stub(:current_user).and_return(person)
 
-				expect(controller.send("user_is_creator?", person_collection)).to eq(true)
+				expect(controller.send("user_is_owner?", person_collection)).to eq(true)
 			end
 
 			it "returns false if the collection belongs to someone else" do
@@ -16,7 +16,7 @@ describe ApplicationController do
 				collection = FactoryGirl.build(:collection)
 				controller.stub(:current_user).and_return(person)
 
-				expect(controller.send("user_is_creator?", collection)).to eq(false)
+				expect(controller.send("user_is_owner?", collection)).to eq(false)
 			end
 		end
 
@@ -27,7 +27,7 @@ describe ApplicationController do
 				record = FactoryGirl.build(:term_record, collection: person_collection)
 				controller.stub(:current_user).and_return(person)
 
-				expect(controller.send("user_is_creator?", record)).to eq(true)
+				expect(controller.send("user_is_owner?", record)).to eq(true)
 			end
 
 			it "returns false if the term record belongs to someone else" do
@@ -36,7 +36,7 @@ describe ApplicationController do
 				record = FactoryGirl.build(:term_record, collection: collection)
 				controller.stub(:current_user).and_return(person)
 
-				expect(controller.send("user_is_creator?", record)).to eq(false)
+				expect(controller.send("user_is_owner?", record)).to eq(false)
 			end
 		end
 	end
