@@ -37,7 +37,7 @@ class TermRecordsController < ApplicationController
 	end
 
 	def destroy
-		@term_record.destroy
+		@term_record.destroy if user_is_owner?(@term_record)
 		redirect_to query_path, flash: { success: 'Record deleted' }
 	end
 

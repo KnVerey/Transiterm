@@ -361,6 +361,16 @@ describe TermRecordsController do
 			  assigns(:term_record).should eq(record)
 			end
 
+			it "does not destroy anything unless record belongs to user" do
+				f_collection = FactoryGirl.create(:collection)
+				f_record = FactoryGirl.create(:term_record, collection: f_collection)
+				TermRecord.stub(:find).and_return(f_record)
+
+				expect {
+					delete :destroy, { collection_id: f_collection.id, id: f_record.id }
+				}.not_to change(TermRecord, :count)
+			end
+
 			it "destroys the requested record" do
 			  record.reload
 			  expect {
