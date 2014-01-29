@@ -136,4 +136,13 @@ describe User do
       end
     end
   end
+
+  describe "active_languages=" do
+    it "toggles user langs to match the set passed in" do
+      user = FactoryGirl.build(:active_user)
+      user.active_languages = ["spanish"]
+      expect(user.active_languages).to match_array(["spanish"])
+    end
+  end
+
 end

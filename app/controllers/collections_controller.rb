@@ -11,10 +11,7 @@ class CollectionsController < ApplicationController
 
     if @collection.save
     	current_user.toggle_collection(@collection.id)
-    	current_user.french_active = @collection.french
-    	current_user.english_active = @collection.english
-    	current_user.spanish_active = @collection.spanish
-    	current_user.save
+    	current_user.active_languages = @collection.active_languages
       redirect_to query_path, flash: { success: 'Collection created'}
     else
       render action: 'new'

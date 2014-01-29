@@ -31,6 +31,14 @@ class User < ActiveRecord::Base
     langs
   end
 
+  def active_languages=(to_activate)
+    Collection::LANGUAGES.each do |lang|
+      state = to_activate.include?(lang)
+      self.send("#{lang}_active=", state)
+    end
+    save
+  end
+
   def toggle_language(language)
     if Collection::LANGUAGES.include?(language)
       self.send("#{language}_active=", !self.send("#{language}_active"))
