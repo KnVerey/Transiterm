@@ -1,0 +1,2 @@
+class TermRecordImportsController < ApplicationController
+end
