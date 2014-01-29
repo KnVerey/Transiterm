@@ -34,7 +34,6 @@ group :development, :test do
 	gem 'pry-byebug'
 	gem 'better_errors'
 	gem 'binding_of_caller'
-  gem 'cucumber-rails', :require => false
   gem 'database_cleaner'
   gem 'spork-rails'
   gem 'sunspot-rails-tester'
@@ -49,6 +48,7 @@ gem 'sunspot_solr'
 
 gem 'font-awesome-sass'
 gem 'redcarpet', '~> 3.0'
+gem 'spreadsheet', '~> 0.9.6'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
