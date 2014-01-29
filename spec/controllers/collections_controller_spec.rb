@@ -55,6 +55,18 @@ describe CollectionsController do
 					assigns(:collection).user_id.should eq(person.id)
 				end
 
+				it "adds the new collection to the active list" do
+					post :create, collection: valid_attributes
+					new_id = assigns(:collection).id
+
+					expect(person.active_collection_ids).to include(new_id)
+				end
+
+				it "changes the active languages to match the collection's" do
+					post :create, collection: { title: "Music", description: "For music studio client", english: false, french: false, spanish: true }
+					expect(person.active_languages).to match_array(["spanish"])
+				end
+
 				it "redirects to the query page" do
 				  post :create, collection: valid_attributes
 				  expect(response).to redirect_to("/query")
