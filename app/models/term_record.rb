@@ -29,8 +29,8 @@ class TermRecord < ActiveRecord::Base
 		return false unless self.collection_id
 
 		Domain.transaction do
-			self.domain_id = Domain.find_or_create_by(name: lookup_params[:domain_name], user_id: self.collection.user_id).id
-			self.source_id = Source.find_or_create_by(name: lookup_params[:source_name], user_id: self.collection.user_id).id
+			self.domain_id = Domain.find_or_create_by(name: lookup_params[:domain_name], user_id: self.collection.user_id).id if lookup_params[:domain_name]
+			self.source_id = Source.find_or_create_by(name: lookup_params[:source_name], user_id: self.collection.user_id).id if lookup_params[:source_name]
 			raise ActiveRecord::Rollback unless self.valid?
 		end
 
