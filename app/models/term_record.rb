@@ -23,6 +23,16 @@ class TermRecord < ActiveRecord::Base
 		integer :collection_id
 	end
 
+	def hookup_lookups(lookup_params)
+		return false unless self.collection_id
+
+		Domain.transaction do
+			self.domain_id = Domain.find_or_create_by(name: lookup_params[:domain_name], user_id: self.collection.user_id).id
+			self.source_id = Source.find_or_create_by(name: lookup_params[:source_name], user_id: self.collection.user_id).id
+			raise ActiveRecord::Rollback unless self.valid?
+		end
+	end
+
 	private
 	def correct_languages_present
 		result = Collection::LANGUAGES.detect do |language|

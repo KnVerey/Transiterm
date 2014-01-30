@@ -8,10 +8,10 @@ class TermRecordsController < ApplicationController
 	end
 
 	def create
-		handle_domain_link
-		handle_source_link
-
+		# handle_domain_link
+		# handle_source_link
 		@term_record = TermRecord.new(term_record_params)
+		@term_record.hookup_lookups(lookup_params)
 
 		if user_is_owner?(@term_record.collection) && @term_record.save
 			redirect_to query_path, flash: { success: 'Record created'}
@@ -37,15 +37,22 @@ class TermRecordsController < ApplicationController
 	end
 
 	def destroy
-		@term_record.destroy if user_is_owner?(@term_record)
-		redirect_to query_path, flash: { success: 'Record deleted' }
+		if user_is_owner?(@term_record) && @term_record.destroy
+			redirect_to query_path, flash: { success: 'Record deleted' }
+		else
+			redirect_to query_path, flash: { alert: 'Error: record not deleted' }
+		end
 	end
 
 
 	private
 
 	def term_record_params
-		params.require(:term_record).permit(:english, :french, :spanish, :context, :comment, :domain_id, :source_id, :collection_id)
+		params.require(:term_record).permit(:english, :french, :spanish, :context, :comment, :collection_id)
+	end
+
+	def lookup_params
+		params.require(:term_record).permit(:domain_name, :source_name)
 	end
 
 	def find_term_record
@@ -57,15 +64,15 @@ class TermRecordsController < ApplicationController
 		@default_collection = @term_record ? @term_record.collection : @collections.order(updated_at: :desc).limit(1).first
 	end
 
-	def handle_domain_link
-		domain = Domain.find_or_create_by(name: params["term_record"]["domain"], user_id: current_user.id)
+	# def handle_domain_link
+	# 	domain = Domain.find_or_create_by(name: params["term_record"]["domain"], user_id: current_user.id)
 
-		params[:term_record][:domain_id] = domain.id
-	end
+	# 	params[:term_record][:domain_id] = domain.id
+	# end
 
-	def handle_source_link
-		source = Source.find_or_create_by(name: params["term_record"]["source"], user_id: current_user.id)
+	# def handle_source_link
+	# 	source = Source.find_or_create_by(name: params["term_record"]["source"], user_id: current_user.id)
 
-		params[:term_record][:source_id] = source.id
-	end
+	# 	params[:term_record][:source_id] = source.id
+	# end
 end
