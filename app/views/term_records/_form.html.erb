@@ -43,7 +43,7 @@
           <%= f.label :source_name, class: "right inline"  %><br>
         </div>
           <div class="small-9 medium-11 columns">
-          <%= f.text_field :source_name, value: @term_record.source_name, placeholder: "Required" %>
+          <%= f.text_field :source_name, value: get_source_name, placeholder: "Required" %>
         </div>
       </div>
 
@@ -52,7 +52,7 @@
           <%= f.label :domain_name, class: "right inline"  %><br>
         </div>
           <div class="small-9 medium-11 columns">
-          <%= f.text_field :domain_name, value: @term_record.domain_name, placeholder: "Required" %>
+          <%= f.text_field :domain_name, value: get_domain_name, placeholder: "Required" %>
         </div>
       </div>
 
