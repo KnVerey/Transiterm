@@ -199,7 +199,9 @@ describe TermRecordsController do
 				end
 
 				it "re-renders the 'new' template" do
-				  TermRecord.any_instance.stub(:save).and_return(false)
+				  controller.stub(:user_is_owner?).and_return(true)
+				  TermRecord.any_instance.stub(:hookup_lookups).and_return(false)
+
 				  post :create, term_record: { isnt: "valid" }
 				  expect(response).to render_template("new")
 				end

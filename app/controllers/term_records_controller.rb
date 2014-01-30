@@ -8,12 +8,11 @@ class TermRecordsController < ApplicationController
 	end
 
 	def create
-		# handle_domain_link
-		# handle_source_link
 		@term_record = TermRecord.new(term_record_params)
-		@term_record.hookup_lookups(lookup_params)
 
-		if user_is_owner?(@term_record.collection) && @term_record.save
+		if !user_is_owner?(@term_record.collection)
+			redirect_to query_path, flash: { alert: "Error: permission denied" }
+		elsif @term_record.hookup_lookups(lookup_params) && @term_record.save
 			redirect_to query_path, flash: { success: 'Record created'}
 		else
 			render action: "new"
@@ -26,10 +25,12 @@ class TermRecordsController < ApplicationController
 
 	def update
 		#use is_a? String instead of present? so will throw visible error if user attempted to set blank source/domain
-		handle_domain_link if params[:term_record][:domain].is_a? String
-		handle_source_link if params[:term_record][:source].is_a? String
+		# handle_domain_link if params[:term_record][:domain].is_a? String
+		# handle_source_link if params[:term_record][:source].is_a? String
 
-		if user_is_owner?(@term_record) && @term_record.update(term_record_params)
+		if !user_is_owner?(@term_record)
+			redirect_to query_path, flash: { alert: "Error: permission denied" }
+		elsif @term_record.hookup_lookups(lookup_params) && @term_record.update(term_record_params)
 			redirect_to query_path, flash: { success: 'Record updated'}
 		else
 			render action: "edit"

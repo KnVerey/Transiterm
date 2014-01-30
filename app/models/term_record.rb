@@ -34,10 +34,15 @@ class TermRecord < ActiveRecord::Base
 			raise ActiveRecord::Rollback unless self.valid?
 		end
 
-		set_virtual_attributes(lookup_params) if !self.valid?
+		set_virtual_attributes(lookup_params) if !lookups_hookedup?
+		return lookups_hookedup?
 	end
 
 	private
+
+	def lookups_hookedup?
+		self.domain_id && self.source_id
+	end
 	def set_virtual_attributes(lookup_params)
 		self.domain_name = lookup_params[:domain_name]
 		self.source_name = lookup_params[:source_name]
