@@ -40,19 +40,19 @@
 
       <div class="row">
           <div class="small-3 medium-1 columns">
-          <%= f.label :source, class: "right inline"  %><br>
+          <%= f.label :source_name, class: "right inline"  %><br>
         </div>
           <div class="small-9 medium-11 columns">
-          <%= f.text_field :source, value: source_name, placeholder: "Required" %>
+          <%= f.text_field :source_name, value: @term_record.source_name, placeholder: "Required" %>
         </div>
       </div>
 
       <div class="row">
           <div class="small-3 medium-1 columns">
-          <%= f.label :domain, class: "right inline"  %><br>
+          <%= f.label :domain_name, class: "right inline"  %><br>
         </div>
           <div class="small-9 medium-11 columns">
-          <%= f.text_field :domain, value: domain_name, placeholder: "Required" %>
+          <%= f.text_field :domain_name, value: @term_record.domain_name, placeholder: "Required" %>
         </div>
       </div>
 

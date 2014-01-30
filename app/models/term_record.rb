@@ -1,4 +1,6 @@
 class TermRecord < ActiveRecord::Base
+	attr_accessor :domain_name, :source_name
+
 	belongs_to :collection, touch: true
 	belongs_to :domain
 	belongs_to :source
@@ -31,9 +33,16 @@ class TermRecord < ActiveRecord::Base
 			self.source_id = Source.find_or_create_by(name: lookup_params[:source_name], user_id: self.collection.user_id).id
 			raise ActiveRecord::Rollback unless self.valid?
 		end
+
+		set_virtual_attributes(lookup_params) if !self.valid?
 	end
 
 	private
+	def set_virtual_attributes(lookup_params)
+		self.domain_name = lookup_params[:domain_name]
+		self.source_name = lookup_params[:source_name]
+	end
+
 	def correct_languages_present
 		result = Collection::LANGUAGES.detect do |language|
 			self.collection.send(language) && self.send(language).empty?
