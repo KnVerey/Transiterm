@@ -62,7 +62,7 @@ class TermRecord < ActiveRecord::Base
 		["source", "domain"].each do |field|
 			next if self.persisted? && !self.send("#{field}_id_changed?")
 			potential_orphan = stale_record.send(field)
-			potential_orphan.destroy if potential_orphan.term_records.empty?
+			potential_orphan.destroy if potential_orphan.orphaned?
 		end
 	end
 end
