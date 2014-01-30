@@ -22,6 +22,18 @@ class User < ActiveRecord::Base
   has_many :sources, dependent: :destroy
   has_many :domains, dependent: :destroy
 
+  def ensure_collection_displays(collection)
+    self.toggle_collection(collection.id) unless self.active_collection_ids.include?(collection.id)
+    self.active_languages = collection.active_languages
+  end
+
+  def deactivate_collection(collection)
+    if self.active_collection_ids.include?(collection.id)
+      self.active_collection_ids_will_change!
+      self.active_collection_ids.delete(collection.id)
+      save
+    end
+  end
 
   def active_languages
     langs = []
