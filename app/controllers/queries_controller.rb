@@ -5,6 +5,6 @@ class QueriesController < ApplicationController
 
 		@selected_collections = Collection.fully_active(current_user)
 
-		@term_records = FullTextSearch.new(@selected_collections, { field: params[:field], keywords: params[:search] } ).results
+		@term_records = FullTextSearch.new(collections: @selected_collections, field: params[:field], keywords: params[:search], page: params[:page]).results
 	end
 end
