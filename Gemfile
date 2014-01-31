@@ -46,6 +46,7 @@ gem 'sorcery'
 gem 'figaro'
 gem 'sunspot_rails', '~> 2.1'
 gem 'sunspot_solr'
+gem 'kaminari', '~> 0.15'
 
 gem 'font-awesome-sass'
 gem 'redcarpet', '~> 3.0'

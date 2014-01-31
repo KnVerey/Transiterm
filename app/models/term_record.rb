@@ -23,6 +23,8 @@ class TermRecord < ActiveRecord::Base
 
 		integer :user_id do collection.user_id end
 		integer :collection_id
+		string :context
+		string :comment
 	end
 
 	def hookup_lookups(lookup_params)
