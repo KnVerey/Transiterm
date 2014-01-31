@@ -10,8 +10,6 @@ class FullTextSearch
 
 	def results
 		return [] if @collections.empty?
-		# leave sorted by relevance if user entered keywords
-		# @keywords.present? ? sunspot.results : sort_results(sunspot.results)
 		sunspot.results
 	end
 
@@ -28,7 +26,8 @@ class FullTextSearch
 				without(:context, '') if field == "context"
 				without(:comment, '') if field == "comment"
 			end
-			paginate(page: page, per_page: 5)
+			order_by(field || :english, :asc)
+			paginate(page: page, per_page: 4)
 		end
 	end
 
@@ -37,11 +36,6 @@ class FullTextSearch
 		return nil unless field
 
 		field.downcase if (Collection::LANGUAGES + Collection::FIELDS).include?(field.downcase) && field != "All"
-	end
-
-	def sort_results(results)
-		# sort block gets the field value, downcases, removes html tags and strips markdown
-		results.sort_by! { |r| ActionView::Base.full_sanitizer.sanitize(field_value(r).downcase).gsub(/[\W_]/, "") }
 	end
 
 	def field_value(record) # handles lookups and default field
