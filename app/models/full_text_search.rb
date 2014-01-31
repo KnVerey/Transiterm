@@ -27,7 +27,7 @@ class FullTextSearch
 				without(:comment, '') if field == "comment"
 			end
 			order_by(field || :english, :asc)
-			paginate(page: page, per_page: 4)
+			paginate(page: page, per_page: 25)
 		end
 	end
 
