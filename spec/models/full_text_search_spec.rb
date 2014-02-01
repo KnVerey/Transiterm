@@ -1,13 +1,8 @@
 require 'spec_helper'
 
 describe FullTextSearch do
-
-	let(:c) { FactoryGirl.build(:collection) }
-	let(:c2) { FactoryGirl.build(:collection) }
-	let(:collections) { [c, c2] }
 	let(:search) { FactoryGirl.build(:complete_full_text_search) }
 	let(:min_search) { FactoryGirl.build(:full_text_search) }
-
 
 	it "sets the desired defaults" do
 		empty_search = FactoryGirl.build(:empty_search)
@@ -54,9 +49,9 @@ describe FullTextSearch do
 			expect(search.sunspot).to be_a(Sunspot::Search::StandardSearch)
 		end
 
-		it "paginates the query"
-
-		it "sorts the query results by english by default"
+		it "paginates the results" do
+			expect(search.sunspot.inspect).to match(/:start=>\d+, :rows=>/)
+		end
 
 		it "generates a query for term records" do
 			expect(search.sunspot.inspect).to match(/:fq=>\[\"type:TermRecord\"/)
@@ -82,6 +77,10 @@ describe FullTextSearch do
 			it "generates query on all fields" do
 				expect(min_search.sunspot.inspect).not_to match(/:qf=>/)
 			end
+
+			it "sorts the query results by english by default" do
+				expect(search.sunspot.inspect).to match(/:sort=>\"english_s asc\"/)
+			end
 		end
 
 		context "with a field specified" do
@@ -89,11 +88,25 @@ describe FullTextSearch do
 				expect(search.sunspot.inspect).to match(/:qf=>\"english_text\"/)
 			end
 
-			it "narrows by context/comment presence if searching those fields"
+			it "narrows by context presence if searching that field" do
+				search.field = "context"
+				expect(search.sunspot.inspect).to match(/-context_s:\[\* TO \\\"\\\"\]/)
+			end
 
-			it "does not narrow if searching by field other than context/comment"
+			it "narrows by comment presence if searching that field" do
+				search.field = "comment"
+				expect(search.sunspot.inspect).to match(/-comment_s:\[\* TO \\\"\\\"\]/)
+			end
 
-			it "sorts the results by that field"
+			it "does not narrow if searching by field other than context/comment" do
+				search.field = "spanish"
+				expect(search.sunspot.inspect).not_to match(/-\w_s:\[\* TO \\\"\\\"\]/)
+			end
+
+			it "sorts the results by the specified field" do
+				search.field = "domain"
+				expect(search.sunspot.inspect).to match(/:sort=>\"domain_s asc\"/)
+			end
 		end
 
 		context "with no collections to search" do
@@ -110,10 +123,8 @@ describe FullTextSearch do
 			expect(search.results).to be_an(Array)
 		end
 
-		xit "uses the sunspot query" do
-			# This happens inside the sunspot method, which the test refuses to call if I set an expectation straight on search
-			expect(search.collections).to receive(:map)
-			search.results
+		it "uses the sunspot query" do
+			expect(search.results.class).to be(Sunspot::Search::PaginatedCollection)
 		end
 
 		it "simply returns an empty array if no collections" do
