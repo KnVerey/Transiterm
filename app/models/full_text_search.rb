@@ -42,9 +42,4 @@ class FullTextSearch
 
 		field.downcase if (Collection::LANGUAGES + Collection::FIELDS).include?(field.downcase) && field != "All"
 	end
-
-	def field_value(record) # handles lookups and default field
-		value = record.send(@field || "english")
-		value.try(:name) || value
-	end
 end
