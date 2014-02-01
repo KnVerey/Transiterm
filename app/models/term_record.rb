@@ -23,13 +23,13 @@ class TermRecord < ActiveRecord::Base
 
 		integer :user_id do collection.user_id end
 		integer :collection_id
-		string :context do context.nil? ? nil : ActionView::Base.full_sanitizer.sanitize(context.downcase).gsub(/[\W_]/, "") end
-		string :comment do comment.nil? ? nil : ActionView::Base.full_sanitizer.sanitize(comment.downcase).gsub(/[\W_]/, "") end
-		string :english do english.nil? ? nil : ActionView::Base.full_sanitizer.sanitize(english.downcase).gsub(/[\W_]/, "") end
-		string :french do french.nil? ? nil : ActionView::Base.full_sanitizer.sanitize(french.downcase).gsub(/[\W_]/, "") end
-		string :spanish do spanish.nil? ? nil : ActionView::Base.full_sanitizer.sanitize(spanish.downcase).gsub(/[\W_]/, "") end
-		string :domain do ActionView::Base.full_sanitizer.sanitize(domain.name.downcase).gsub(/[\W_]/, "") end
-		string :source do ActionView::Base.full_sanitizer.sanitize(source.name.downcase).gsub(/[\W_]/, "") end
+		string :context do context.nil? ? nil : scrub_for_sort(context) end
+		string :comment do comment.nil? ? nil :  scrub_for_sort(comment) end
+		string :english do english.nil? ? nil : scrub_for_sort(english) end
+		string :french do french.nil? ? nil : scrub_for_sort(french) end
+		string :spanish do spanish.nil? ? nil : scrub_for_sort(spanish) end
+		string :domain do scrub_for_sort(domain.name) end
+		string :source do scrub_for_sort(source.name) end
 	end
 
 	def hookup_lookups(lookup_params)
@@ -46,6 +46,10 @@ class TermRecord < ActiveRecord::Base
 	end
 
 	private
+
+	def scrub_for_sort(field)
+		ActionView::Base.full_sanitizer.sanitize(field.downcase).gsub(/[\W_]/, "")
+	end
 
 	def lookups_hookedup?
 		self.domain_id && self.source_id
