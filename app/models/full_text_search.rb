@@ -1,11 +1,16 @@
 class FullTextSearch
-	attr_accessor :collections, :field, :keywords
+	attr_accessor :collections, :keywords, :page
+	attr_reader :field
 
 	def initialize(collections: [], field: nil, keywords: nil, page: 1)
 		@collections = collections
 		@field = sanitize_search_field(field)
 		@keywords = keywords
 		@page = page
+	end
+
+	def field=(field)
+		@field = sanitize_search_field(field)
 	end
 
 	def results
