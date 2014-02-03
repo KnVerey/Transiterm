@@ -13,7 +13,7 @@ class TermRecord < ActiveRecord::Base
 	around_destroy :handle_lookup_orphaning
 	around_update :handle_lookup_orphaning
 
-	searchable do
+	searchable(includes: [:domains, :sources]) do
 		text :english, boost: 5.0
 		text :french, boost: 5.0
 		text :spanish, boost: 5.0
@@ -21,7 +21,6 @@ class TermRecord < ActiveRecord::Base
 		text :domain do domain.name end
 		text :source do source.name end
 
-		integer :user_id do collection.user_id end
 		integer :collection_id
 		string :context do context.nil? ? nil : scrub_for_sort(context) end
 		string :comment do comment.nil? ? nil :  scrub_for_sort(comment) end
