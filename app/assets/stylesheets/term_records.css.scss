@@ -1,3 +1,4 @@
+
 .new_term_record {
 	min-width: 350px;
 	margin-top: 3em;
@@ -43,4 +44,40 @@
 			color: blue;
 			background-color: inherit;
 		}
+}
+
+/* Adapted from foundation's css to work with kaminari output */
+nav.pagination {
+  display: block;
+  height: 1.5rem;
+  margin-left: -0.3125rem;
+
+  span {
+    height: 1.5rem;
+    color: #222222;
+    font-size: 0.875rem;
+    margin-left: 0.3125rem;
+    float: left;
+    display: block;
+  }
+
+	span a, span.current {
+    display: block;
+    padding: 0.0625rem 0.625rem 0.0625rem;
+    color: #999999;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+  }
+
+  span.current, span.current:hover, span.current:focus {
+  	background: #C7BEBE;
+	  color: white;
+	  font-weight: bold;
+	  cursor: default;
+	  height: 1.25rem;
+  }
+
+  span:hover a, span a:focus {
+  	background: lighten(#C7BEBE, 15%);
+  }
 }
