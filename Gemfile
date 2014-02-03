@@ -53,7 +53,7 @@ gem 'font-awesome-sass'
 gem 'redcarpet', '~> 3.0'
 
 gem 'rails_12factor', group: :production
-
+gem 'newrelic_rpm'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
