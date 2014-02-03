@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_filter :require_login, only: [:new, :create, :activate, :unlock]
+  # skip_before_filter :require_login, only: [:new, :create, :activate, :unlock]
 
   layout "pages", only: [:new, :create, :destroy]
 
