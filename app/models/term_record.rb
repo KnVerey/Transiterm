@@ -1,4 +1,6 @@
 class TermRecord < ActiveRecord::Base
+	include PgSearch
+
 	attr_accessor :domain_name, :source_name
 
 	belongs_to :collection, touch: true
@@ -13,22 +15,19 @@ class TermRecord < ActiveRecord::Base
 	around_destroy :handle_lookup_orphaning
 	around_update :handle_lookup_orphaning
 
-	searchable(includes: [:domains, :sources]) do
-		text :english, boost: 5.0
-		text :french, boost: 5.0
-		text :spanish, boost: 5.0
-		text :context, :comment
-		text :domain do domain.name end
-		text :source do source.name end
+	multisearchable against: [:all_sanitized_for_search]
 
-		integer :collection_id
-		string :context do context.nil? ? nil : scrub_for_sort(context) end
-		string :comment do comment.nil? ? nil :  scrub_for_sort(comment) end
-		string :english do english.nil? ? nil : scrub_for_sort(english) end
-		string :french do french.nil? ? nil : scrub_for_sort(french) end
-		string :spanish do spanish.nil? ? nil : scrub_for_sort(spanish) end
-		string :domain do scrub_for_sort(domain.name) end
-		string :source do scrub_for_sort(source.name) end
+	def all_sanitized_for_search
+		combined = ""
+		["english", "french", "spanish", "context", "comment"].each do |field|
+			value = self.send(field)
+			combined << "#{sanitize(value)} " unless value.blank?
+		end
+		combined << "#{sanitize(self.domain.name)} #{sanitize(self.source.name)}"
+	end
+
+	def sanitize(string)
+		ActionView::Base.full_sanitizer.sanitize(string.downcase).gsub(/[^\s\w]|_/, "")
 	end
 
 	def hookup_lookups(lookup_params)
@@ -45,11 +44,6 @@ class TermRecord < ActiveRecord::Base
 	end
 
 	private
-
-	def scrub_for_sort(field)
-		ActionView::Base.full_sanitizer.sanitize(field.downcase).gsub(/[\W_]/, "")
-	end
-
 	def lookups_hookedup?
 		self.domain_id && self.source_id
 	end

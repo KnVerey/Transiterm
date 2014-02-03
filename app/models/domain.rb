@@ -1,4 +1,6 @@
 class Domain < ActiveRecord::Base
+	include PgSearch
+
 	belongs_to :user
 	has_many :term_records
 
