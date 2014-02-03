@@ -15,7 +15,6 @@ class FullTextSearch
 	end
 
 	def results
-		return [] if @collections.empty?
 		sunspot.results
 	end
 
