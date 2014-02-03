@@ -1,12 +1,13 @@
 class FullTextSearch
 	attr_accessor :collections, :keywords, :page
-	attr_reader :field
+	attr_reader :field, :total_results
 
 	def initialize(collections: [], field: nil, keywords: nil, page: 1)
 		@collections = collections
 		@field = sanitize_search_field(field)
 		@keywords = keywords
 		@page = page
+		@total_results = 0
 	end
 
 	def field=(field)
@@ -24,7 +25,7 @@ class FullTextSearch
 		search_terms = @keywords
 		page = @page
 
-		Sunspot.search(TermRecord) do
+		query = Sunspot.search(TermRecord) do
 			keywords search_terms, fields: field
 			all_of do
 				with(:collection_id, collection_ids)
@@ -34,6 +35,9 @@ class FullTextSearch
 			order_by(field || :english, :asc)
 			paginate(page: page, per_page: 25)
 		end
+
+		@total_results = query.total
+		query
 	end
 
 	private

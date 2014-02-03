@@ -36,12 +36,22 @@ describe QueriesController do
 			  expect(assigns(:selected_collections).length).to eq(1)
 			end
 
-			it "sets @term_records with a FullTextSearch" do
+			it "sets @search with a FullTextSearch" do
 				search = FactoryGirl.build(:full_text_search)
 				FullTextSearch.stub(:new).and_return(search)
 
-				expect(FullTextSearch).to receive(:new)
 			  get :index
+			  expect(assigns(:search)).to be_a(FullTextSearch)
+			end
+
+			it "saves the search results in @term_records" do
+				search = FactoryGirl.build(:full_text_search)
+				FullTextSearch.stub(:new).and_return(search)
+				search.stub(:results).and_return([])
+
+				expect(search).to receive(:results)
+			  get :index
+			  expect(assigns(:term_records)).not_to be_nil
 			end
 
 		end

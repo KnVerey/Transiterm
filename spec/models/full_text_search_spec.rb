@@ -10,6 +10,7 @@ describe FullTextSearch do
 		expect(empty_search.field).to be_nil
 		expect(empty_search.keywords).to be_nil
 		expect(empty_search.page).to eq(1)
+		expect(empty_search.total_results).to eq(0)
 	end
 
 	context "when setting the search field" do
