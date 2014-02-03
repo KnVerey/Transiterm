@@ -52,5 +52,3 @@ coverage
 
 *.key
 *.pdf
-
-newrelic.yml
