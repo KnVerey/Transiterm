@@ -23,7 +23,7 @@ class Source < ActiveRecord::Base
 	end
 
 	def set_clean_name
-		self.clean_name = sanitize(name) if name_changed?
+		self.clean_name = sanitize(name) if name && name_changed?
 	end
 
 	def sanitize(string)
