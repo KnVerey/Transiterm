@@ -47,7 +47,7 @@ class TermRecord < ActiveRecord::Base
 
 	def populate_clean_fields
 		["english", "french", "spanish", "context", "comment"].each do |field|
-			if send("#{field}_changed?")
+			if !send("#{field}").nil? && send("#{field}_changed?")
 				sanitized_content = sanitize(send(field))
 				send("clean_#{field}=", sanitized_content)
 			end
