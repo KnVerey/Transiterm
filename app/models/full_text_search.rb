@@ -15,23 +15,16 @@ class FullTextSearch
 	end
 
 	def results
-		if @keywords && @field
-			# field_specific_search
-		elsif @keywords
-			full_text_search
-		elsif @field
-			full_text_search
+		query = if @field && @keywords.present?
+			TermRecord.search_by_field(@field, @keywords)
+		elsif @field && @keywords.blank?
+			# TermRecord.retrieve_all_by_field(@field)
+		elsif !@field && @keywords.present?
+			TermRecord.search_whole_record(@keywords)
 		else
-			full_text_search
+			TermRecord.all #need to sort
 		end
-	end
-
-	def full_text_search
-		TermRecord.whole_record_search(@keywords).where(collection_id: @collections).page(@page)
-	end
-
-	def field_specific_search
-		[]
+		query.where(collection_id: @collections).page(@page)
 	end
 
 	# def sunspot

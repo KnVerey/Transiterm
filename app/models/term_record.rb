@@ -1,7 +1,7 @@
 class TermRecord < ActiveRecord::Base
 	include PgSearch
 
-	pg_search_scope :whole_record_search,
+	pg_search_scope :search_whole_record,
 		against: {
 			clean_english: 'A',
 			clean_french: 'A',
@@ -12,6 +12,17 @@ class TermRecord < ActiveRecord::Base
 		using: { tsearch: {:prefix => true} },
 		ignoring: :accents,
 		order_within_rank: "term_records.updated_at DESC"
+
+	pg_search_scope :search_by_field,
+		lambda { |field, query|
+			{
+				against: "clean_#{field}".to_sym,
+				query: query,
+				using: { tsearch: {:prefix => true} },
+				ignoring: :accents,
+				order_within_rank: "term_records.updated_at DESC"
+			}
+		}
 
 	attr_accessor :domain_name, :source_name
 
