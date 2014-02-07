@@ -7,11 +7,15 @@ class TermRecord < ActiveRecord::Base
 	belongs_to :domain
 	belongs_to :source
 
-	validates :domain_id, presence: { message: "must be specified" }
-	validates :source_id, presence: { message: "must be specified" }
+	accepts_nested_attributes_for :domain, :source
+
+	validates :collection, presence: { message: "must be selected" }
+	validates :domain, presence: { message: "must be specified" }
+	validates :source, presence: { message: "must be specified" }
 
 	validate :correct_languages_present
 
+	before_validation :assign_user_on_domain_and_source
 	around_destroy :handle_lookup_orphaning
 	around_update :handle_lookup_orphaning
 
@@ -30,26 +34,12 @@ class TermRecord < ActiveRecord::Base
 		ActionView::Base.full_sanitizer.sanitize(string.downcase).gsub(/[^\s\w]|_/, "")
 	end
 
-	def hookup_lookups(lookup_params)
-		return false unless self.collection_id
-
-		Domain.transaction do
-			self.domain_id = Domain.find_or_create_by(name: lookup_params[:domain_name], user_id: self.collection.user_id).id if lookup_params[:domain_name]
-			self.source_id = Source.find_or_create_by(name: lookup_params[:source_name], user_id: self.collection.user_id).id if lookup_params[:source_name]
-			raise ActiveRecord::Rollback unless self.valid?
-		end
-
-		set_virtual_attributes(lookup_params) if !lookups_hookedup?
-		return lookups_hookedup?
-	end
-
 	private
-	def lookups_hookedup?
-		self.domain_id && self.source_id
-	end
-	def set_virtual_attributes(lookup_params)
-		self.domain_name = lookup_params[:domain_name]
-		self.source_name = lookup_params[:source_name]
+	def assign_user_on_domain_and_source
+		if collection
+			domain.user = collection.user
+			source.user = collection.user
+		end
 	end
 
 	def correct_languages_present
