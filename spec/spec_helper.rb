@@ -22,19 +22,7 @@ Spork.prefork do
   # If you are not using ActiveRecord, you can remove this line.
   ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 
-  $original_sunspot_session = Sunspot.session
-  Sunspot::Rails::Tester.start_original_sunspot_session
-
   RSpec.configure do |config|
-
-    config.before do
-      Sunspot.session = Sunspot::Rails::StubSessionProxy.new($original_sunspot_session)
-    end
-
-    config.before :each, :solr => true do
-      Sunspot.session = $original_sunspot_session
-      Sunspot.remove_all!
-    end
 
     # ## Mock Framework
     #
