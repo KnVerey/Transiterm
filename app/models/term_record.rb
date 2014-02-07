@@ -7,7 +7,6 @@ class TermRecord < ActiveRecord::Base
 	belongs_to :domain
 	belongs_to :source
 
-	# accepts_nested_attributes_for :domain, :source
 	validates :collection, presence: { message: "must be selected" }
 	validates :domain, presence: { message: "must be specified" }
 	validates :source, presence: { message: "must be specified" }
@@ -17,7 +16,6 @@ class TermRecord < ActiveRecord::Base
 	validate :correct_languages_present
 
 	before_validation :assign_domain, :assign_source
-	# before_validation :assign_user_on_domain_and_source
 	around_destroy :handle_lookup_orphaning
 	around_update :handle_lookup_orphaning
 
@@ -44,22 +42,7 @@ class TermRecord < ActiveRecord::Base
 		@source_name || source.try(:name)
 	end
 
-	# def domain_name=(name)
-	# 	self.domain = Domain.find_or_initialize_by(user: collection.user, name: name)
-	# end
-
-	# def source_name=(name)
-	# 	self.source = Source.find_or_initialize_by(user: collection.user, name: name)
-	# end
-
 	private
-	# def assign_user_on_domain_and_source
-	# 	if collection
-	# 		domain.user = collection.user
-	# 		source.user = collection.user
-	# 	end
-	# end
-
 	def assign_domain
 		self.domain = Domain.find_or_initialize_by(user: collection.user, name: domain_name)
 	end
