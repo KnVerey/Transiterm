@@ -33,7 +33,7 @@ describe TermRecord do
     end
   end
 
-  context "after save" do
+  context "after validation" do
     it "populates the clean_ fields if they were nil" do
       markdown_record = FactoryGirl.create(:term_record, english: "==A word!!!==", french: "**Un mot**", spanish: "__una-palabra__", context: "<strong>An example</strong>", comment: "**A** different thing")
 
