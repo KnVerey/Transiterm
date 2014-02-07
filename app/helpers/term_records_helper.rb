@@ -16,14 +16,6 @@ module TermRecordsHelper
 		term_record.collection.active_languages
 	end
 
-	def source_name
-		@term_record.source.try(:name)
-	end
-
-	def domain_name
-		@term_record.domain.try(:name)
-	end
-
 	def current_or_default_collection
 		@term_record.collection_id || @default_collection.id
 	end
