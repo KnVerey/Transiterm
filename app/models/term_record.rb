@@ -16,8 +16,8 @@ class TermRecord < ActiveRecord::Base
 	validate :correct_languages_present
 
 	before_validation :assign_domain, :assign_source
-	around_destroy :handle_lookup_orphaning
-	around_update :handle_lookup_orphaning
+	after_destroy :prevent_domain_orphaning, :prevent_source_orphaning
+	after_update :prevent_domain_orphaning, :prevent_source_orphaning
 
 	multisearchable against: [:all_sanitized_for_search]
 
@@ -59,13 +59,13 @@ class TermRecord < ActiveRecord::Base
 		errors.add(:base, "Please fill in all language fields") if result
 	end
 
-	def handle_lookup_orphaning
-		stale_record = TermRecord.find(self.id)
-		yield
-		["source", "domain"].each do |field|
-			next if self.persisted? && !self.send("#{field}_id_changed?")
-			potential_orphan = stale_record.send(field)
-			potential_orphan.destroy if potential_orphan.orphaned?
-		end
+	def prevent_domain_orphaning
+		domain = Domain.find(domain_id_was)
+		domain.self_destruct_if_orphaned
+	end
+
+	def prevent_source_orphaning
+		source = Source.find(source_id_was)
+		source.self_destruct_if_orphaned
 	end
 end
