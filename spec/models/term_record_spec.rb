@@ -33,22 +33,31 @@ describe TermRecord do
     end
   end
 
-  context "after validation" do
+  context "before save" do
     it "populates the clean_ fields if they were nil" do
-      markdown_record = FactoryGirl.create(:term_record, english: "==A word!!!==", french: "**Un mot**", spanish: "__una-palabra__", context: "<strong>An example</strong>", comment: "**A** different thing")
-
-      expect(markdown_record.clean_english).to match(/a word/)
-      expect(markdown_record.clean_french).to match(/un mot/)
-      expect(markdown_record.clean_spanish).to match(/palabra/)
-      expect(markdown_record.clean_comment).to match(/a different thing/)
-      expect(markdown_record.clean_context).to match(/an example/)
+      tr = FactoryGirl.build(:term_record)
+      tr.save
+      expect(tr.clean_english).not_to be_nil
+      expect(tr.clean_french).not_to be_nil
+      expect(tr.clean_spanish).not_to be_nil
+      expect(tr.clean_comment).not_to be_nil
+      expect(tr.clean_context).not_to be_nil
     end
 
     it "updates the clean_ fields if they changed" do
-      markdown_record = FactoryGirl.create(:term_record, english: "==A word!!!==", french: "**Un mot**", spanish: "__una-palabra__", context: "<strong>An example</strong>", comment: "**A** different thing")
-      markdown_record.french = "==Un mot!!=="
-      markdown_record.save
-      expect(markdown_record.clean_french).to eq("un mot")
+      tr = FactoryGirl.create(:term_record)
+      tr.english = "Changed"
+      tr.french = "Changed"
+      tr.spanish = "Changed"
+      tr.context = "Changed"
+      tr.comment = "Changed"
+      tr.save
+
+      expect(tr.clean_english).to eq("changed")
+      expect(tr.clean_french).to eq("changed")
+      expect(tr.clean_spanish).to eq("changed")
+      expect(tr.clean_comment).to eq("changed")
+      expect(tr.clean_context).to eq("changed")
     end
   end
 

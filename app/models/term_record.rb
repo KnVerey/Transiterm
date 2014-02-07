@@ -16,7 +16,7 @@ class TermRecord < ActiveRecord::Base
 	validate :correct_languages_present
 
 	before_validation :assign_domain, :assign_source
-	after_validation :populate_clean_fields
+	before_save :populate_clean_fields
 	after_destroy :prevent_domain_orphaning, :prevent_source_orphaning
 	after_update :prevent_domain_orphaning, :prevent_source_orphaning
 
