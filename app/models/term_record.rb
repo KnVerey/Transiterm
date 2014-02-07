@@ -1,6 +1,18 @@
 class TermRecord < ActiveRecord::Base
 	include PgSearch
 
+	pg_search_scope :whole_record_search,
+		against: {
+			clean_english: 'A',
+			clean_french: 'A',
+			clean_spanish: 'A',
+			clean_context: 'B',
+			clean_comment: 'B'
+		},
+		using: { tsearch: {:prefix => true} },
+		ignoring: :accents,
+		order_within_rank: "term_records.updated_at DESC"
+
 	attr_accessor :domain_name, :source_name
 
 	belongs_to :collection, touch: true
