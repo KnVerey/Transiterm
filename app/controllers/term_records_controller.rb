@@ -5,8 +5,6 @@ class TermRecordsController < ApplicationController
 
 	def new
 		@term_record = TermRecord.new
-		@term_record.build_domain
-		@term_record.build_source
 	end
 
 	def create
@@ -44,7 +42,7 @@ class TermRecordsController < ApplicationController
 	private
 
 	def term_record_params
-		params.require(:term_record).permit(:english, :french, :spanish, :context, :comment, domain_attributes: [:name], source_attributes: [:name])
+		params.require(:term_record).permit(:english, :french, :spanish, :context, :comment, :domain_name, :source_name)
 	end
 
 	def find_term_record

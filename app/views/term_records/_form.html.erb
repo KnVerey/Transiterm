@@ -38,27 +38,23 @@
         </div>
       <% end %>
 
-      <%= f.fields_for :source do |source_form| %>
-        <div class="row">
-            <div class="small-3 medium-1 columns">
-            <%= source_form.label :name, "Source", class: "right inline"  %><br>
-          </div>
-            <div class="small-9 medium-11 columns">
-            <%= source_form.text_field :name, placeholder: "Required" %>
-          </div>
-        </div>
-      <% end %>
-
-      <%= f.fields_for :domain do |domain_form| %>
       <div class="row">
           <div class="small-3 medium-1 columns">
-          <%= domain_form.label :name, 'Domain', class: "right inline"  %><br>
+          <%= f.label :source_name, class: "right inline"  %><br>
         </div>
           <div class="small-9 medium-11 columns">
-          <%= domain_form.text_field :name, placeholder: "Required" %>
+          <%= f.text_field :source_name, placeholder: "Required" %>
         </div>
       </div>
-      <% end %>
+
+      <div class="row">
+          <div class="small-3 medium-1 columns">
+          <%= f.label :domain_name, class: "right inline"  %><br>
+        </div>
+          <div class="small-9 medium-11 columns">
+          <%= f.text_field :domain_name, placeholder: "Required" %>
+        </div>
+      </div>
 
       <div class="row">
           <div class="small-3 medium-1 columns">
