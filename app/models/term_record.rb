@@ -60,12 +60,15 @@ class TermRecord < ActiveRecord::Base
 	end
 
 	def prevent_domain_orphaning
-		domain = Domain.find(domain_id_was)
-		domain.self_destruct_if_orphaned
+		Domain.destroy_if_orphaned(domain_id_was) if field_changed?("domain")
 	end
 
 	def prevent_source_orphaning
-		source = Source.find(source_id_was)
-		source.self_destruct_if_orphaned
+		Source.destroy_if_orphaned(source_id_was) if field_changed?("source")
+	end
+
+	def field_changed?(field)
+		return true if !persisted?
+		self.send("#{field}_id_changed?")
 	end
 end

@@ -7,12 +7,13 @@ class Domain < ActiveRecord::Base
 	validates :name, :user_id, presence: true
 	validates :name, uniqueness: { scope: :user_id }
 
-	def self.orphans
-		Domain.all.select { |r| r.term_records.empty? }
+	def self.destroy_if_orphaned(id)
+		domain = Domain.find(id)
+		domain.destroy if domain.orphaned?
 	end
 
-	def self_destruct_if_orphaned
-		destroy if orphaned?
+	def self.orphans
+		Domain.all.select { |r| r.term_records.empty? }
 	end
 
 	def orphaned?
