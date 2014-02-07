@@ -16,23 +16,9 @@ class TermRecord < ActiveRecord::Base
 	validate :correct_languages_present
 
 	before_validation :assign_domain, :assign_source
+	after_save :populate_clean_fields
 	after_destroy :prevent_domain_orphaning, :prevent_source_orphaning
 	after_update :prevent_domain_orphaning, :prevent_source_orphaning
-
-	multisearchable against: [:all_sanitized_for_search]
-
-	def all_sanitized_for_search
-		combined = ""
-		["english", "french", "spanish", "context", "comment"].each do |field|
-			value = self.send(field)
-			combined << "#{sanitize(value)} " unless value.blank?
-		end
-		combined << "#{sanitize(self.domain.name)} #{sanitize(self.source.name)}"
-	end
-
-	def sanitize(string)
-		ActionView::Base.full_sanitizer.sanitize(string.downcase).gsub(/[^\s\w]|_/, "")
-	end
 
 	def domain_name
 		@domain_name || domain.try(:name)
@@ -57,6 +43,19 @@ class TermRecord < ActiveRecord::Base
 		end
 
 		errors.add(:base, "Please fill in all language fields") if result
+	end
+
+	def populate_clean_fields
+		["english", "french", "spanish", "context", "comment"].each do |field|
+			if send("#{field}_changed?")
+				sanitized_content = sanitize(send(field))
+				send("clean_#{field}=", sanitized_content)
+			end
+		end
+	end
+
+	def sanitize(string)
+		ActionView::Base.full_sanitizer.sanitize(string.downcase).gsub(/[^\s\w]|_/, "")
 	end
 
 	def prevent_domain_orphaning

@@ -8,27 +8,48 @@ describe TermRecord do
   let (:p_collection) { FactoryGirl.create(:collection, user: person) }
   let (:pc_record) { FactoryGirl.create(:term_record, domain: cats, source: rumors, collection: p_collection) }
 
-  it 'should validate correct languages are saved based on collection settings' do
-  	collection = FactoryGirl.build(:collection, :english => true, :french => true, :spanish => false)
-  	term_record = FactoryGirl.build(:term_record, :collection => collection, :french => "")
+  context "during validation" do
+    it 'should validate correct languages are saved based on collection settings' do
+    	collection = FactoryGirl.build(:collection, :english => true, :french => true, :spanish => false)
+    	term_record = FactoryGirl.build(:term_record, :collection => collection, :french => "")
 
-  	term_record.should be_invalid
+    	term_record.should be_invalid
+    end
+
+    it 'should say record is valid' do
+    	collection = FactoryGirl.build(:collection, :english => true, :french => true, :spanish => false)
+    	term_record = FactoryGirl.build(:term_record, :collection => collection)
+
+    	term_record.should be_valid
+    end
+
+    it 'should only add one error message' do
+    	collection = FactoryGirl.build(:collection, :english => true, :french => true)
+    	term_record = FactoryGirl.build(:term_record, :collection => collection, :french => "", :english => "")
+
+    	term_record.valid?
+
+    	term_record.errors.count.should == 1
+    end
   end
 
-  it 'should say record is valid' do
-  	collection = FactoryGirl.build(:collection, :english => true, :french => true, :spanish => false)
-  	term_record = FactoryGirl.build(:term_record, :collection => collection)
+  context "after save" do
+    it "populates the clean_ fields if they were nil" do
+      markdown_record = FactoryGirl.create(:term_record, english: "==A word!!!==", french: "**Un mot**", spanish: "__una-palabra__", context: "<strong>An example</strong>", comment: "**A** different thing")
 
-  	term_record.should be_valid
-  end
+      expect(markdown_record.clean_english).to match(/a word/)
+      expect(markdown_record.clean_french).to match(/un mot/)
+      expect(markdown_record.clean_spanish).to match(/palabra/)
+      expect(markdown_record.clean_comment).to match(/a different thing/)
+      expect(markdown_record.clean_context).to match(/an example/)
+    end
 
-  it 'should only add one error message' do
-  	collection = FactoryGirl.build(:collection, :english => true, :french => true)
-  	term_record = FactoryGirl.build(:term_record, :collection => collection, :french => "", :english => "")
-
-  	term_record.valid?
-
-  	term_record.errors.count.should == 1
+    it "updates the clean_ fields if they changed" do
+      markdown_record = FactoryGirl.create(:term_record, english: "==A word!!!==", french: "**Un mot**", spanish: "__una-palabra__", context: "<strong>An example</strong>", comment: "**A** different thing")
+      markdown_record.french = "==Un mot!!=="
+      markdown_record.save
+      expect(markdown_record.clean_french).to eq("un mot")
+    end
   end
 
   context "after destroy" do
