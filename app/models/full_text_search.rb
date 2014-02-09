@@ -1,6 +1,9 @@
 class FullTextSearch
 	attr_accessor :collections, :keywords, :page
 	attr_reader :field, :total_results
+	def field=(field)
+		@field = sanitize_search_field(field)
+	end
 
 	def initialize(collections: [], field: nil, keywords: nil, page: 1)
 		@collections = collections
@@ -8,10 +11,6 @@ class FullTextSearch
 		@keywords = keywords
 		@page = page
 		@total_results = 0
-	end
-
-	def field=(field)
-		@field = sanitize_search_field(field)
 	end
 
 	def results
@@ -29,6 +28,7 @@ class FullTextSearch
 		results.page(@page)
 	end
 
+	private
 	def searching_with_keywords?
 		@field && @keywords.present?
 	end
@@ -41,7 +41,6 @@ class FullTextSearch
 		!@field && @keywords.present?
 	end
 
-	private
 	def sanitize_search_field(field)
 		return nil unless field
 
