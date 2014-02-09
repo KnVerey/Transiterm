@@ -18,11 +18,11 @@ class FullTextSearch
 		query = if @field && @keywords.present?
 			TermRecord.search_by_field(@field, @keywords)
 		elsif @field && @keywords.blank?
-			# TermRecord.retrieve_all_by_field(@field)
+			TermRecord.where.not("clean_#{@field}".to_sym => "").order("clean_#{@field}".to_sym => :asc)
 		elsif !@field && @keywords.present?
 			TermRecord.search_whole_record(@keywords)
 		else
-			TermRecord.all #need to sort
+			TermRecord.order(updated_at: :desc)
 		end
 		query.where(collection_id: @collections).page(@page)
 	end
