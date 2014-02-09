@@ -1,6 +1,6 @@
 class FullTextSearch
 	attr_accessor :collections, :keywords, :page
-	attr_reader :field, :total_results
+	attr_reader :field, :total_results, :results
 	def field=(field)
 		@field = sanitize_search_field(field)
 	end
@@ -10,11 +10,13 @@ class FullTextSearch
 		@field = sanitize_search_field(field)
 		@keywords = keywords
 		@page = page
-		@total_results = 0
+		@total_results = get_results.count
+		@results = get_results.page(@page)
 	end
 
-	def results
-		results = if searching_with_keywords?
+	private
+	def get_results
+		if searching_with_keywords?
 			TermRecord.search_by_field(@field, @keywords)
 		elsif viewing_index_for_specific_field?
 			TermRecord.where.not(@field => "").order(@field => :asc)
@@ -23,12 +25,8 @@ class FullTextSearch
 		else # viewing index for all fields
 			TermRecord.order(updated_at: :desc)
 		end.where(collection_id: @collections)
-
-		@total_results = results.count
-		results.page(@page)
 	end
 
-	private
 	def searching_with_keywords?
 		@field && @keywords.present?
 	end
