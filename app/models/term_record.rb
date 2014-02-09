@@ -24,6 +24,22 @@ class TermRecord < ActiveRecord::Base
 			}
 		}
 
+	pg_search_scope :search_by_domain,
+		associated_against: {
+			domain: :clean_name
+		},
+		using: { tsearch: {:prefix => true} },
+		ignoring: :accents,
+		order_within_rank: "term_records.updated_at DESC"
+
+	pg_search_scope :search_by_source,
+		associated_against: {
+			source: :clean_name
+		},
+		using: { tsearch: {:prefix => true} },
+		ignoring: :accents,
+		order_within_rank: "term_records.updated_at DESC"
+
 	attr_accessor :domain_name, :source_name
 
 	belongs_to :collection, touch: true

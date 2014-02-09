@@ -15,7 +15,11 @@ class FullTextSearch
 	end
 
 	def results
-		query = if searching_with_keywords_on_another_field?
+		query = if @field.include? "source"
+			@keywords ? TermRecord.search_by_source(@keywords) : TermRecord.order(updated_at: :desc) #should order by source name
+		elsif @field.include? "domain"
+			@keywords ? TermRecord.search_by_domain(@keywords) : TermRecord.order(updated_at: :desc) #should order by dom name
+		elsif searching_with_keywords_on_another_field?
 			TermRecord.search_by_field(@field, @keywords)
 		elsif viewing_index_of_another_field?
 			TermRecord.where.not(@field => "").order(@field => :asc)
@@ -25,10 +29,6 @@ class FullTextSearch
 			TermRecord.order(updated_at: :desc)
 		end
 		query.where(collection_id: @collections).page(@page)
-	end
-
-	def source_or_domain_selected?
-		["source","domain"].any? { |f| @field.include? f }
 	end
 
 	def searching_with_keywords_on_another_field?
@@ -68,6 +68,10 @@ class FullTextSearch
 	def sanitize_search_field(field)
 		return nil unless field
 
-		"clean_#{field.downcase}" if (Collection::LANGUAGES + Collection::FIELDS).include?(field.downcase) && field != "All"
+		if (Collection::LANGUAGES + ["context", "comment"]).include?(field.downcase)
+			"clean_#{field.downcase}"
+		elsif ["domain", "source"].include?(field.downcase)
+			"#{field.downcase}"
+		end
 	end
 end
