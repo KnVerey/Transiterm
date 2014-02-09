@@ -15,7 +15,7 @@ class FullTextSearch
 	end
 
 	def results
-		query = if searching_with_keywords?
+		results = if searching_with_keywords?
 			TermRecord.search_by_field(@field, @keywords)
 		elsif viewing_index_for_specific_field?
 			TermRecord.where.not(@field => "").order(@field => :asc)
@@ -23,8 +23,10 @@ class FullTextSearch
 			TermRecord.search_whole_record(@keywords)
 		else # viewing index for all fields
 			TermRecord.order(updated_at: :desc)
-		end
-		query.where(collection_id: @collections).page(@page)
+		end.where(collection_id: @collections)
+
+		@total_results = results.count
+		results.page(@page)
 	end
 
 	def searching_with_keywords?
