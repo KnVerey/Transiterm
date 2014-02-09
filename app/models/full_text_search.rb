@@ -18,7 +18,7 @@ class FullTextSearch
 		query = if @field && @keywords.present?
 			TermRecord.search_by_field(@field, @keywords)
 		elsif @field && @keywords.blank?
-			TermRecord.where.not("clean_#{@field}".to_sym => "").order("clean_#{@field}".to_sym => :asc)
+			TermRecord.where.not(@field => "").order(@field => :asc)
 		elsif !@field && @keywords.present?
 			TermRecord.search_whole_record(@keywords)
 		else
@@ -52,6 +52,6 @@ class FullTextSearch
 	def sanitize_search_field(field)
 		return nil unless field
 
-		field.downcase if (Collection::LANGUAGES + Collection::FIELDS).include?(field.downcase) && field != "All"
+		"clean_#{field.downcase}" if (Collection::LANGUAGES + Collection::FIELDS).include?(field.downcase) && field != "All"
 	end
 end

@@ -16,7 +16,7 @@ class TermRecord < ActiveRecord::Base
 	pg_search_scope :search_by_field,
 		lambda { |field, query|
 			{
-				against: "clean_#{field}".to_sym,
+				against: field,
 				query: query,
 				using: { tsearch: {:prefix => true} },
 				ignoring: :accents,
