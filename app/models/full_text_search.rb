@@ -15,13 +15,9 @@ class FullTextSearch
 	end
 
 	def results
-		query = if @field.include? "source"
-			@keywords ? TermRecord.search_by_source(@keywords) : TermRecord.order(updated_at: :desc) #should order by source name
-		elsif @field.include? "domain"
-			@keywords ? TermRecord.search_by_domain(@keywords) : TermRecord.order(updated_at: :desc) #should order by dom name
-		elsif searching_with_keywords_on_another_field?
+		query = if searching_with_keywords?
 			TermRecord.search_by_field(@field, @keywords)
-		elsif viewing_index_of_another_field?
+		elsif viewing_index_for_specific_field?
 			TermRecord.where.not(@field => "").order(@field => :asc)
 		elsif searching_with_keywords_on_all_fields
 			TermRecord.search_whole_record(@keywords)
@@ -31,11 +27,11 @@ class FullTextSearch
 		query.where(collection_id: @collections).page(@page)
 	end
 
-	def searching_with_keywords_on_another_field?
+	def searching_with_keywords?
 		@field && @keywords.present?
 	end
 
-	def viewing_index_of_another_field?
+	def viewing_index_for_specific_field?
 		@field && @keywords.blank?
 	end
 
@@ -43,35 +39,10 @@ class FullTextSearch
 		!@field && @keywords.present?
 	end
 
-	# def sunspot
-	# 	collection_ids = @collections.empty? ? [0] : @collections.map(&:id)
-	# 	field = @field
-	# 	search_terms = @keywords
-	# 	page = @page
-
-	# 	query = Sunspot.search(TermRecord) do
-	# 		keywords search_terms, fields: field
-	# 		all_of do
-	# 			with(:collection_id, collection_ids)
-	# 			without(:context, '') if field == "context"
-	# 			without(:comment, '') if field == "comment"
-	# 		end
-	# 		order_by(field || :english, :asc)
-	# 		paginate(page: page, per_page: 25)
-	# 	end
-
-	# 	@total_results = query.total
-	# 	query
-	# end
-
 	private
 	def sanitize_search_field(field)
 		return nil unless field
 
-		if (Collection::LANGUAGES + ["context", "comment"]).include?(field.downcase)
-			"clean_#{field.downcase}"
-		elsif ["domain", "source"].include?(field.downcase)
-			"#{field.downcase}"
-		end
+		"clean_#{field.downcase}" if (Collection::LANGUAGES + Collection::FIELDS).include?(field.downcase) && field.downcase != "all"
 	end
 end

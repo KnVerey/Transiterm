@@ -7,7 +7,9 @@ class TermRecord < ActiveRecord::Base
 			clean_french: 'A',
 			clean_spanish: 'A',
 			clean_context: 'B',
-			clean_comment: 'B'
+			clean_comment: 'B',
+			clean_source: 'C',
+			clean_domain: 'C'
 		},
 		using: { tsearch: {:prefix => true} },
 		ignoring: :accents,
@@ -23,22 +25,6 @@ class TermRecord < ActiveRecord::Base
 				order_within_rank: "term_records.updated_at DESC"
 			}
 		}
-
-	pg_search_scope :search_by_domain,
-		associated_against: {
-			domain: :clean_name
-		},
-		using: { tsearch: {:prefix => true} },
-		ignoring: :accents,
-		order_within_rank: "term_records.updated_at DESC"
-
-	pg_search_scope :search_by_source,
-		associated_against: {
-			source: :clean_name
-		},
-		using: { tsearch: {:prefix => true} },
-		ignoring: :accents,
-		order_within_rank: "term_records.updated_at DESC"
 
 	attr_accessor :domain_name, :source_name
 
@@ -86,11 +72,13 @@ class TermRecord < ActiveRecord::Base
 
 	def populate_clean_fields
 		["english", "french", "spanish", "context", "comment"].each do |field|
-			if !send("#{field}").nil? && send("#{field}_changed?")
+			if !send(field).nil? && send("#{field}_changed?")
 				sanitized_content = sanitize(send(field))
 				send("clean_#{field}=", sanitized_content)
 			end
 		end
+		self.clean_domain = sanitize(domain_name) if domain_id_changed?
+		self.clean_source = sanitize(source_name) if source_id_changed?
 	end
 
 	def sanitize(string)
