@@ -15,16 +15,32 @@ class FullTextSearch
 	end
 
 	def results
-		query = if @field && @keywords.present?
+		query = if searching_with_keywords_on_another_field?
 			TermRecord.search_by_field(@field, @keywords)
-		elsif @field && @keywords.blank?
+		elsif viewing_index_of_another_field?
 			TermRecord.where.not(@field => "").order(@field => :asc)
-		elsif !@field && @keywords.present?
+		elsif searching_with_keywords_on_all_fields
 			TermRecord.search_whole_record(@keywords)
-		else
+		else # viewing index for all fields
 			TermRecord.order(updated_at: :desc)
 		end
 		query.where(collection_id: @collections).page(@page)
+	end
+
+	def source_or_domain_selected?
+		["source","domain"].any? { |f| @field.include? f }
+	end
+
+	def searching_with_keywords_on_another_field?
+		@field && @keywords.present?
+	end
+
+	def viewing_index_of_another_field?
+		@field && @keywords.blank?
+	end
+
+	def searching_with_keywords_on_all_fields
+		!@field && @keywords.present?
 	end
 
 	# def sunspot
