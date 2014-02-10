@@ -13,124 +13,47 @@ describe FullTextSearch do
 		expect(empty_search.total_results).to eq(0)
 	end
 
-	context "when setting the search field" do
-		it "downcases the field passed in the initializer" do
-			expect(search.field).to eq(search.field.downcase)
+	it "@total_results returns the number of results" do
+		expect(search.total_results).to be_an(Integer)
+	end
+
+	context "when initializing @field" do
+		it "sets the field to nil if 'all' was passed in" do
+			expect(min_search.field).to be_nil
 		end
 
-		it "downcases valid field names set directly" do
-			(Collection::LANGUAGES + Collection::FIELDS).each do |f|
-				search.field = f.upcase
-				expect(search.field).to eq(f.downcase)
-			end
-		end
-
-		it "sets field to nil if invalid field passed in initalizer" do
+		it "sets field to nil if invalid field passed" do
 			invalid_search = FactoryGirl.build(:invalid_search)
 			expect(invalid_search.field).to be_nil
 		end
 
-		it "sets field to nil if invalid field set directly" do
-			search.field = "walrus"
-			expect(search.field).to be_nil
-		end
-
-		it "sets field to nil if 'All' passed in initializer" do
-			expect(min_search.field).to be_nil
-		end
-
-		it "sets field to nil if 'All' set directly" do
-			search.field = "All"
-			expect(search.field).to be_nil
-		end
-	end
-
-	describe "#sunspot", solr: true do
-		it "sets up a sunspot query" do
-			expect(search.sunspot).to be_a(Sunspot::Search::StandardSearch)
-		end
-
-		it "paginates the results" do
-			expect(search.sunspot.inspect).to match(/:start=>\d+, :rows=>/)
-		end
-
-		it "generates a query for term records" do
-			expect(search.sunspot.inspect).to match(/:fq=>\[\"type:TermRecord\"/)
-		end
-
-		it "generates a query with collection ids specified" do
-				expect(search.sunspot.inspect).to match(/\"collection_id_i:\(1 OR 2\)\"/)
-		end
-
-		context "with no keywords specified" do
-			it "generates query with splat" do
-				expect(min_search.sunspot.inspect).to match(/:q=>\"*:*\"/)
-			end
-		end
-
-		context "with keywords specified" do
-			it "generates query with keywords" do
-				expect(search.sunspot.inspect).to match(/:q=>\"fennec fox\"/)
-			end
-		end
-
-		context "with no field specified" do
-			it "generates query on all fields" do
-				expect(min_search.sunspot.inspect).not_to match(/:qf=>/)
-			end
-
-			it "sorts the query results by english by default" do
-				expect(search.sunspot.inspect).to match(/:sort=>\"english_s asc\"/)
-			end
-		end
-
-		context "with a field specified" do
-			it "generates a query on that field" do
-				expect(search.sunspot.inspect).to match(/:qf=>\"english_text\"/)
-			end
-
-			it "narrows by context presence if searching that field" do
-				search.field = "context"
-				expect(search.sunspot.inspect).to match(/-context_s:\[\* TO \\\"\\\"\]/)
-			end
-
-			it "narrows by comment presence if searching that field" do
-				search.field = "comment"
-				expect(search.sunspot.inspect).to match(/-comment_s:\[\* TO \\\"\\\"\]/)
-			end
-
-			it "does not narrow if searching by field other than context/comment" do
-				search.field = "spanish"
-				expect(search.sunspot.inspect).not_to match(/-\w_s:\[\* TO \\\"\\\"\]/)
-			end
-
-			it "sorts the results by the specified field" do
-				search.field = "domain"
-				expect(search.sunspot.inspect).to match(/:sort=>\"domain_s asc\"/)
-			end
-		end
-
-		context "with no collections to search" do
-			it "never runs a search unfiltered by collection ids" do
-				search.collections = []
-				expect(search.sunspot.inspect).to match(/collection_id_i:/)
-				expect(search.sunspot.inspect).not_to match(/collection_id_i:\[\* TO \*\]/)
+		it "downcases field name and adds clean_ if valid field passed (test sets directly, not through init)" do
+			(Collection::LANGUAGES + ["context", "comment", "source", "domain"]).each do |f|
+				search.field = f.upcase
+				expect(search.field).to eq("clean_#{f}")
 			end
 		end
 	end
 
-	describe "#results", solr: true do
-		it "returns an array of collections" do
-			expect(search.results).to be_an(Array)
+	describe "@results" do
+		it "returns a paginated active record relation" do
+			c = FactoryGirl.create(:collection)
+			t = FactoryGirl.create(:term_record, collection: c)
+			s = FactoryGirl.build(:empty_search)
+			s.collections = [c.id]
+
+			expect(s.results).to be_an(ActiveRecord::Relation)
+			expect(s.results).to respond_to(:current_page)
 		end
 
-		it "uses the sunspot query" do
-			expect(search.results.class).to be(Sunspot::Search::PaginatedCollection)
-		end
-
-		it "simply returns an empty array if no collections" do
+		it "returns an empty array if no collections set" do
 			search.collections = []
 			expect(search.results).to eq([])
+		end
+
+		it "is paginated, even if empty" do
+			search.collections = []
+			expect(search.results).to respond_to(:current_page)
 		end
 	end
 end
