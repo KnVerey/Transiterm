@@ -10,4 +10,19 @@ describe Domain do
 		dom = Domain.new(name: "Medical")
 		expect(dom).to be_invalid
 	end
+
+	context "before save" do
+		it "populates the clean name field if it was nil" do
+			domain = FactoryGirl.build(:domain)
+			domain.save
+			expect(domain.clean_name).not_to be_nil
+		end
+
+		it "updates the clean name field if it was not nil" do
+			domain = FactoryGirl.create(:domain)
+			domain.name = "Changed"
+			domain.save
+			expect(domain.clean_name).to eq("changed")
+		end
+	end
 end

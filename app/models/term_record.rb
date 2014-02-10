@@ -1,61 +1,65 @@
 class TermRecord < ActiveRecord::Base
+	include PgSearch
+
+	pg_search_scope :search_whole_record,
+		against: {
+			clean_english: 'A',
+			clean_french: 'A',
+			clean_spanish: 'A',
+			clean_context: 'B',
+			clean_comment: 'B',
+			clean_source: 'C',
+			clean_domain: 'C'
+		},
+		using: { tsearch: {:prefix => true} },
+		ignoring: :accents,
+		order_within_rank: "term_records.updated_at DESC"
+
+	pg_search_scope :search_by_field,
+		lambda { |field, query|
+			{
+				against: field,
+				query: query,
+				using: { tsearch: {:prefix => true} },
+				ignoring: :accents,
+				order_within_rank: "term_records.updated_at DESC"
+			}
+		}
+
 	attr_accessor :domain_name, :source_name
 
 	belongs_to :collection, touch: true
 	belongs_to :domain
 	belongs_to :source
 
-	validates :domain_id, presence: { message: "must be specified" }
-	validates :source_id, presence: { message: "must be specified" }
+	validates :collection, presence: { message: "must be selected" }
+	validates :domain, presence: { message: "must be specified" }
+	validates :source, presence: { message: "must be specified" }
+	validates :domain_name, presence: { message: "must be specified" }
+	validates :source_name, presence: { message: "must be specified" }
 
 	validate :correct_languages_present
 
-	around_destroy :handle_lookup_orphaning
-	around_update :handle_lookup_orphaning
+	before_validation :assign_domain, :assign_source
+	before_save :populate_clean_fields
+	after_destroy :prevent_domain_orphaning, :prevent_source_orphaning
+	after_update :prevent_domain_orphaning, :prevent_source_orphaning
 
-	searchable(includes: [:domains, :sources]) do
-		text :english, boost: 5.0
-		text :french, boost: 5.0
-		text :spanish, boost: 5.0
-		text :context, :comment
-		text :domain do domain.name end
-		text :source do source.name end
-
-		integer :collection_id
-		string :context do context.nil? ? nil : scrub_for_sort(context) end
-		string :comment do comment.nil? ? nil :  scrub_for_sort(comment) end
-		string :english do english.nil? ? nil : scrub_for_sort(english) end
-		string :french do french.nil? ? nil : scrub_for_sort(french) end
-		string :spanish do spanish.nil? ? nil : scrub_for_sort(spanish) end
-		string :domain do scrub_for_sort(domain.name) end
-		string :source do scrub_for_sort(source.name) end
+	def domain_name
+		@domain_name || domain.try(:name)
 	end
 
-	def hookup_lookups(lookup_params)
-		return false unless self.collection_id
-
-		Domain.transaction do
-			self.domain_id = Domain.find_or_create_by(name: lookup_params[:domain_name], user_id: self.collection.user_id).id if lookup_params[:domain_name]
-			self.source_id = Source.find_or_create_by(name: lookup_params[:source_name], user_id: self.collection.user_id).id if lookup_params[:source_name]
-			raise ActiveRecord::Rollback unless self.valid?
-		end
-
-		set_virtual_attributes(lookup_params) if !lookups_hookedup?
-		return lookups_hookedup?
+	def source_name
+		@source_name || source.try(:name)
 	end
 
 	private
-
-	def scrub_for_sort(field)
-		ActionView::Base.full_sanitizer.sanitize(field.downcase).gsub(/[\W_]/, "")
+	def assign_domain
+		self.domain = Domain.find_or_initialize_by(user: collection.user, name: domain_name)
 	end
 
-	def lookups_hookedup?
-		self.domain_id && self.source_id
-	end
-	def set_virtual_attributes(lookup_params)
-		self.domain_name = lookup_params[:domain_name]
-		self.source_name = lookup_params[:source_name]
+	def assign_source
+		self.source = Source.find_or_initialize_by(user: collection.user, name: source_name)
 	end
 
 	def correct_languages_present
@@ -66,13 +70,31 @@ class TermRecord < ActiveRecord::Base
 		errors.add(:base, "Please fill in all language fields") if result
 	end
 
-	def handle_lookup_orphaning
-		stale_record = TermRecord.find(self.id)
-		yield
-		["source", "domain"].each do |field|
-			next if self.persisted? && !self.send("#{field}_id_changed?")
-			potential_orphan = stale_record.send(field)
-			potential_orphan.destroy if potential_orphan.orphaned?
+	def populate_clean_fields
+		["english", "french", "spanish", "context", "comment"].each do |field|
+			if !send(field).nil? && send("#{field}_changed?")
+				sanitized_content = sanitize(send(field))
+				send("clean_#{field}=", sanitized_content)
+			end
 		end
+		self.clean_domain = sanitize(domain_name) if domain_id_changed?
+		self.clean_source = sanitize(source_name) if source_id_changed?
+	end
+
+	def sanitize(string)
+		ActionView::Base.full_sanitizer.sanitize(string.downcase).gsub(/[^\s\w]|_/, "")
+	end
+
+	def prevent_domain_orphaning
+		Domain.destroy_if_orphaned(domain_id_was) if field_changed?("domain")
+	end
+
+	def prevent_source_orphaning
+		Source.destroy_if_orphaned(source_id_was) if field_changed?("source")
+	end
+
+	def field_changed?(field)
+		return true if !persisted?
+		self.send("#{field}_id_changed?")
 	end
 end

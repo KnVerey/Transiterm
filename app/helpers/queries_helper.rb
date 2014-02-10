@@ -46,7 +46,7 @@ module QueriesHelper
 	end
 
 	def collection_result_count
-		num_results = @search.total_results
+		num_results = @query.total_results
 		num_collections = @selected_collections.length
 
 		"#{num_collections} #{format_active_langs} #{'collection'.pluralize(num_collections)} (#{num_results} #{'result'.pluralize(num_results)})"

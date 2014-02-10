@@ -55,12 +55,11 @@ describe TermRecordsController do
 		context "when logged in" do
 			before(:each) { login_user(person) }
 
-			it "will not save a record in someone else's collection" do
+			it "will raise an error if attempting to save in someone else's collection" do
 				collection = FactoryGirl.create(:collection)
 				expect {
 					post :create, { term_record: { english: "Test", french: "test", spanish: "TEST", source_name: "A SOURCE", domain_name: "A DOMAIN", collection_id: collection.id } }
-				}.not_to change(TermRecord, :count)
-
+				}.to raise_error(ActiveRecord::RecordNotFound)
 			end
 
 			context "with valid params" do
@@ -143,9 +142,8 @@ describe TermRecordsController do
 				before(:each) { login_user(person) }
 
 				it "assigns a newly created but unsaved record as @term_record" do
-				  TermRecord.any_instance.stub(:save).and_return(false)
-				  post :create, term_record: { isnt: "valid" }
-				  assigns(:term_record).should be_a_new(TermRecord)
+					post :create, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain_name: "", source_name: "Common knowledge", collection_id: person_collection.id }
+				  expect(assigns(:term_record)).to be_a_new(TermRecord)
 				end
 
 				it "does not create blank domains" do
@@ -184,7 +182,7 @@ describe TermRecordsController do
 					TermRecord.any_instance.stub(:save).and_return(false)
 					controller.stub(:current_user).and_return(person)
 
-				  post :create, term_record: { isnt: "valid" }
+				  post :create, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain_name: "Greetings", source_name: "", collection_id: person_collection.id }
 				  expect(assigns(:collections)).not_to be_nil
 				end
 
@@ -194,15 +192,12 @@ describe TermRecordsController do
 					person.spanish_active = true
 
 					person_collection.reload
-				  post :create, term_record: { isnt: "valid" }
+				  post :create, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain_name: "Greetings", source_name: "", collection_id: person_collection.id }
 				  expect(assigns(:default_collection)).not_to be_nil
 				end
 
 				it "re-renders the 'new' template" do
-				  controller.stub(:user_is_owner?).and_return(true)
-				  TermRecord.any_instance.stub(:hookup_lookups).and_return(false)
-
-				  post :create, term_record: { isnt: "valid" }
+				  post :create, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain_name: "Greetings", source_name: "", collection_id: person_collection.id }
 				  expect(response).to render_template("new")
 				end
 			end
@@ -225,12 +220,13 @@ describe TermRecordsController do
 			  expect(assigns(:term_record)).to eq(record)
 			end
 
-			it "redirects if the parent collection does not belong to the user" do
+			it "raises an error if the parent collection does not belong to the user" do
 				f_collection = FactoryGirl.create(:collection)
 				f_record = FactoryGirl.create(:term_record, collection: f_collection)
 
-				get :edit, { id: f_record.id }
-				expect(response).to redirect_to("/query")
+				expect {
+					get :edit, { id: f_record.id }
+				}.to raise_error(ActiveRecord::RecordNotFound)
 			end
 
 			it "assigns @collections" do
@@ -255,7 +251,7 @@ describe TermRecordsController do
 	describe "PUT update" do
 		context "when not logged in" do
 			it "redirects to the login page" do
-			  put :update, { collection_id: person_collection.id, id: record.id }
+			  put :update, { id: record.id }
 			  expect(response).to redirect_to("/login")
 			end
 		end
@@ -265,45 +261,48 @@ describe TermRecordsController do
 
 			context "with valid params" do
 
-				it "locates the correct record" do
-				  put :update, { collection_id: person_collection.id, id: record.id, term_record: { english: "Good day", domain_name: "Travel" } }
-				  assigns(:term_record).should eq(record)
+				it "assigns @term_record" do
+					TermRecord.stub(:find).and_return(record)
+					Collection.any_instance.stub(:find).and_return(record.collection)
+					TermRecord.any_instance.stub(:update).and_return(true)
+
+				  put :update, { id: record.id, term_record: { collection_id: record.collection_id, english: record.english, domain_name: "Travel" } }
+				  expect(assigns(:term_record)).not_to be_nil
 				end
 
-				it "does not update record unless parent collection belongs to user" do
+				it "raises an error if parent collection does not belong to user" do
 					f_collection = FactoryGirl.create(:collection)
 					f_record = FactoryGirl.create(:term_record, collection: f_collection)
 					TermRecord.stub(:find).and_return(f_record)
 
-					expect(f_record).not_to receive(:update)
-					put :update, { collection_id: f_collection, id: f_record.id, term_record: { english: "changeme" }}
+					expect {
+						put :update, { collection_id: f_collection, id: f_record.id, term_record: { english: "changeme" }}
+						}.to raise_error(ActiveRecord::RecordNotFound)
 				end
 
 				it "redirects to the parent collection" do
-				  put :update, { collection_id: person_collection.id, id: record.id, term_record: { english: "Good day", domain_name: "Travel" } }
+					TermRecord.stub(:find).and_return(record)
+					Collection.any_instance.stub(:find).and_return(record.collection)
+					TermRecord.any_instance.stub(:update).and_return(true)
+
+				  put :update, { id: record.id, term_record: { collection_id: record.collection_id, english: "Good day", domain_name: "Travel" } }
 				  expect(response).to redirect_to("/query")
 				end
 
-				it "updates the correct record" do
-				  put :update, { collection_id: person_collection.id, id: record.id, term_record: { english: "Good day" } }
-				  record.reload
-				  expect(record.english).to eq("Good day")
-				end
-
 				it "updates a domain" do
-				  put :update, { collection_id: person_collection.id, id: record.id, term_record: { domain_name: "Travel" } }
+				  put :update, { id: record.id, term_record: { collection_id: person_collection.id, domain_name: "Travel" } }
 				  record.reload
 				  expect(record.domain.name).to eq("Travel")
 				end
 
 				it "updates a source" do
-				  put :update, { collection_id: person_collection.id, id: record.id, term_record: { source_name: "Teacher" } }
+				  put :update, { id: record.id, term_record: { collection_id: person_collection.id, source_name: "Teacher" } }
 				  record.reload
 				  expect(record.source.name).to eq("Teacher")
 				end
 
 				it "updates diverse fields" do
-				  put :update, { collection_id: person_collection.id, id: record.id, term_record: { english: "Good day", domain_name: "Travel" } }
+				  put :update, { id: record.id, term_record: { collection_id: person_collection.id, english: "Good day", domain_name: "Travel" } }
 				  record.reload
 				  expect(record.domain.name).to eq("Travel")
 				  expect(record.english).to eq("Good day")
@@ -312,28 +311,28 @@ describe TermRecordsController do
 
 			context "with invalid params" do
 				it "re-renders the 'edit' template" do
-					put :update, { collection_id: person_collection.id, id: record.id, term_record: { english: "" }}
+					put :update, { id: record.id, term_record: { collection_id: person_collection.id, english: "" }}
 					expect(response).to render_template("edit")
 				end
 
 				it "does not update the record" do
-					put :update, { collection_id: person_collection.id, id: record.id, term_record: { french: "salut", english: "" }}
+					put :update, { id: record.id, term_record: { collection_id: person_collection.id, french: "salut", english: "" }}
 					record.reload
 				  expect(record.french).not_to eq("salut")
 				end
 
 				it "re-renders edit template if blank domain submitted" do
-					put :update, { collection_id: person_collection.id, id: record.id, term_record: { domain_name: ""}}
+					put :update, { id: record.id, term_record: { collection_id: person_collection.id, domain_name: ""}}
 					expect(response).to render_template("edit")
 				end
 
 				it "re-renders the edit template if blank source submitted" do
-					put :update, { collection_id: person_collection.id, id: record.id, term_record: { source_name: ""}}
+					put :update, { id: record.id, term_record: { collection_id: person_collection.id, source_name: ""}}
 					expect(response).to render_template("edit")
 				end
 
 				it "re-renders edit if blank source submitted with other valid params" do
-					put :update, { collection_id: person_collection.id, id: record.id, term_record: { source_name: "", english: "Good day"}}
+					put :update, { id: record.id, term_record: { collection_id: person_collection.id, source_name: "", english: "Good day"}}
 					expect(response).to render_template("edit")
 				end
 
@@ -341,7 +340,7 @@ describe TermRecordsController do
 					TermRecord.any_instance.stub(:save).and_return(false)
 					controller.stub(:current_user).and_return(person)
 
-					put :update, { collection_id: person_collection.id, id: record.id, term_record: { source_name: "", english: "Good day"}}
+					put :update, { id: record.id, term_record: { collection_id: person_collection.id, source_name: "", english: "Good day"}}
 				  expect(assigns(:collections)).not_to be_nil
 				end
 
@@ -350,7 +349,7 @@ describe TermRecordsController do
 					controller.stub(:current_user).and_return(person)
 					person_collection.reload
 
-					put :update, { collection_id: person_collection.id, id: record.id, term_record: { source_name: "", english: "Good day"}}
+					put :update, { id: record.id, term_record: { collection_id: person_collection.id, source_name: "", english: "Good day"}}
 				  expect(assigns(:default_collection)).not_to be_nil
 				end
 			end
@@ -373,14 +372,14 @@ describe TermRecordsController do
 			  assigns(:term_record).should eq(record)
 			end
 
-			it "does not destroy anything unless record belongs to user" do
+			it "raises an error if record does not belong to user" do
 				f_collection = FactoryGirl.create(:collection)
 				f_record = FactoryGirl.create(:term_record, collection: f_collection)
 				TermRecord.stub(:find).and_return(f_record)
 
 				expect {
 					delete :destroy, { collection_id: f_collection.id, id: f_record.id }
-				}.not_to change(TermRecord, :count)
+				}.to raise_error(ActiveRecord::RecordNotFound)
 			end
 
 			it "destroys the requested record" do
