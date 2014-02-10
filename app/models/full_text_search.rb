@@ -1,4 +1,4 @@
-class FullTextSearch
+class FullTextSearch < ActiveRecord::Base
 	attr_accessor :collections, :keywords, :page
 	attr_reader :field, :total_results, :results
 	def field=(field)
