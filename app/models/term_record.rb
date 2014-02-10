@@ -42,7 +42,6 @@ class TermRecord < ActiveRecord::Base
 	validate :correct_languages_present
 
 	before_validation :assign_domain, :assign_source
-	before_save :populate_searchable_fields
 	after_destroy :prevent_lookup_orphaning
 	after_update :prevent_lookup_orphaning
 

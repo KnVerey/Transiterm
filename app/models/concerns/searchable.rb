@@ -1,6 +1,10 @@
 module Searchable
 	extend ActiveSupport::Concern
 
+	included do
+		before_save :populate_searchable_fields
+	end
+
 	def searchable_fields
 		attributes.select{ |k,v| k.include? "clean_"}
 	end
@@ -17,6 +21,8 @@ module Searchable
 
 	private
 	def field_changed?(field)
+		return true if !persisted?
+
 		field = field.gsub("_name","_id") if field.include?("_name")
 		try("#{field}_changed?")
 	end
