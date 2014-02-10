@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe FullTextSearch do
-	let(:search) { FactoryGirl.build(:complete_full_text_search) }
-	let(:min_search) { FactoryGirl.build(:full_text_search) }
+describe Query do
+	let(:search) { FactoryGirl.build(:complete_query) }
+	let(:min_search) { FactoryGirl.build(:query) }
 
 	it "sets the desired defaults" do
-		empty_search = FactoryGirl.build(:empty_search)
+		empty_search = FactoryGirl.build(:empty_query)
 		expect(empty_search.collections).to eq([])
 		expect(empty_search.field).to be_nil
 		expect(empty_search.keywords).to be_nil
@@ -23,7 +23,7 @@ describe FullTextSearch do
 		end
 
 		it "sets field to nil if invalid field passed" do
-			invalid_search = FactoryGirl.build(:invalid_search)
+			invalid_search = FactoryGirl.build(:invalid_query)
 			expect(invalid_search.field).to be_nil
 		end
 
@@ -39,7 +39,7 @@ describe FullTextSearch do
 		it "returns a paginated active record relation" do
 			c = FactoryGirl.create(:collection)
 			t = FactoryGirl.create(:term_record, collection: c)
-			s = FactoryGirl.build(:empty_search)
+			s = FactoryGirl.build(:empty_query)
 			s.collections = [c.id]
 
 			expect(s.results).to be_an(ActiveRecord::Relation)

@@ -7,7 +7,7 @@ describe QueriesController do
 	describe "GET index" do
 		context "when not logged in" do
 			it "redirects to the login page" do
-			  get :index
+			  get :show
 			  expect(response).to redirect_to("/login")
 			end
 		end
@@ -20,7 +20,7 @@ describe QueriesController do
 				FactoryGirl.create(:collection, user: person)
 				FactoryGirl.create(:three_lang_collection, user: person)
 
-			  get :index
+			  get :show
 			  expect(assigns(:sidebar_collections)).not_to be_empty
 			  expect(assigns(:sidebar_collections).length).to eq(2)
 			end
@@ -31,26 +31,26 @@ describe QueriesController do
 				FactoryGirl.create(:three_lang_collection, user: person)
 
 				person.active_collection_ids << c.id
-			  get :index
+			  get :show
 			  expect(assigns(:selected_collections)).not_to be_empty
 			  expect(assigns(:selected_collections).length).to eq(1)
 			end
 
-			it "sets @search with a FullTextSearch" do
-				search = FactoryGirl.build(:full_text_search)
-				FullTextSearch.stub(:new).and_return(search)
+			it "sets @query with a Query object" do
+				search = FactoryGirl.build(:query)
+				Query.stub(:new).and_return(search)
 
-			  get :index
-			  expect(assigns(:search)).to be_a(FullTextSearch)
+			  get :show
+			  expect(assigns(:query)).to be_a(Query)
 			end
 
 			it "saves the search results in @term_records" do
-				search = FactoryGirl.build(:full_text_search)
-				FullTextSearch.stub(:new).and_return(search)
+				search = FactoryGirl.build(:query)
+				Query.stub(:new).and_return(search)
 				search.stub(:results).and_return([])
 
 				expect(search).to receive(:results)
-			  get :index
+			  get :show
 			  expect(assigns(:term_records)).not_to be_nil
 			end
 
