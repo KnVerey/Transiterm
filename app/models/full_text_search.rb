@@ -16,6 +16,8 @@ class FullTextSearch < ActiveRecord::Base
 
 	private
 	def get_results
+		return [] unless @collections
+
 		if searching_with_keywords?
 			TermRecord.search_by_field(@field, @keywords)
 		elsif viewing_index_for_specific_field?
