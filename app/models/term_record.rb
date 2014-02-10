@@ -43,8 +43,8 @@ class TermRecord < ActiveRecord::Base
 
 	before_validation :assign_domain, :assign_source
 	before_save :populate_searchable_fields
-	after_destroy :prevent_domain_orphaning, :prevent_source_orphaning
-	after_update :prevent_domain_orphaning, :prevent_source_orphaning
+	after_destroy :prevent_lookup_orphaning
+	after_update :prevent_lookup_orphaning
 
 	def domain_name
 		@domain_name || domain.try(:name)
@@ -71,16 +71,10 @@ class TermRecord < ActiveRecord::Base
 		errors.add(:base, "Please fill in all language fields") if result
 	end
 
-	def prevent_domain_orphaning
-		Domain.destroy_if_orphaned(domain_id_was) if field_changed?("domain")
-	end
-
-	def prevent_source_orphaning
-		Source.destroy_if_orphaned(source_id_was) if field_changed?("source")
-	end
-
-	def field_changed?(field)
-		return true if !persisted?
-		self.send("#{field}_id_changed?")
+	def prevent_lookup_orphaning
+		["source", "domain"].each do |l_field|
+			old_id = send("#{l_field.downcase}_id_was")
+			l_field.capitalize.constantize.destroy_if_orphaned(old_id) if send("#{l_field}_id_changed?") || !persisted?
+		end
 	end
 end
