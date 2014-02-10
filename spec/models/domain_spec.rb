@@ -1,6 +1,10 @@
 require 'spec_helper'
+require "./spec/models/concerns/searchable_spec.rb"
 
 describe Domain do
+
+	it_behaves_like "searchable"
+
 	it "must not save if empty" do
 		dom = FactoryGirl.build(:domain, name: "")
 		expect(dom).to be_invalid

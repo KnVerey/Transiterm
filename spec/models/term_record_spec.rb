@@ -1,6 +1,9 @@
 require 'spec_helper'
+require "./spec/models/concerns/searchable_spec.rb"
 
 describe TermRecord do
+
+  it_behaves_like "searchable"
 
   let(:person) { FactoryGirl.create(:user) }
   let (:cats) { FactoryGirl.create(:domain, user: person, name: "cats") }

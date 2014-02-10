@@ -1,5 +1,6 @@
 class Domain < ActiveRecord::Base
 	include PgSearch
+	include Searchable
 
 	belongs_to :user
 	has_many :term_records
@@ -7,7 +8,7 @@ class Domain < ActiveRecord::Base
 	validates :name, :user_id, presence: true
 	validates :name, uniqueness: { scope: :user_id }
 
-	before_save :set_clean_name
+	before_save :populate_searchable_fields
 
 	def self.destroy_if_orphaned(id)
 		domain = Domain.find(id)
@@ -20,13 +21,5 @@ class Domain < ActiveRecord::Base
 
 	def orphaned?
 		self.term_records.empty?
-	end
-
-	def set_clean_name
-		self.clean_name = sanitize(name) if name && name_changed?
-	end
-
-	def sanitize(string)
-		ActionView::Base.full_sanitizer.sanitize(string.downcase).gsub(/[^\s\w]|_/, "")
 	end
 end

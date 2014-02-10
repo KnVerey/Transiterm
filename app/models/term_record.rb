@@ -1,5 +1,6 @@
 class TermRecord < ActiveRecord::Base
 	include PgSearch
+	include Searchable
 
 	pg_search_scope :search_whole_record,
 		against: {
@@ -41,7 +42,7 @@ class TermRecord < ActiveRecord::Base
 	validate :correct_languages_present
 
 	before_validation :assign_domain, :assign_source
-	before_save :populate_clean_fields
+	before_save :populate_searchable_fields
 	after_destroy :prevent_domain_orphaning, :prevent_source_orphaning
 	after_update :prevent_domain_orphaning, :prevent_source_orphaning
 
@@ -68,21 +69,6 @@ class TermRecord < ActiveRecord::Base
 		end
 
 		errors.add(:base, "Please fill in all language fields") if result
-	end
-
-	def populate_clean_fields
-		["english", "french", "spanish", "context", "comment"].each do |field|
-			if !send(field).nil? && send("#{field}_changed?")
-				sanitized_content = sanitize(send(field))
-				send("clean_#{field}=", sanitized_content)
-			end
-		end
-		self.clean_domain = sanitize(domain_name) if domain_id_changed?
-		self.clean_source = sanitize(source_name) if source_id_changed?
-	end
-
-	def sanitize(string)
-		ActionView::Base.full_sanitizer.sanitize(string.downcase).gsub(/[^\s\w]|_/, "")
 	end
 
 	def prevent_domain_orphaning
