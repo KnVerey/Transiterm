@@ -17,13 +17,13 @@ module Searchable
 
 	private
 	def field_changed?(field)
-		field = field.gsub("_name","_id") if field.include?("name")
+		field = field.gsub("_name","_id") if field.include?("_name")
 		try("#{field}_changed?")
 	end
 
 	def get_data_field_name(clean_field_name)
 		name_if_core = clean_field_name.gsub("clean_", "")
-		attributes[name_if_core] ? name_if_core : "#{name_if_core}_name"
+		attributes.has_key?(name_if_core) ? name_if_core : "#{name_if_core}_name"
 	end
 
 	def sanitize(string)
