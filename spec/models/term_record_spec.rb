@@ -37,30 +37,10 @@ describe TermRecord do
   end
 
   context "before save" do
-    it "populates the clean_ fields if they were nil" do
-      tr = FactoryGirl.build(:term_record)
-      tr.save
-      expect(tr.clean_english).not_to be_nil
-      expect(tr.clean_french).not_to be_nil
-      expect(tr.clean_spanish).not_to be_nil
-      expect(tr.clean_comment).not_to be_nil
-      expect(tr.clean_context).not_to be_nil
-    end
-
-    it "updates the clean_ fields if they changed" do
-      tr = FactoryGirl.create(:term_record)
-      tr.english = "Changed"
-      tr.french = "Changed"
-      tr.spanish = "Changed"
-      tr.context = "Changed"
-      tr.comment = "Changed"
-      tr.save
-
-      expect(tr.clean_english).to eq("changed")
-      expect(tr.clean_french).to eq("changed")
-      expect(tr.clean_spanish).to eq("changed")
-      expect(tr.clean_comment).to eq("changed")
-      expect(tr.clean_context).to eq("changed")
+    it "when an optional field changed to nil, it sets clean field to nil" do
+      pc_record.comment = nil
+      pc_record.save
+      expect(pc_record.clean_comment).to be_nil
     end
   end
 
