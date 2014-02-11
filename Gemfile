@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '4.0.2'
+gem 'thin'
 ruby '2.0.0'
 
 # Use postgresql as the database for Active Record
