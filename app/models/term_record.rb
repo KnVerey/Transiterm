@@ -29,6 +29,7 @@ class TermRecord < ActiveRecord::Base
 
 	attr_accessor :domain_name, :source_name
 
+	belongs_to :user
 	belongs_to :collection, touch: true
 	belongs_to :domain
 	belongs_to :source
