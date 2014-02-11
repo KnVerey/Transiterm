@@ -30,7 +30,9 @@ describe TermRecordsController do
 				controller.stub(:current_user).and_return(person)
 				a = FactoryGirl.create(:collection, user: person)
 				b = FactoryGirl.create(:collection, user: person)
-				t = FactoryGirl.create(:term_record, collection: a)
+				t = FactoryGirl.create(:term_record)
+				t.collection = a
+				t.save
 
 				get :new
 				expect(assigns(:default_collection)).to eq(a)
@@ -216,6 +218,7 @@ describe TermRecordsController do
 			before(:each) { login_user(person) }
 
 			it "sets @term_record to the requested record" do
+				controller.stub(:current_user).and_return(record.user)
 			  get :edit, { id: record.id }
 			  expect(assigns(:term_record)).to eq(record)
 			end
@@ -230,18 +233,19 @@ describe TermRecordsController do
 			end
 
 			it "assigns @collections" do
+				controller.stub(:current_user).and_return(record.user)
 				get :edit, { id: record.id }
-				controller.stub(:current_user).and_return(person)
 				expect(assigns(:collections)).not_to be_nil
 			end
 
 			it "sets @default_collection to the record's current collection" do
-				controller.stub(:current_user).and_return(person)
+				controller.stub(:current_user).and_return(record.user)
 			  get :edit, { id: record.id }
 			  expect(assigns(:default_collection)).to eq(record.collection)
 			end
 
 			it "renders the edit view" do
+				controller.stub(:current_user).and_return(record.user)
 			  get :edit, { collection_id: person_collection.id, id: record.id }
 			  expect(response.status).to eq(200)
 			end
@@ -258,14 +262,11 @@ describe TermRecordsController do
 
 		context "when logged in" do
 			before(:each) { login_user(person) }
+			before(:each) { controller.stub(:current_user).and_return(record.user) }
 
 			context "with valid params" do
 
 				it "assigns @term_record" do
-					TermRecord.stub(:find).and_return(record)
-					Collection.any_instance.stub(:find).and_return(record.collection)
-					TermRecord.any_instance.stub(:update).and_return(true)
-
 				  put :update, { id: record.id, term_record: { collection_id: record.collection_id, english: record.english, domain_name: "Travel" } }
 				  expect(assigns(:term_record)).not_to be_nil
 				end
@@ -281,28 +282,24 @@ describe TermRecordsController do
 				end
 
 				it "redirects to the parent collection" do
-					TermRecord.stub(:find).and_return(record)
-					Collection.any_instance.stub(:find).and_return(record.collection)
-					TermRecord.any_instance.stub(:update).and_return(true)
-
 				  put :update, { id: record.id, term_record: { collection_id: record.collection_id, english: "Good day", domain_name: "Travel" } }
 				  expect(response).to redirect_to("/query")
 				end
 
 				it "updates a domain" do
-				  put :update, { id: record.id, term_record: { collection_id: person_collection.id, domain_name: "Travel" } }
+				  put :update, { id: record.id, term_record: { collection_id: record.collection.id, domain_name: "Travel" } }
 				  record.reload
 				  expect(record.domain.name).to eq("Travel")
 				end
 
 				it "updates a source" do
-				  put :update, { id: record.id, term_record: { collection_id: person_collection.id, source_name: "Teacher" } }
+				  put :update, { id: record.id, term_record: { collection_id: record.collection.id, source_name: "Teacher" } }
 				  record.reload
 				  expect(record.source.name).to eq("Teacher")
 				end
 
 				it "updates diverse fields" do
-				  put :update, { id: record.id, term_record: { collection_id: person_collection.id, english: "Good day", domain_name: "Travel" } }
+				  put :update, { id: record.id, term_record: { collection_id: record.collection.id, english: "Good day", domain_name: "Travel" } }
 				  record.reload
 				  expect(record.domain.name).to eq("Travel")
 				  expect(record.english).to eq("Good day")
