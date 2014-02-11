@@ -52,6 +52,8 @@ gem 'redcarpet', '~> 3.0'
 
 gem 'rails_12factor', group: :production
 gem 'newrelic_rpm'
+
+gem "letter_opener", :group => :development
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
