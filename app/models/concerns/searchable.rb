@@ -34,6 +34,6 @@ module Searchable
 
 	def sanitize(string)
 		return nil unless string
-		ActionView::Base.full_sanitizer.sanitize(string.downcase).gsub(/[^\p{L}\s\p{N}\-']/, "")
+		ActionView::Base.full_sanitizer.sanitize(string.downcase).gsub(/http:\/\/|www\.|[^\p{L}\s\p{N}\-'.]/, "")
 	end
 end

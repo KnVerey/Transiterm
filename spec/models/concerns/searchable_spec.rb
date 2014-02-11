@@ -41,13 +41,22 @@ shared_examples_for "searchable" do
     expect(searchable_object.send(example_clean_field)).to be_blank
   end
 
-  it "removes puncutation in its searchable fields" do
+  it "removes puncutation other than periods (for web addresses) in its searchable fields" do
     example_field = example_clean_field.gsub("clean_","")
     example_field << "_name" unless searchable_object.attributes.has_key?(example_field)
-    searchable_object.send("#{example_field}=", "example!?$%:;,.")
+    searchable_object.send("#{example_field}=", "example!?$%:;,")
     searchable_object.save
 
     expect(searchable_object.send(example_clean_field)).to eq("example")
+  end
+
+  it "removes www. and http:// from searchable fields" do
+    example_field = example_clean_field.gsub("clean_","")
+    example_field << "_name" unless searchable_object.attributes.has_key?(example_field)
+    searchable_object.send("#{example_field}=", "http://www.infonet.org")
+    searchable_object.save
+
+    expect(searchable_object.send(example_clean_field)).to eq("infonet.org")
   end
 
   it "leaves numbers in its fields" do
