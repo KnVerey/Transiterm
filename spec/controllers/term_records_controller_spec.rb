@@ -216,9 +216,9 @@ describe TermRecordsController do
 
 		context "when logged in" do
 			before(:each) { login_user(person) }
+			before(:each) { controller.stub(:current_user).and_return(record.user) }
 
 			it "sets @term_record to the requested record" do
-				controller.stub(:current_user).and_return(record.user)
 			  get :edit, { id: record.id }
 			  expect(assigns(:term_record)).to eq(record)
 			end
@@ -233,19 +233,16 @@ describe TermRecordsController do
 			end
 
 			it "assigns @collections" do
-				controller.stub(:current_user).and_return(record.user)
 				get :edit, { id: record.id }
 				expect(assigns(:collections)).not_to be_nil
 			end
 
 			it "sets @default_collection to the record's current collection" do
-				controller.stub(:current_user).and_return(record.user)
 			  get :edit, { id: record.id }
 			  expect(assigns(:default_collection)).to eq(record.collection)
 			end
 
 			it "renders the edit view" do
-				controller.stub(:current_user).and_return(record.user)
 			  get :edit, { collection_id: person_collection.id, id: record.id }
 			  expect(response.status).to eq(200)
 			end
@@ -308,45 +305,43 @@ describe TermRecordsController do
 
 			context "with invalid params" do
 				it "re-renders the 'edit' template" do
-					put :update, { id: record.id, term_record: { collection_id: person_collection.id, english: "" }}
+					put :update, { id: record.id, term_record: { collection_id: record.collection.id, english: "" }}
 					expect(response).to render_template("edit")
 				end
 
 				it "does not update the record" do
-					put :update, { id: record.id, term_record: { collection_id: person_collection.id, french: "salut", english: "" }}
+					put :update, { id: record.id, term_record: { collection_id: record.collection.id, french: "salut", english: "" }}
 					record.reload
 				  expect(record.french).not_to eq("salut")
 				end
 
 				it "re-renders edit template if blank domain submitted" do
-					put :update, { id: record.id, term_record: { collection_id: person_collection.id, domain_name: ""}}
+					put :update, { id: record.id, term_record: { collection_id: record.collection.id, domain_name: ""}}
 					expect(response).to render_template("edit")
 				end
 
 				it "re-renders the edit template if blank source submitted" do
-					put :update, { id: record.id, term_record: { collection_id: person_collection.id, source_name: ""}}
+					put :update, { id: record.id, term_record: { collection_id: record.collection.id, source_name: ""}}
 					expect(response).to render_template("edit")
 				end
 
 				it "re-renders edit if blank source submitted with other valid params" do
-					put :update, { id: record.id, term_record: { collection_id: person_collection.id, source_name: "", english: "Good day"}}
+					put :update, { id: record.id, term_record: { collection_id: record.collection.id, source_name: "", english: "Good day"}}
 					expect(response).to render_template("edit")
 				end
 
 				it "sets @collections" do
 					TermRecord.any_instance.stub(:save).and_return(false)
-					controller.stub(:current_user).and_return(person)
 
-					put :update, { id: record.id, term_record: { collection_id: person_collection.id, source_name: "", english: "Good day"}}
+					put :update, { id: record.id, term_record: { collection_id: record.collection.id, source_name: "", english: "Good day"}}
 				  expect(assigns(:collections)).not_to be_nil
 				end
 
 				it "sets @default_collection" do
 					TermRecord.any_instance.stub(:save).and_return(false)
-					controller.stub(:current_user).and_return(person)
 					person_collection.reload
 
-					put :update, { id: record.id, term_record: { collection_id: person_collection.id, source_name: "", english: "Good day"}}
+					put :update, { id: record.id, term_record: { collection_id: record.collection.id, source_name: "", english: "Good day"}}
 				  expect(assigns(:default_collection)).not_to be_nil
 				end
 			end
@@ -356,16 +351,17 @@ describe TermRecordsController do
 	describe "DELETE destroy" do
 		context "when not logged in" do
 			it "redirects to the login page" do
-			  delete :destroy, { collection_id: person_collection.id, id: record.id }
+			  delete :destroy, { collection_id: record.collection, id: record.id }
 			  expect(response).to redirect_to("/login")
 			end
 		end
 
 		context "when logged in" do
 			before(:each) { login_user(person) }
+			before(:each) { controller.stub(:current_user).and_return(record.user) }
 
 			it "identifies the requested record" do
-			  delete :destroy, { collection_id: person_collection.id, id: record.id }
+			  delete :destroy, { collection_id: record.collection, id: record.id }
 			  assigns(:term_record).should eq(record)
 			end
 
@@ -382,19 +378,19 @@ describe TermRecordsController do
 			it "destroys the requested record" do
 			  record.reload
 			  expect {
-				  delete :destroy, { collection_id: person_collection.id, id: record.id }
+				  delete :destroy, { collection_id: record.collection, id: record.id }
 			  }.to change(TermRecord, :count).by(-1)
 			end
 
 			it "does not destroy the parent collection" do
 				record.reload
 			  expect {
-				  delete :destroy, { collection_id: person_collection.id, id: record.id }
+				  delete :destroy, { collection_id: record.collection, id: record.id }
 			  }.not_to change(Collection, :count)
 			end
 
 			it "redirects to the parent collection" do
-			  delete :destroy, { collection_id: person_collection.id, id: record.id }
+			  delete :destroy, { collection_id: record.collection, id: record.id }
 			  expect(response).to redirect_to("/query")
 			end
 		end
