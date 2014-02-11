@@ -10,6 +10,7 @@ class TermRecordsController < ApplicationController
 	def create
 		@term_record = TermRecord.new(term_record_params)
 		@term_record.collection = current_user.collections.find(params[:term_record][:collection_id])
+		@term_record.user_id = current_user.id
 
 		if @term_record.save
 			redirect_to query_path, flash: { success: 'Record created'}
