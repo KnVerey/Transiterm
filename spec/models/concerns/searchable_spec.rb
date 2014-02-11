@@ -29,7 +29,7 @@ shared_examples_for "searchable" do
     searchable_object.send("#{example_field}=", "<em>Italics</em>")
     searchable_object.save
 
-    expect(searchable_object.send(example_clean_field)).not_to include("<em>")
+    expect(searchable_object.send(example_clean_field)).not_to match(/<em>|<\/em>/)
   end
 
   it "does not allow markdown in its searchable fields" do
@@ -38,7 +38,25 @@ shared_examples_for "searchable" do
     searchable_object.send("#{example_field}=", "==~#~***__<>+^()")
     searchable_object.save
 
-    expect(searchable_object.send(example_clean_field)).not_to match(/[#=~*<>_+^\(\)\{\}]/)
+    expect(searchable_object.send(example_clean_field)).to be_blank
+  end
+
+  it "removes puncutation in its searchable fields" do
+    example_field = example_clean_field.gsub("clean_","")
+    example_field << "_name" unless searchable_object.attributes.has_key?(example_field)
+    searchable_object.send("#{example_field}=", "example!?$%:;,.")
+    searchable_object.save
+
+    expect(searchable_object.send(example_clean_field)).to eq("example")
+  end
+
+  it "leaves numbers in its fields" do
+    example_field = example_clean_field.gsub("clean_","")
+    example_field << "_name" unless searchable_object.attributes.has_key?(example_field)
+    searchable_object.send("#{example_field}=", "example1!")
+    searchable_object.save
+
+    expect(searchable_object.send(example_clean_field)).to eq("example1")
   end
 
   it "preserves spacing in its searchable fields" do
