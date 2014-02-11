@@ -98,8 +98,9 @@ describe CollectionsController do
 		it "redirects if the collection does not belong to the user" do
 			login_user(person)
 			collection = FactoryGirl.create(:collection)
-		  get :edit, { id: collection.to_param }
-			expect(response).to redirect_to("/query")
+		  expect {
+		  	get :edit, { id: collection.to_param }
+			}.to raise_error(ActiveRecord::RecordNotFound)
 		end
 
     it "sets @collection to requested collection" do
@@ -126,18 +127,19 @@ describe CollectionsController do
 		context "when user logged in" do
 			before(:each) { login_user(person) }
 
-			it "will not update someone else's record" do
+			it "throws an error if tries to update someone else's record" do
 				collection = FactoryGirl.create(:collection)
-				controller.stub(:current_user).and_return(person)
-				Collection.stub(:find).and_return(collection)
 
-				expect(collection).not_to receive(:update)
-				put :update, id: collection.to_param, collection: { title: "Coin collecting" }
+				expect {
+					put :update, id: collection.to_param, collection: { title: "Coin collecting" }
+				}.to raise_error(ActiveRecord::RecordNotFound)
 			end
 
 			context "with valid params" do
 				it "updates the current user's specified collection" do
-				  Collection.stub(:find).and_return(person_collection)
+					controller.stub(:find_collection)
+					controller.instance_variable_set(:@collection, person_collection)
+
 				  person_collection.should_receive(:update).with({"title" => "Ornithology"})
 				  put :update, id: person_collection.id, collection: {id: person_collection.id, title: "Ornithology"}
 				end
@@ -175,11 +177,11 @@ describe CollectionsController do
 	      assigns(:collection).should eq(person_collection)
 	    end
 
-	    it "does not destroy anything unless collection belongs to user" do
+	    it "raises an error if attempt to destroy collection that does not belong to user" do
 	    	collection = FactoryGirl.create(:collection)
 	      expect {
   	      delete :destroy, { id: collection.to_param }
-  	      }.not_to change(Collection, :count)
+  	      }.to raise_error(ActiveRecord::RecordNotFound)
 	    end
 
 	    it "destroys the requested collection" do
