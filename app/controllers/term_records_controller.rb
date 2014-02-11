@@ -22,7 +22,7 @@ class TermRecordsController < ApplicationController
 	end
 
 	def update
-		@term_record.collection_id = current_user.collections.find(params[:term_record][:collection_id]).id
+		@term_record.collection = current_user.collections.find(params[:term_record][:collection_id])
 		if @term_record.update(term_record_params)
 			redirect_to query_path, flash: { success: 'Record updated'}
 		else
@@ -46,7 +46,7 @@ class TermRecordsController < ApplicationController
 	end
 
 	def find_term_record
-		@term_record = TermRecord.joins(:collection).where(["collections.user_id = ?", current_user.id]).readonly(false).find(params[:id])
+		@term_record = current_user.term_records.find(params[:id])
 	end
 
 	def set_collections_and_default

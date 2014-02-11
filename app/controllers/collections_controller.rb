@@ -18,11 +18,10 @@ class CollectionsController < ApplicationController
 	end
 
 	def edit
-		redirect_to query_path if !user_is_owner?(@collection)
 	end
 
 	def update
-		if user_is_owner?(@collection) && @collection.update(collection_params)
+		if @collection.update(collection_params)
 			redirect_to query_path, notice: 'Collection details successfully updated'
 		else
 			render action: 'edit'
@@ -30,14 +29,14 @@ class CollectionsController < ApplicationController
 	end
 
 	def destroy
-		current_user.deactivate_collection(@collection) if user_is_owner?(@collection) && @collection.destroy
+		current_user.deactivate_collection(@collection) if @collection.destroy
 		redirect_to query_path
 	end
 
 	private
 
 	def find_collection
-		@collection = Collection.find(params[:id])
+		@collection = current_user.collections.find(params[:id])
 	end
 
 	def collection_params

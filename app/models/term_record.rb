@@ -56,11 +56,11 @@ class TermRecord < ActiveRecord::Base
 
 	private
 	def assign_domain
-		self.domain = Domain.find_or_initialize_by(user: collection.user, name: domain_name)
+		self.domain = Domain.find_or_initialize_by(user: user, name: domain_name)
 	end
 
 	def assign_source
-		self.source = Source.find_or_initialize_by(user: collection.user, name: source_name)
+		self.source = Source.find_or_initialize_by(user: user, name: source_name)
 	end
 
 	def correct_languages_present
