@@ -7,9 +7,13 @@ FactoryGirl.define do
     context "Example of usage"
     comment "this is a comment"
 
-    domain
-    source
-    collection
+    user
+
+    after(:build) do |record|
+       record.collection = create(:collection, user: record.user)
+       record.domain = create(:domain, user: record.user)
+       record.source = create(:source, user: record.user)
+    end
   end
 
 end
