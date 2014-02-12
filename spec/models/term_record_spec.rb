@@ -32,14 +32,6 @@ describe TermRecord do
     end
   end
 
-  context "before save" do
-    it "when an optional field changed to nil, it sets clean field to nil" do
-      record.comment = nil
-      record.save
-      expect(record.clean_comment).to be_nil
-    end
-  end
-
   context "after destroy" do
     it "destroys newly orphaned sources" do
       record.reload
