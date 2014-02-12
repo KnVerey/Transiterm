@@ -22,8 +22,9 @@ module Searchable
 
 	def populate_searchable_fields
 		self.class.searchable_fields.each do |field_hash|
-			next unless data_changed?(field_hash[:attribute])
-			send("#{field_hash[:field]}=", Searchable.sanitize(field_hash[:attribute]))
+			next unless data_changed?(field_hash)
+			clean_data = Searchable.sanitize(send(field_hash[:attribute]))
+			send("#{field_hash[:field]}=", clean_data)
 		end
 	end
 
