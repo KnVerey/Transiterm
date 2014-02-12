@@ -29,9 +29,9 @@ module Searchable
 	end
 
 	private
-	def data_changed?(field)
+	def data_changed?(field_hash)
 		return true if !persisted?
-		try("#{field}_changed?")
+		try("#{field_hash[:attribute]}_changed?") || try("#{field_hash[:field].gsub("clean_","")}_id_changed?")
 	end
 
 	def self.sanitize(string)
