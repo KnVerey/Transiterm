@@ -2,6 +2,8 @@ class Domain < ActiveRecord::Base
 	include PgSearch
 	include Searchable
 
+	searchable_fields :name
+
 	belongs_to :user
 	has_many :term_records
 

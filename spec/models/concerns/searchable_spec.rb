@@ -3,26 +3,36 @@ require 'spec_helper'
 shared_examples_for "searchable" do
   let(:model) { described_class }
   let(:searchable_object) { FactoryGirl.build(model.to_s.underscore.to_sym) }
-  let(:example_clean_field) { searchable_object.searchable_fields.keys.first }
 
   it "has searchable fields" do
-    expect(searchable_object.searchable_fields.count).to be > 0
+    expect(model.searchable_fields.size).to be > 0
   end
 
   it "has searchable fields that aren't populated in unpersisted objects" do
-    searchable_object.searchable_fields.each do |k, v|
-    	expect(v).to be_blank
+    model.searchable_fields.each do |f|
+    	expect(searchable_object.send(f)).to be_blank
     end
   end
 
   it "populates its searchable fields before save" do
   	searchable_object.save
-    searchable_object.searchable_fields.each do |k, v|
-    	puts "#{k} was blank in object #{searchable_object.inspect}" if v.blank?
-    	expect(v).not_to be_blank
+    model.searchable_fields.each do |f|
+    	expect(searchable_object.send(f)).not_to be_blank
     end
   end
 
+  it "sanitizes its clean fields (html example)" do
+    example_clean_field = model.searchable_fields.first
+    example_field = example_clean_field.gsub("clean_","")
+    example_field << "_name" unless searchable_object.attributes.has_key?(example_field)
+    searchable_object.send("#{example_field}=", "<em>Italics</em>")
+    searchable_object.save
+
+    expect(searchable_object.send(example_clean_field)).not_to match(/<em>|<\/em>/)
+  end
+end
+
+describe Searchable do
   it "does not allow html tags in its searchable fields" do
     example_field = example_clean_field.gsub("clean_","")
     example_field << "_name" unless searchable_object.attributes.has_key?(example_field)
