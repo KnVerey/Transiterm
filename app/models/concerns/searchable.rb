@@ -19,7 +19,7 @@ module Searchable
 			data_field = get_data_field_name(clean_field_name)
 			next unless field_changed?(data_field)
 
-			clean_data = Searchable::sanitize(send(data_field))
+			clean_data = Searchable.sanitize(send(data_field))
 			send("#{clean_field_name}=", clean_data)
 		end
 	end
