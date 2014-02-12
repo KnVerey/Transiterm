@@ -66,7 +66,7 @@ class TermRecord < ActiveRecord::Base
 
 	def correct_languages_present
 		result = Collection::LANGUAGES.detect do |language|
-			self.collection.send(language) && self.send(language).empty?
+			self.collection.send(language) && self.send(language).blank?
 		end
 
 		errors.add(:base, "Please fill in all language fields") if result
