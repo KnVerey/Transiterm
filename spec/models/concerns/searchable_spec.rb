@@ -4,10 +4,6 @@ shared_examples_for "searchable" do
   let(:model) { described_class }
   let(:searchable_object) { FactoryGirl.build(model.to_s.underscore.to_sym) }
 
-  it "has searchable fields" do
-    expect(model.searchable_fields.size).to be > 0
-  end
-
   it "has searchable fields that aren't populated in unpersisted objects" do
     model.searchable_fields.each do |f|
     	expect(searchable_object.send(f)).to be_blank
