@@ -8,33 +8,29 @@ module Searchable
 	module ClassMethods
 		def searchable_fields(*fields)
 			if fields.present?
-				@searchable_fields = fields.map {|f| "clean_#{f}" }
+				@searchable_fields = fields.map do |f|
+					if f.is_a? Hash
+						{ field: "clean_#{f[:field]}", attribute: "#{f[:attribute]}"}
+					elsif f.is_a? Symbol
+						{ field: "clean_#{f}", attribute: "#{f}" }
+					end
+				end
 			end
 			@searchable_fields || []
 		end
 	end
 
 	def populate_searchable_fields
-		self.class.searchable_fields.each do |clean_field_name|
-			data_field = get_data_field_name(clean_field_name)
-			next unless field_changed?(data_field)
-
-			clean_data = Searchable.sanitize(send(data_field))
-			send("#{clean_field_name}=", clean_data)
+		self.class.searchable_fields.each do |field_hash|
+			next unless data_changed?(field_hash[:attribute])
+			send("#{field_hash[:field]}=", Searchable.sanitize(field_hash[:attribute]))
 		end
 	end
 
 	private
-	def field_changed?(field)
+	def data_changed?(field)
 		return true if !persisted?
-
-		field = field.gsub("_name","_id") if field.include?("_name")
 		try("#{field}_changed?")
-	end
-
-	def get_data_field_name(clean_field_name)
-		name_if_core = clean_field_name.gsub("clean_", "")
-		attributes.has_key?(name_if_core) ? name_if_core : "#{name_if_core}_name"
 	end
 
 	def self.sanitize(string)

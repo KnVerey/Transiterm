@@ -1,8 +1,7 @@
 class TermRecord < ActiveRecord::Base
 	include PgSearch
 	include Searchable
-	searchable_fields :english, :french, :spanish, :context, :comment, :source, :domain
-	# { field: :domain, attribute: :domain_name }
+	searchable_fields :english, :french, :spanish, :context, :comment, { field: :domain, attribute: :domain_name }, { field: :source, attribute: :source_name }
 
 	pg_search_scope :search_whole_record,
 		against: {
