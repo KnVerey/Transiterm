@@ -2,7 +2,7 @@ module LookupModel
 	extend ActiveSupport::Concern
 
 	included do
-		after_save :update_name_in_term_records_table
+		after_save :update_duplicate_in_term_records_table
 	end
 
 	module ClassMethods
@@ -25,15 +25,13 @@ module LookupModel
 		term_records.empty?
 	end
 
-	def update_name_in_term_records_table
+	def update_duplicate_in_term_records_table
 		if !self.id_changed? && self.name_changed?
 			model = self.class.to_s.downcase
-			clean_attribute = TermRecord.searchable_fields.find { |field_hash| field_hash[:attribute].match(/#{model}/) }[:field]
+			clean_attribute = TermRecord.identify_lookup_duplicate(model)
 
 			term_records.each do |t|
-				clean_data = Searchable.sanitize(send(self.class.lookup_field))
-				t.send("#{clean_attribute}=", clean_data)
-				t.save
+				t.set_lookup_duplicate(attribute: clean_attribute, value: send(self.class.lookup_field))
 			end
 		end
 	end

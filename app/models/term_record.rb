@@ -55,6 +55,15 @@ class TermRecord < ActiveRecord::Base
 		@source_name || source.try(:name)
 	end
 
+	def self.identify_lookup_duplicate(model)
+		searchable_fields.find { |field_hash| field_hash[:attribute].match(/#{model}/) }[:field]
+	end
+
+	def set_lookup_duplicate(attribute: nil, value: nil)
+		send("#{attribute}=", Searchable.sanitize(value))
+		save
+	end
+
 	private
 	def assign_domain
 		self.domain = Domain.find_or_initialize_by(user: user, name: domain_name)
