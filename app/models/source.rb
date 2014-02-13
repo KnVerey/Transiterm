@@ -3,6 +3,7 @@ class Source < ActiveRecord::Base
 	include Searchable
 	searchable_fields :name
 	include LookupModel
+	lookup_field :name
 
 	belongs_to :user
 	has_many :term_records
