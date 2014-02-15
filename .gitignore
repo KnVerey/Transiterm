@@ -51,3 +51,4 @@ coverage
 
 *.key
 *.pdf
+app/assets/images/t*.*
