@@ -4,6 +4,20 @@
 
 nav {
 	color: white;
+
+	.logo {
+			height: 39px;
+			margin: 3px;
+		}
+
+	.logo:hover {
+		height: 41px;
+		margin: 2px;
+	}
+
+	a.logo-link:hover, a.logo-link:active {
+		background-color: inherit;
+	}
 }
 
 #remember {
