@@ -14,8 +14,7 @@ gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0'
 
 # Use CoffeeScript for .js.coffee assets and views
-# gem 'coffee-rails', '~> 4.0.0'
-
+gem 'coffee-rails', '~> 4.0.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -36,7 +35,6 @@ group :development, :test do
 	gem 'pry-byebug'
 	gem 'better_errors'
 	gem 'binding_of_caller'
-  gem 'cucumber-rails', :require => false
   gem 'database_cleaner'
   gem 'spork-rails'
 end
@@ -55,11 +53,5 @@ gem 'rails_12factor', group: :production
 gem 'newrelic_rpm'
 
 gem "letter_opener", :group => :development
-# Use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.1.2'
 
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano', group: :development
+gem 'spreadsheet', '~> 0.9.6'
