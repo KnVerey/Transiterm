@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140211174418) do
+ActiveRecord::Schema.define(version: 20140216183543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,39 +29,39 @@ ActiveRecord::Schema.define(version: 20140211174418) do
   end
 
   create_table "domains", force: true do |t|
-    t.string   "name"
+    t.text     "name"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "clean_name"
+    t.text     "clean_name"
   end
 
   create_table "sources", force: true do |t|
-    t.string   "name"
+    t.text     "name"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "clean_name"
+    t.text     "clean_name"
   end
 
   create_table "term_records", force: true do |t|
-    t.string   "english"
-    t.string   "french"
-    t.string   "spanish"
-    t.string   "context"
-    t.string   "comment"
+    t.text     "english"
+    t.text     "french"
+    t.text     "spanish"
+    t.text     "context"
+    t.text     "comment"
     t.integer  "domain_id"
     t.integer  "source_id"
     t.integer  "collection_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "clean_english"
-    t.string   "clean_french"
-    t.string   "clean_spanish"
-    t.string   "clean_context"
-    t.string   "clean_comment"
-    t.string   "clean_domain"
-    t.string   "clean_source"
+    t.text     "clean_english"
+    t.text     "clean_french"
+    t.text     "clean_spanish"
+    t.text     "clean_context"
+    t.text     "clean_comment"
+    t.text     "clean_domain"
+    t.text     "clean_source"
     t.integer  "user_id"
   end
 

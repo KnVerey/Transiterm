@@ -3,6 +3,7 @@ class Collection < ActiveRecord::Base
 	has_many :term_records, dependent: :destroy
 
 	validates :title, presence: true
+	validates :title, length: { in: 1..100 }
 	validate :valid_num_languages
 
   LANGUAGES = %w{english french spanish}
