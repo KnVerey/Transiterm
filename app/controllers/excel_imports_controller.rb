@@ -13,6 +13,6 @@ class ExcelImportsController < ApplicationController
 
 	private
 	def excel_file_param
-		params.try(:excel_import).try(:excel_file)
+		params[:excel_import] ? params[:excel_import][:excel_file] : nil
 	end
 end
