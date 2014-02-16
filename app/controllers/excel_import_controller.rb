@@ -1,2 +1,0 @@
-class ExcelImportController < ApplicationController
-end
