@@ -12,9 +12,20 @@
 </div>
 <br>
 <div class="row">
-	<div class="small-11 columns indented uploader">
+	<div class="small-11 columns indented ">
+    <% if @importer.errors.any? %>
+      <div id="error_explanation">
+        <h2>Oh no! The upload failed!</h2>
+        <ul>
+        <% @importer.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
 		<%= form_for @importer do |i| %>
-			<%= i.file_field :excel_file %>
+			<%= i.file_field :excel_file, class: "uploader" %>
 			<%= i.submit "Upload file", class: "button tiny" %>
 		<% end %>
 	</div>
