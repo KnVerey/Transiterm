@@ -2,5 +2,20 @@
 	<strong><%= link_to "←  Back to account", edit_user_path(current_user), class: "button tiny c-secondary" %></strong>
 <% end %>
 
-<h1></h1><br>
-<p class="compact-para"></p>
+<h1>Import term records from Excel</h1><br>
+
+<div class="row">
+	<div class="small-11 columns emphasis-box indented">
+		<p><strong>INSTRUCTIONS:</strong> The Excel file you use to import your records needs to be in a very specific format. For best results, copy and paste your data into the template below. Be careful not to change the headings!</p>
+		<%= link_to "Download template", root_url+"/TransitermTemplate.xls", class: "normal-link" %>
+	</div>
+</div>
+<br>
+<div class="row">
+	<div class="small-11 columns indented uploader">
+		<%= form_for @importer do |i| %>
+			<%= i.file_field :excel_file %>
+			<%= i.submit "Upload file", class: "button tiny" %>
+		<% end %>
+	</div>
+</div>

@@ -23,6 +23,15 @@ body {
 	z-index: 100;
 }
 
+.normal-link {
+	color: $c-link-unchanging;
+	text-decoration: underline;
+}
+
+.normal-link:hover {
+	color: darken($c-link-unchanging, 15%)
+}
+
 .emphasis-box {
 	background-color: darken($c-bg-secondary, 5%);
 	color: $c-text-secondary;
