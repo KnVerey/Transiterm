@@ -18,7 +18,7 @@ class ExcelImport
 
   def save_records
   	excel = Spreadsheet.open(@file.tempfile.path).worksheet 0
-  	@collection = Collection.new(user: user, title: "Imported Records")
+  	@collection = Collection.new(user: @user, title: "Imported Records")
   	@headings_map = map_headings(excel.row(0))
   	set_collection_langs(excel.row(1))
   	records_to_import = []
