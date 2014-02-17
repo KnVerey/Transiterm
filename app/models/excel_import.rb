@@ -6,7 +6,7 @@ class ExcelImport
 	validates :file, presence: { message: "must be selected using the 'Choose File' button" }
 	validate :correct_file_extension
 
-	attr_reader :file, :collection
+	attr_reader :file, :collection, :failed_records
 
 	def persisted?
 	  false
@@ -40,12 +40,10 @@ class ExcelImport
   end
 
   def persist_records(records_array)
+  	@failed_records = []
   	records_array.each do |r|
-  		begin
-
-  		rescue ActiveRecord::RecordInvalid => e
-
-  		end
+			r.save
+			@failed_records << r unless r.persisted?
   	end
   end
 

@@ -24,7 +24,7 @@ Transiterm::Application.routes.draw do
 
   get 'query' => 'queries#show', as: :query
 
-  resources :excel_imports, only: [:new, :create]
+  resources :excel_imports, only: [:new, :create, :show]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
