@@ -15,17 +15,17 @@ class ExcelImport
   def initialize(file: nil, user: nil)
   	@file = file
   	@user = user
-  	@collection = Collection.new(user: user, title: "Imported Records", english: true, french: true, spanish: true)
+  	@collection = Collection.new(user: user, title: "Imported Records")
   end
 
   def save_records
-  	excel = Spreadsheet.open(@file.tempfile.path)
-  	sheet = excel.worksheet 0
-  	@headings_map = map_headings(sheet.row(0))
+  	excel = Spreadsheet.open(@file.tempfile.path).worksheet 0
+  	@headings_map = map_headings(excel.row(0))
+  	set_collection_langs(excel.row(1))
   	records_to_import = []
 
-  	sheet.each 1 do |row|
-  		r = TermRecord.new(get_attributes(row), user: @user, collection: @collection)
+  	excel.each 1 do |row|
+  		r = TermRecord.new(get_attributes(row))
   		r.user = @user
   		r.collection = @collection
   		records_to_import << r
@@ -53,6 +53,13 @@ class ExcelImport
   			hash[cell.downcase.gsub(" ", "_").to_sym] = row.find_index(cell)
   		end
   		hash
+  	end
+  end
+
+	def set_collection_langs(first_row)
+  	Collection::LANGUAGES.each do |lang|
+  		lang_activity_state = @headings_map.has_key?(lang.to_sym) && first_row[@headings_map[lang.to_sym]].present?
+  		@collection.send("#{lang}=", lang_activity_state)
   	end
   end
 
