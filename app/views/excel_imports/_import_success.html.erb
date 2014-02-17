@@ -2,11 +2,10 @@
 	<strong><%= link_to "Continue to collection →", edit_collection_path(@importer.collection), class: "button tiny c-secondary" %></strong>
 <% end %>
 
-<h1>Import successful</h1>
-<h5><%= pluralize(@saved_records.count, 'record') %> imported</h5>
+<h2>Import successful: <%= pluralize(@saved_records.count, 'record') %> imported</h2><br><br>
 <div class="row">
 	<div class="small-10 columns indented">
-		<p class="emphasis-box"><strong>Please review the example records below.</strong> If anything looks wrong, <%= link_to "view the new collection", edit_collection_path(@importer.collection), class: "normal-link" %> and delete it on that screen. Then, modify your Excel file and try the import again. Note that you can modify individual term records from the main search screen to fix any minor errors.</p>
+		<p class="emphasis-box"><strong>Please review the example records below.</strong> If anything looks wrong, <%= link_to "view the new collection", edit_collection_path(@importer.collection), class: "normal-link" %> and delete it on that screen. Then, modify your Excel file and try the import again. Note that you can modify individual term records from the main search screen to fix any minor errors.</p><br>
 	</div>
 </div>
 
