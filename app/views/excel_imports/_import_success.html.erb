@@ -1,0 +1,34 @@
+<% content_for :sidebar_meat do %>
+	<strong><%= link_to "Continue to collection →", edit_collection_path(@importer.collection), class: "button tiny c-secondary" %></strong>
+<% end %>
+
+<h1>Import successful</h1>
+<h5><%= pluralize(@saved_records.count, 'record') %> imported</h5>
+<div class="row">
+	<div class="small-10 columns indented">
+		<p class="emphasis-box"><strong>Please review the example records below.</strong> If anything looks wrong, <%= link_to "view the new collection", edit_collection_path(@importer.collection) %> and delete it. Then, modify your Excel file and try the import again. Note that you can modify individual term records from the main search screen to fix small errors.</p>
+	</div>
+</div>
+
+<div class="row">
+	<div class="small-10 columns emphasis-box indented">
+		<h3>First few records created:</h3>
+		<table class="records-table">
+			<thead>
+				<tr>
+					<% set_columns.each do |lang| %>
+						<th class="lang-column" width="<%= 60 / set_columns.length %>%"><%= lang.capitalize %></th>
+					<% end %>
+					<th class="source-column">Source</th>
+					<th class="domain-column">Domain</th>
+					<th class="expander-column"></th>
+				</tr>
+			</thead>
+			<tbody class="no-links">
+				<%= render @saved_records.limit(5) %>
+			</tbody>
+		</table>
+		<p>The next step is to name your collection of newly imported term records. If something looks wrong above, you can delete the collection on the next screen.</p>
+		<%= link_to "Continue to collection", edit_collection_path(@importer.collection), class: "button small" %>
+	</div>
+</div>
