@@ -15,9 +15,6 @@ class ExcelImportsController < ApplicationController
 		end
 	end
 
-	def show
-	end
-
 	private
 	def excel_file_param
 		params[:excel_import] ? params[:excel_import][:excel_file] : nil
