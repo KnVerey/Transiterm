@@ -14,5 +14,9 @@ FactoryGirl.define do
   	factory :invalid_file_type_excel_import do
 	    initialize_with { new(user: FactoryGirl.create(:user), file: ActionDispatch::Http::UploadedFile.new(:tempfile => File.new("#{Rails.root}/spec/fixtures/invalid_import.xlsx"), :filename => "invalid_import.xlsx")) }
   	end
+
+  	factory :large_invalid_excel_import do
+	    initialize_with { new(user: FactoryGirl.create(:user), file: ActionDispatch::Http::UploadedFile.new(:tempfile => File.new("#{Rails.root}/spec/fixtures/large_invalid_import.xls"), :filename => "large_invalid_import.xls")) }
+  	end
   end
 end
