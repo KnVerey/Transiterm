@@ -74,11 +74,14 @@ class TermRecord < ActiveRecord::Base
 	end
 
 	def correct_languages_present
-		result = Collection::LANGUAGES.detect do |language|
-			self.collection.send(language) && self.send(language).blank?
+		if collection.title == "Imported Records"
+			errors.add(:base, "Imported records must have at least one language filled in") unless french.present? || english.present? || spanish.present?
+		else
+			result = Collection::LANGUAGES.detect do |language|
+				self.collection.send(language) && self.send(language).blank?
+			end
+			errors.add(:base, "Please fill in all language fields") if result
 		end
-
-		errors.add(:base, "Please fill in all language fields") if result
 	end
 
 	def prevent_lookup_orphaning
