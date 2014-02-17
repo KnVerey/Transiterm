@@ -4,7 +4,7 @@ class ExcelImportsController < ApplicationController
 	end
 
 	def create
-		@importer = ExcelImport.new(file: excel_file_param)
+		@importer = ExcelImport.new(file: excel_file_param, user: current_user)
 		if @importer.valid? && @importer.save_records
 			redirect_to edit_collection_path(@importer.collection)
 		else
