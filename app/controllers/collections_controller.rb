@@ -22,6 +22,7 @@ class CollectionsController < ApplicationController
 
 	def update
 		if @collection.update(collection_params)
+    	current_user.ensure_collection_displays(@collection)
 			redirect_to query_path, notice: 'Collection details successfully updated'
 		else
 			render action: 'edit'
