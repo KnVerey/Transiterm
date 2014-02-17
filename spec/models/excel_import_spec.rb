@@ -22,7 +22,6 @@ describe ExcelImport do
 	describe "#save_records" do
 
 		context "when the input file is completely valid (import succeeds)" do
-
 			let (:successful_import) { FactoryGirl.build(:valid_excel_import) }
 
 			it "generates a new collection" do
@@ -38,6 +37,34 @@ describe ExcelImport do
 			it "has no failed records" do
 				successful_import.save_records
 				expect(successful_import.failed_records).to be_empty
+			end
+		end
+
+		context "when the input file contains invalid rows (import fails)" do
+			let(:doomed_import) { FactoryGirl.build(:invalid_excel_import) }
+
+			it "does not generate a collection" do
+			  expect {
+			  	doomed_import.save_records
+			  }.not_to change(Collection, :count)
+			end
+
+			it "does not create any term records" do
+			  expect {
+			  	doomed_import.save_records
+			  }.not_to change(TermRecord, :count)
+			end
+
+			it "provides an array of failed records" do
+				doomed_import.save_records
+				expect(doomed_import.failed_records).not_to be_empty
+				expect(doomed_import.failed_records[0]).to be_a(TermRecord)
+			end
+
+			it "aborts after five records fail" do
+			  large_doomed_import = FactoryGirl.build(:large_invalid_excel_import)
+			  large_doomed_import.save_records
+			  expect(large_doomed_import.failed_records.count).to eq(5)
 			end
 		end
 	end
