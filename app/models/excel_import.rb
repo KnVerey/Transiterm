@@ -17,13 +17,15 @@ class ExcelImport
   end
 
   def save_records
-  	excel = Spreadsheet.open(@file.tempfile.path).worksheet 0
-  	@collection = Collection.new(user: @user, title: "Imported Records")
-  	@headings_map = map_headings(excel.row(0))
-  	set_collection_langs(excel.row(1))
+  	return unless self.valid?
+
+  	@excel = Spreadsheet.open(@file.tempfile.path).worksheet 0
+  	@headings_map = map_headings
+  	@collection = initialize_import_collection
+
   	records_to_import = []
 
-  	excel.each 1 do |row|
+  	@excel.each 1 do |row|
   		break unless row.any?
   		r = TermRecord.new(get_attributes(row))
   		r.user = @user
@@ -38,6 +40,19 @@ class ExcelImport
   	(errors.add(:file, "must be an Excel file (.xls) - .xlsx is not currently supported") unless @file.original_filename.match(/\.xls\z/)) if @file
   end
 
+  def initialize_import_collection
+  	model_row = @excel.row(1)
+  	english = lang_active?("english", model_row)
+  	french = lang_active?("french", model_row)
+  	spanish = lang_active?("spanish", model_row)
+
+  	Collection.new(user: @user, title: "Imported Records", english: english, french: french, spanish: spanish)
+  end
+
+	def lang_active?(lang, model_row)
+		@headings_map.has_key?(lang.to_sym) && model_row[@headings_map[lang.to_sym]].present?
+  end
+
   def try_persist_records(records_array)
   	@failed_records = []
   	TermRecord.transaction do
@@ -50,19 +65,13 @@ class ExcelImport
 	  end
   end
 
-  def map_headings(row)
-  	row.inject({}) do |hash, cell|
+  def map_headings
+  	headings_row = @excel.row(0)
+  	headings_row.inject({}) do |hash, cell|
   		if cell.match(/\A(english|french|spanish|context|comment|domain name|source name)\z/i)
-  			hash[cell.downcase.gsub(" ", "_").to_sym] = row.find_index(cell)
+  			hash[cell.downcase.gsub(" ", "_").to_sym] = headings_row.find_index(cell)
   		end
   		hash
-  	end
-  end
-
-	def set_collection_langs(first_row)
-  	Collection::LANGUAGES.each do |lang|
-  		lang_activity_state = @headings_map.has_key?(lang.to_sym) && first_row[@headings_map[lang.to_sym]].present?
-  		@collection.send("#{lang}=", lang_activity_state)
   	end
   end
 
