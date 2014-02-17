@@ -25,13 +25,13 @@ class ExcelImport
   	records_to_import = []
 
   	excel.each 1 do |row|
+  		break unless row.any?
   		r = TermRecord.new(get_attributes(row))
   		r.user = @user
   		r.collection = @collection
   		records_to_import << r
   	end
-  	persist_records(records_to_import)
-  	# must return true if saved any
+  	try_persist_records(records_to_import)
   end
 
   private
@@ -39,12 +39,16 @@ class ExcelImport
   	errors.add(:file, "must be an Excel file (.xls) - .xlsx is not currently supported") unless @file.original_filename.match(/\.xlsx?\z/)
   end
 
-  def persist_records(records_array)
+  def try_persist_records(records_array)
   	@failed_records = []
-  	records_array.each do |r|
-			r.save
-			@failed_records << r unless r.persisted?
-  	end
+  	TermRecord.transaction do
+	  	records_array.each do |r|
+				r.save
+				@failed_records << r unless r.persisted?
+				break if @failed_records.count >= 10
+	  	end
+	  	raise ActiveRecord::Rollback if @failed_records.present?
+	  end
   end
 
   def map_headings(row)
