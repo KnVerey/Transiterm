@@ -2,24 +2,23 @@ class ExcelImport
   extend ActiveModel::Naming
 	include ActiveModel::Conversion
 	include ActiveModel::Validations
+	def persisted?
+	  false
+  end
 
 	validates :file, presence: { message: "must be selected using the 'Choose File' button" }
 	validate :correct_file_extension
 
 	attr_reader :file, :collection, :failed_records
 
-	def persisted?
-	  false
-  end
-
   def initialize(file: nil, user: nil)
   	@file = file
   	@user = user
-  	@collection = Collection.new(user: user, title: "Imported Records")
   end
 
   def save_records
   	excel = Spreadsheet.open(@file.tempfile.path).worksheet 0
+  	@collection = Collection.new(user: user, title: "Imported Records")
   	@headings_map = map_headings(excel.row(0))
   	set_collection_langs(excel.row(1))
   	records_to_import = []
@@ -36,7 +35,7 @@ class ExcelImport
 
   private
   def correct_file_extension
-  	errors.add(:file, "must be an Excel file (.xls) - .xlsx is not currently supported") unless @file.original_filename.match(/\.xlsx?\z/)
+  	(errors.add(:file, "must be an Excel file (.xls) - .xlsx is not currently supported") unless @file.original_filename.match(/\.xls\z/)) if @file
   end
 
   def try_persist_records(records_array)
