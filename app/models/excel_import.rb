@@ -45,7 +45,7 @@ class ExcelImport
 	  	records_array.each do |r|
 				r.save
 				@failed_records << r unless r.persisted?
-				break if @failed_records.count >= 10
+				break if @failed_records.count >= 5
 	  	end
 	  	raise ActiveRecord::Rollback if @failed_records.present?
 	  end
