@@ -5,7 +5,8 @@ class ExcelImportsController < ApplicationController
 
 	def create
 		@importer = ExcelImport.new(file: excel_file_param)
-		if @importer.valid?
+		if @importer.valid? && @importer.save_records
+			redirect_to edit_collection_path(@importer.collection)
 		else
 			render action: 'new'
 		end
