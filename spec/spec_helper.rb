@@ -12,10 +12,6 @@ Spork.prefork do
   require 'rspec/rails'
   require 'rspec/autorun'
 
-  # Load Capybara integration:
-  require 'capybara/rspec'
-  require 'capybara/rails'
-
   include Sorcery::TestHelpers::Rails
 
   # Checks for pending migrations before tests are run.
