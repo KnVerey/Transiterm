@@ -1,7 +1,7 @@
 <h1>Import successful</h1>
 
 <% if @saved_records.present? %>
-	<h3>Saved the following <%= @saved_records.count %> record(s)</h3>
+	<h3>Saved the following <%= pluralize(@saved_records.count, 'record') %></h3>
 
 	<table class="records-table">
 		<thead>
@@ -30,7 +30,7 @@
 <% end %>
 
 <% if @failed_records.present? %>
-	<h3>Could not save the following <%= @failed_records.count %> record(s)</h3>
+	<h3>Could not save the following <%= pluralize(@failed_records.count, 'record') %></h3>
 
 	<table class="records-table">
 		<thead>
