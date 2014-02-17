@@ -9,7 +9,7 @@ class ExcelImport
 	validates :file, presence: { message: "must be selected using the 'Choose File' button" }
 	validate :correct_file_extension
 
-	attr_reader :file, :collection, :failed_records
+	attr_reader :file, :collection, :failed_records, :user
 
   def initialize(file: nil, user: nil)
   	@file = file
