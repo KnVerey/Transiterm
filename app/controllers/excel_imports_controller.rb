@@ -7,7 +7,7 @@ class ExcelImportsController < ApplicationController
 		@importer = ExcelImport.new(file: excel_file_param, user: current_user)
 		if @importer.valid?
 			@importer.save_records
-			@saved_records = @importer.collection.term_records
+			@saved_records = @importer.collection.try(:term_records)
 			@failed_records = @importer.failed_records
 			render action: 'show'
 		else
