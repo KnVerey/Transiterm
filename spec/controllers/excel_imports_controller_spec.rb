@@ -37,7 +37,7 @@ describe ExcelImportsController do
 		  expect(assigns(:importer).user).to eq(person)
 		end
 
-		context "when the importer is invalid (i.e. invalid file)" do
+		context "when the file is invalid" do
 			it "re-renders the 'new' template" do
 				login_user(person)
 				invalid_importer = FactoryGirl.build(:excel_import)
@@ -49,7 +49,7 @@ describe ExcelImportsController do
 			end
 		end
 
-		context "when the importer is valid (i.e. valid file)" do
+		context "when the file is valid" do
 			before(:each) { login_user(person) }
 			before(:each) { ExcelImport.any_instance.stub(:valid?).and_return(true) }
 
@@ -69,7 +69,7 @@ describe ExcelImportsController do
 				post :create
 			end
 
-			it "assigns @saved_records, which returns term records if import succeeded" do
+			it "assigns @saved_records if import succeeded (contains term records)" do
 				valid_import = FactoryGirl.build(:valid_excel_import)
 				ExcelImport.stub(:new).and_return(valid_import)
 
@@ -78,25 +78,23 @@ describe ExcelImportsController do
 				expect(assigns(:saved_records)[0]).to be_a(TermRecord)
 			end
 
-			it "assigns @saved_records, which is empty if the import failed" do
+			it "does not assign @saved_records if the import failed" do
 				invalid_import = FactoryGirl.build(:invalid_excel_import)
 				ExcelImport.stub(:new).and_return(invalid_import)
 
 				post :create
-				expect(assigns(:saved_records)).to be_an(ActiveRecord::Relation)
-				expect(assigns(:saved_records)).to be_empty
+				expect(assigns(:saved_records)).to be_nil
 			end
 
-			it "assigns @failed records, which is an empty array if import succeeded" do
+			it "does not assign @failed records if the import succeeded" do
 				valid_import = FactoryGirl.build(:valid_excel_import)
 				ExcelImport.stub(:new).and_return(valid_import)
 
 				post :create
-				expect(assigns(:failed_records)).to be_an(Array)
-				expect(assigns(:failed_records)).to be_empty
+				expect(assigns(:failed_records)).to be_nil
 			end
 
-			it "assigns @failed records, which is an array of term records if import failed" do
+			it "assigns @failed records, which is an array of term records, if import failed" do
 				invalid_import = FactoryGirl.build(:invalid_excel_import)
 				ExcelImport.stub(:new).and_return(invalid_import)
 

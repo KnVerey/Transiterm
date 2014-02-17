@@ -5,12 +5,13 @@ class ExcelImportsController < ApplicationController
 
 	def create
 		@importer = ExcelImport.new(file: excel_file_param, user: current_user)
-		if @importer.valid?
-			@importer.save_records
-			@saved_records = @importer.collection.try(:term_records)
-			@failed_records = @importer.failed_records
+
+		if @importer.save_records
+			@saved_records = @importer.collection.term_records
 			render action: 'show'
-		else
+		elsif @failed_records = @importer.failed_records
+			render action: 'show'
+		else #save_records failed because file itself was invalid
 			render action: 'new'
 		end
 	end

@@ -1,5 +1,5 @@
-<% if @failed_records.present? %>
+<% if @failed_records %>
 	<%= render 'import_failure' %>
-<% else %>
+<% elsif @saved_records %>
 	<%= render 'import_success' %>
 <% end %>
