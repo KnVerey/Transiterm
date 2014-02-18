@@ -1,5 +1,5 @@
 <% content_for :sidebar_meat do %>
-	<strong><%= link_to "Continue to collection →", edit_collection_path(@importer.collection), class: "button tiny c-secondary" %></strong>
+	<strong><%= link_to "Continue to collection &rarr;".html_safe, edit_collection_path(@importer.collection), class: "button tiny c-secondary" %></strong>
 <% end %>
 
 <h2>Import successful: <%= pluralize(@saved_records.count, 'record') %> imported</h2><br><br>

@@ -1,5 +1,5 @@
 <% content_for :sidebar_meat do %>
-	<strong><%= link_to "←  Back to search", query_path, class: "button tiny c-secondary" %></strong>
+	<strong><%= link_to "&larr;  Back to search".html_safe, query_path, class: "button tiny c-secondary" %></strong>
 	<%= render 'formatting_guide' %>
 <% end %>
 
