@@ -36,6 +36,19 @@ p.compact-para {
 		border-top: 1px solid $c-bg-secondary;
 	}
 
+	tr.record-expand {
+		position: relative;
+
+		.edit-button {
+			right: 10px;
+			bottom: 10px;
+
+			&:visited {
+				color: $c-text-secondary;
+			}
+		}
+	}
+
 	.term-record, .record-expand {
 		background-color: lighten($c-bg-secondary, 12);
 	}
@@ -69,7 +82,7 @@ p.compact-para {
 	}
 }
 
-.warning, .records-table {
+.warning {
 	.delete-link, .delete-link:visited, a, a:visited {
 			background: none;
 			border: none;

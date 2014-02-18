@@ -19,10 +19,8 @@
 		<% if term_record.comment.present? %>
 			<span class="optional-field"><strong>Comment</strong>: <%= render_markdown(term_record.comment) %></span><br>
 		<% end %>
-			<small class="left">Collection: <%= term_record.collection.title %></small>
-			<small class="right">Created: <%= term_record.created_at %>&nbsp |
-			Last updated: <%= term_record.updated_at %>
-				&nbsp | <%= link_to "Edit record", edit_term_record_path(term_record.id) %>
-			</small>
+			<small class="left">Collection: <%= term_record.collection.title %>&nbsp | Record created: <%= term_record.created_at %>&nbsp |
+			Record last updated: <%= term_record.updated_at %></small>
+			<%= link_to "Edit record", edit_term_record_path(term_record.id), class: "button edit-button right tiny no-margin secondary" %>
 	</td>
 </tr>
