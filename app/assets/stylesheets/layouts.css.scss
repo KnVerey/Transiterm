@@ -32,6 +32,13 @@ body {
 	color: darken($c-link-unchanging, 15%)
 }
 
+.alert-box {
+	top: -100px;
+	position: fixed;
+	z-index: 1000;
+	width: 65%;
+}
+
 .emphasis-box {
 	background-color: darken($c-bg-secondary, 5%);
 	color: $c-text-secondary;
@@ -51,10 +58,6 @@ html {
 	body {
 		height: 100%;
 		position: static;
-
-		.close {
-			display: none;
-		}
 	}
 
 	main {
