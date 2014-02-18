@@ -53,7 +53,7 @@
         <% end %>
         <div class="small-1 columns no-padding">
           <%= link_to edit_collection_path(c) do %>
-            <i class="fa fa-info-circle fa-lg"></i>
+            <span data-tooltip class="tip-right" title="<%= '<h5 class="tooltip-color">' + c.description + '</h5>' if c.description.present? %><span class='tooltip-smallish'>Click the <i class='fa fa-info-circle fa-lg'></i> to edit or delete this collection.</span>"><i class="fa fa-info-circle fa-lg"></i></span>
           <% end %>
         </div>
       </div>

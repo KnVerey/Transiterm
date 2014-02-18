@@ -23,6 +23,17 @@ body {
 	z-index: 100;
 }
 
+// for tooltips
+span.tooltip-smallish {
+	font-size: 0.85em;
+}
+
+h5.tooltip-color {
+	color: white;
+}
+
+//end for tooltips
+
 .normal-link {
 	color: $c-link-unchanging;
 	text-decoration: underline;
