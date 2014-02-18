@@ -33,17 +33,17 @@
          <% if flash[:notice] %>
             <div data-alert class="alert-box info" id="notice">
               <%= flash[:notice] %>
-              <a href="#" class="close no-js-hidden">&times;</a>
+              <a href="#" class="close">&times;</a>
             </div>
           <% elsif flash[:alert] %>
             <div data-alert class="alert-box alert" id="alert">
               <%= flash[:alert] %>
-              <a href="#" class="close no-js-hidden">&times;</a>
+              <a href="#" class="close">&times;</a>
             </div>
           <% elsif flash[:success] %>
             <div data-alert class="alert-box success" id="success">
               <%= flash[:success] %>
-              <a href="#" class="close no-js-hidden">&times;</a>
+              <a href="#" class="close">&times;</a>
             </div>
           <% end %>
 

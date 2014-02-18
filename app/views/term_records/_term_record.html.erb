@@ -4,10 +4,13 @@
 	<% end %>
 	<td class="mandatory-field"><%= render_markdown(term_record.source.name) %></td>
 	<td class="mandatory-field"><%= render_markdown(term_record.domain.name) %></td>
-	<td></td>
+	<td>
+		<i class="fa fa-plus-square-o fa-lg record-expander"></i>
+		<i class="fa fa-minus-square-o fa-lg record-minimizer hide"></i>
+	</td>
 </tr>
 
-<tr class="record-expand">
+<tr class="record-expand hide">
 	<td colspan="<%= lang_columns(term_record).length + 3 %>" class="expanded-cell">
 		<% if term_record.context.present? %>
 			<span class="optional-field"><strong>Context</strong>: <%= render_markdown(term_record.context) %></span><br>

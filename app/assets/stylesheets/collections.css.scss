@@ -32,6 +32,10 @@ p.compact-para {
 		background-color: $c-bg-secondary;
 	}
 
+	.term-record {
+		border-top: 1px solid $c-bg-secondary;
+	}
+
 	.term-record, .record-expand {
 		background-color: lighten($c-bg-secondary, 12);
 	}
@@ -47,7 +51,6 @@ p.compact-para {
 	.expanded-cell {
 		padding: 0.75em 3em 0.75em 3em;
 		font-size: 0.75rem;
-		border-bottom: 1px solid $c-bg-secondary;
 
 		small {
 			font-size: 0.55rem;
