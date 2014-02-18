@@ -32,6 +32,12 @@ h5.tooltip-color {
 	color: white;
 }
 
+@media print {
+	.tooltip {
+		display: none !important;
+	}
+}
+
 //end for tooltips
 
 .normal-link {

@@ -1,4 +1,23 @@
 module QueriesHelper
+
+	def title_for_print
+		"<p class='subheader'><strong>Collections:</strong>: #{format_collection_titles}</p>
+		<p class='subheader'><strong>Filter</strong>: #{keywords_and_field}</p>".html_safe
+	end
+
+	def keywords_and_field
+		if @query.keywords.present?
+			field = @query.field.present? ? " in #{@query.field.gsub("clean_", "").capitalize}" : " in any field"
+			"\"#{@query.keywords}\"#{field}"
+		else
+			"none"
+		end
+	end
+
+	def format_collection_titles
+		@selected_collections.map {|c| c.title }.join(", ")
+	end
+
 	def set_columns
 		current_user.active_languages
 	end

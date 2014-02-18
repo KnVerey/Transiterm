@@ -21,17 +21,21 @@
 
 <div class="row full-width">
 	<div class="small-12 columns">
-		<h3 class="subheader">
+		<h3 class="subheader hide-for-print">
 			<% if @selected_collections.empty? %>
 				&larr; Use the sidebar to activate languages and choose collections to search
 			<% else %>
-				Searching <%= collection_result_count %><br>
+				Searching <%= collection_result_count %>&nbsp;&nbsp;
+				<span data-tooltip title="<span class='tooltip-smallish'>Click to print these results</span>"><i class="fa fa-print" id="print"></i></span>
+				<br>
 			<% end %>
 		</h3>
+		<%= image_tag("transiterm-150px.png", width: "150px", class: "print-only") %>
+		<div class="print-only"><%= title_for_print %></div>
 	</div>
 </div>
 
-<div class="row search-bar">
+<div class="row search-bar hide-for-print">
   <div class="small-11 columns">
   	<%= form_tag(query_path, method: :get) do %>
 	    <div class="row collapse">

@@ -5,8 +5,8 @@
 	<td class="mandatory-field"><%= render_markdown(term_record.source.name) %></td>
 	<td class="mandatory-field"><%= render_markdown(term_record.domain.name) %></td>
 	<td>
-		<i class="fa fa-plus-square-o fa-lg record-expander"></i>
-		<i class="fa fa-minus-square-o fa-lg record-minimizer hide"></i>
+		<i class="fa fa-plus-square-o fa-lg record-expander hide-for-print"></i>
+		<i class="fa fa-minus-square-o fa-lg record-minimizer hide hide-for-print"></i>
 	</td>
 </tr>
 
@@ -21,6 +21,6 @@
 		<% end %>
 			<small class="left">Collection: <%= term_record.collection.title %>&nbsp | Record created: <%= term_record.created_at %>&nbsp |
 			Record last updated: <%= term_record.updated_at %></small>
-			<%= link_to "Edit record", edit_term_record_path(term_record.id), class: "button edit-button right tiny no-margin secondary" %>
+			<%= link_to "Edit record", edit_term_record_path(term_record.id), class: "button edit-button right tiny no-margin secondary hide-for-print" %>
 	</td>
 </tr>
