@@ -1,0 +1,62 @@
+<% content_for :sidebar_meat do %>
+	<strong><%= link_to "←  Retry import", new_excel_import_path, class: "button tiny c-secondary" %></strong>
+<% end %>
+
+<h2>Import failed</h2><br><br>
+<p><strong>For an import to succeed, Transiterm must be able to create a valid term record from every row in your Excel file.</strong> <br>Please read through the failed records below, adjust your Excel file accordingly, and then <%= link_to "try the import again", new_excel_import_path %>.</p>
+
+<div class="tip-box">
+	<h6><strong>Tips:</strong></h6>
+	<ul>
+		<li>The import stops as soon as it reaches an empty row.</li>
+		<li>The import aborts after 5 records fail. If you see 5 failures below, additional rows of your file may also be invalid.</li>
+		<li>If you really have no data to put in a mandatory column, a quick cheat is to enter "** **" in the blank cell. This will output a line when the term record displays. Obviously, you should use real data if you can!</li><br>
+		<li>"Source name must be specified" error: The source column must be filled in for every row.</li>
+		<li>"Domain name must be specified" error: The domain column must be filled in for every row.</li>
+		<li>"Please fill in all language fields" error: All rows in the Excel file must have the same language (i.e. English, French, Spanish) columns filled in. Note that Transiterm uses the first row (after the header) to figure out which languages to expect.</li>
+	</ul>
+	Still stumped? Email your Excel file to <%= mail_to "transiterm@gmail.com", "transiterm@gmail.com", class: "normal-link" %>.
+</div>
+
+<div class="row">
+	<div class="small-10 columns emphasis-box indented">
+		<h3>Please fix the rows for the following <%= pluralize(@failed_records.count, 'record') %></h3>
+		<table class="records-table">
+			<thead>
+				<tr>
+					<th class="lang-column" width="20%">English</th>
+					<th class="lang-column" width="20%">French</th>
+					<th class="lang-column" width="20%">Spanish</th>
+					<th class="source-column">Source</th>
+					<th class="domain-column">Domain</th>
+					<th class="expander-column"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<% @failed_records.each do |term_record| %>
+					<tr class="term-record">
+						<td class="term"><%= term_record.english %></td>
+						<td class="term"><%= term_record.french %></td>
+						<td class="term"><%= term_record.spanish %></td>
+						<td class="mandatory-field"><%= term_record.source.name %></td>
+						<td class="mandatory-field"><%= term_record.domain.name %></td>
+						<td></td>
+					</tr>
+					<% if term_record.errors.any? %>
+						<tr class="record-expand">
+							<td colspan="6" class="expanded-cell">
+								<strong>Problems with this record:</strong>
+								<ul>
+					        <% term_record.errors.full_messages.each do |msg| %>
+					          <li><%= msg %></li>
+					        <% end %>
+				        </ul>
+							</td>
+						</tr>
+					<% end %>
+				<% end %>
+			</tbody>
+		</table>
+		<%= link_to "I fixed them - Let's try again", new_excel_import_path, class: "button small" %>
+	</div>
+</div>

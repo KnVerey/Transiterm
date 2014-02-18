@@ -5,7 +5,12 @@
 <div class="row full-width">
 	<div class="small-12 columns">
 		<h1>My Transiterm</h1>
-
 		<%= render 'form' %>
+
+	  <fieldset>
+    <legend>Import records</legend>
+    <%= link_to("Import from Excel", new_excel_import_path, class: "button small") %>
+		</fieldset>
+
 	</div>
 </div>

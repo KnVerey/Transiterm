@@ -1,6 +1,6 @@
 <%= form_for(@user) do |f| %>
   <fieldset>
-    <legend>Personal details</legend>
+    <legend>Edit personal details</legend>
       <% if @user.errors.any? %>
         <div id="error_explanation">
           <h2>We found <%= pluralize(@user.errors.count, "problem") %> with your information:</h2>
@@ -64,7 +64,7 @@
 
         <div class="row">
           <div class="actions small-12 columns">
-            <%= f.submit class: "button tiny right" %>
+            <%= f.submit "Update", class: "button tiny right" %>
           </div>
         </div>
       </div>

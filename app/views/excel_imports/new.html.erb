@@ -1,0 +1,40 @@
+<% content_for :sidebar_meat do %>
+	<strong><%= link_to "←  Back to search", query_path, class: "button tiny c-secondary" %></strong>
+<% end %>
+
+<h1>Import term records from Excel (.xls) </h1><br>
+
+<div class="row">
+	<div class="small-11 columns emphasis-box indented">
+		<p><strong>INSTRUCTIONS:</strong> This process creates term records from the rows in an Excel file and adds them to a new collection. You will be given a chance to edit the new collection after the import succeeds. The Excel file you upload <strong>must be a .xls file</strong> (<em>not</em> .xlsx) with <strong>very specific headings</strong>. For best results, download the template below and paste in your data. Be careful not to change the headings!</p>
+		<%= link_to "Download template", root_url+"/TransitermTemplate.xls", class: "button tiny" %>
+
+		<br><strong>MANDATORY COLUMNS:</strong>
+		<ul>
+			<li>Source name and domain name: Always mandatory, so both must be filled in for every row.</li>
+			<li>Language columns (English, French, Spanish): All rows must have the same ones filled in. For example, if your first row (after the headings) has English and French filled in, but leaves Spanish blank, all of your other rows must include English and French, and cannot include Spanish.</li>
+			<li>If you really have no data to put in a mandatory column, a quick cheat is to enter "** **" in the blank cell. This will output a line when the term record displays. Obviously, you should use real data if you can!</li>
+		</ul>
+	</div>
+</div>
+<br>
+<div class="row">
+	<div class="small-11 columns indented ">
+    <% if @importer.errors.any? %>
+      <div id="error_explanation">
+        <h2>Oh no! The upload failed!</h2>
+        <ul>
+        <% @importer.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+		<p><strong>Check over your Excel file carefully. The import will succeed only if Transiterm can make a valid term record from <em>every</em> row in your file.</strong> Note that the import stops when it reaches an empty row.</p>
+		<%= form_for @importer do |i| %>
+			<%= i.file_field :excel_file, class: "uploader" %>
+			<%= i.submit "Upload file", class: "button tiny" %>
+		<% end %>
+	</div>
+</div>
