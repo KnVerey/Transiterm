@@ -18,3 +18,17 @@
 .no-links a {
 	display: none;
 }
+
+#please-wait-modal {
+	height: 75%;
+	text-align: center;
+
+	.valign-content {
+		position: absolute;
+		width: inherit;
+		height: 16rem;
+		padding: 1rem;
+		top: 50%;
+		margin-top: -7rem;
+	}
+}

@@ -2,6 +2,15 @@
 	<strong><%= link_to "&larr;  Back to search".html_safe, query_path, class: "button tiny c-secondary" %></strong>
 <% end %>
 
+<div id='please-wait-modal' class="reveal-modal xlarge data-reveal">
+	<div class="valign-content">
+		<h2>Please Wait</h2>
+		<h2 class="subheader">while we process your file</h2>
+		<p>Processing a large file may take several minutes. Please do not click the back button.</p>
+		<i class="fa fa-spinner fa-spin fa-3x"></i>
+	</div>
+</div>
+
 <h1>Import term records from Excel (.xls) </h1><br>
 
 <div class="row">
@@ -34,7 +43,7 @@
 		<p><strong>Check over your Excel file carefully. The import will succeed only if Transiterm can make a valid term record from <em>every</em> row in your file.</strong> Note that the import stops when it reaches an empty row.</p>
 		<%= form_for @importer do |i| %>
 			<%= i.file_field :excel_file, class: "uploader" %>
-			<%= i.submit "Upload file", class: "button tiny" %>
+			<%= i.submit "Upload file", class: "button tiny", id: "upload-file" %>
 		<% end %>
 	</div>
 </div>

@@ -1,3 +1,7 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
+$(document).ready ->
+	$('#new_excel_import').submit(stallForImportResponse)
+	$('#upload-file').removeAttr('disabled')
+
+stallForImportResponse = () ->
+	$('#upload-file').attr('disabled','disabled')
+	$('#please-wait-modal').foundation('reveal', 'open')
