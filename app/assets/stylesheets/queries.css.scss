@@ -25,6 +25,7 @@ p.compact-para {
 }
 
 .records-table {
+	border: 2px solid $c-bg-secondary;
 	margin-top: 1.5rem;
 	width:95%;
 
@@ -33,7 +34,7 @@ p.compact-para {
 	}
 
 	.term-record {
-		border-top: 1px solid $c-bg-secondary;
+		border-top: 2px solid lighten($c-bg-secondary, 5%);
 	}
 
 	tr.record-expand {
