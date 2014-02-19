@@ -1,4 +1,4 @@
-$(document).ready ->
+jQuery ->
 	$('#new_excel_import').submit(stallForImportResponse)
 	$('#upload-file').removeAttr('disabled')
 

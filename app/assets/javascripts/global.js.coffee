@@ -1,4 +1,4 @@
-$(document).ready ->
+jQuery ->
 	if $('#notice').length then slideFlash($('#notice'))
 	if $('#alert').length then slideFlash($('#alert'))
 	if $('#success').length then slideFlash($('#success'))
@@ -15,6 +15,6 @@ slideFlash = (target) ->
   ), 3000)
 
 toggleRecordExpand = () ->
-	$(this).parents('tr').next('.record-expand').toggleClass("hide")
-	$($(this).siblings('.fa')[0]).toggleClass("hide")
-	$(this).toggleClass("hide")
+	$(@).parents('tr').next('.record-expand').toggleClass("hide")
+	$($(@).siblings('.fa')[0]).toggleClass("hide")
+	$(@).toggleClass("hide")
