@@ -77,7 +77,7 @@ class ExcelImport
   def map_headings
   	headings_row = @excel.row(0)
   	headings_row.inject({}) do |headings_hash, cell|
-  		if cell.match(/\A(english|french|spanish|context|comment|domain name|source name)\z/i)
+  		if cell.present? && cell.match(/\A(english|french|spanish|context|comment|domain name|source name)\z/i)
   			headings_hash[cell.downcase.gsub(" ", "_").to_sym] = headings_row.find_index(cell)
   		end
   		headings_hash

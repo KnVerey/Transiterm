@@ -11,6 +11,7 @@
 		<li>The import stops as soon as it reaches an empty row.</li>
 		<li>The import aborts after 5 records fail. If you see 5 failures below, additional rows of your file may also be invalid.</li>
 		<li>If you really have no data to put in a mandatory column, a quick cheat is to enter "** **" in the blank cell. This will output a line when the term record displays. Obviously, you should use real data if you can!</li><br>
+		<li>Little or no data shown, and all records have "Domain/Source must be specified" errors: This is likely a headings problem. Please make sure that your headings match the ones in the <%= link_to "template", root_url+"/TransitermTemplate.xls", class: "normal-link" %>.</li>
 		<li>"Source name must be specified" error: The source column must be filled in for every row.</li>
 		<li>"Domain name must be specified" error: The domain column must be filled in for every row.</li>
 		<li>"Please fill in all language fields" error: All rows in the Excel file must have the same language (i.e. English, French, Spanish) columns filled in. Note that Transiterm uses the first row (after the header) to figure out which languages to expect.</li>
