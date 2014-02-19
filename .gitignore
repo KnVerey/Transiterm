@@ -52,3 +52,4 @@ coverage
 *.key
 *.pdf
 app/assets/images/t*.*
+spec/fixtures/katrina trans1 valid.xls
