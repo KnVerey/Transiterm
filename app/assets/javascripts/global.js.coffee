@@ -3,10 +3,10 @@ $(document).ready ->
 	if $('#alert').length then slideFlash($('#alert'))
 	if $('#success').length then slideFlash($('#success'))
 
-	$('.record-expander').click(toggleRecordExpand)
-	$('.record-minimizer').click(toggleRecordExpand)
-	$('#delete-link').click(->
-		confirm("Are you sure? Deletion can't be undone!"))
+	$('#term-records').on 'click', '.record-expander', toggleRecordExpand
+	$('#term-records').on 'click', '.record-minimizer', toggleRecordExpand
+	$('#delete-link').on 'click', ->
+		confirm("Are you sure? Deletion can't be undone!")
 
 slideFlash = (target) ->
 	$(target).animate({top: 30}, 800)
