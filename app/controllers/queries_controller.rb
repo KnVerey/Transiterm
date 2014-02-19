@@ -1,4 +1,5 @@
 class QueriesController < ApplicationController
+	respond_to :html, :js
 
 	def show
 		@sidebar_collections = Collection.currently_visible(current_user)
