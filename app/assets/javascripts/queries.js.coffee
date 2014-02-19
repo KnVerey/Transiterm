@@ -2,6 +2,16 @@ jQuery ->
 	$("#print").click ->
 		window.print()
 
+	$("#search").submit (e) ->
+		e.preventDefault()
+		$.ajax
+			type: 'GET'
+			url: $(@).attr('action')
+			data: $(@).serialize()
+			dataType: 'script'
+			beforeSend: ->
+				$('#term-records').html("")
+
 	if $('.pagination').length
 		$(window).scroll ->
 			url = $('.pagination span.next').children().attr('href')
