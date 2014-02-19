@@ -13,15 +13,17 @@ userNearBottom = () ->
 	$(window).scrollTop() > $(document).height() - $(window).height() - 550
 
 appendNextPage = (url) ->
-	oldPaginatorContent = $('.pagination').html()
-	waitMsg = "&nbsp&nbsp<i class='fa fa-spinner fa-spin'></i> &nbsp&nbspLoading more results..."
-	fillPaginator(waitMsg)
-
+	paginationHandler = paginationToMsg()
 	$.ajax
 		url: url
 		dataType: "script"
 		error: ->
-			fillPaginator(oldPaginatorContent)
+			paginationHandler.reset()
 
-fillPaginator = (content) ->
-	$('.pagination').html(content)
+paginationToMsg = () ->
+	originalContent: $('.pagination').html()
+	setWaitMsg: do ->
+		msg = "&nbsp&nbsp<i class='fa fa-spinner fa-spin'></i> &nbsp&nbspLoading more results..."
+		$('.pagination').html(msg)
+	reset: ->
+		$('.pagination').html(@.originalContent)
