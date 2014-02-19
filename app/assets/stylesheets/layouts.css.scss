@@ -24,12 +24,11 @@ body {
 }
 
 // for tooltips
-span.tooltip-smallish {
-	font-size: 0.85em;
-}
-
-h5.tooltip-color {
+.tooltip p {
+	font-size: 0.8em;
 	color: white;
+	margin-bottom: 0;
+	padding: 3px 0;
 }
 
 @media print {
