@@ -137,6 +137,7 @@ form {
 	top: 0;
 	bottom: $h-bottom-bar;
 	left: 0;
+	-ms-overflow-x: hidden;
 	overflow-x: hidden;
 }
 
@@ -147,6 +148,7 @@ form {
 	h5 {
 		// border: 2px solid black;
 		background-color: $c-bg-secondary;
+		-webkit-box-shadow: 0px 2px;
 		box-shadow: 0px 2px;
 		color: $c-text-secondary;
 		margin-bottom: 1em;
