@@ -10,6 +10,6 @@
 <div class="warning">
 	<strong>WARNING:</strong> The link below will permanently delete your term record. This can't be undone!
 	<%= form_tag(term_record_path(@term_record.id), method: :delete) do %>
-	  <%= submit_tag "Delete record", class: "delete-link" %>
+	  <%= submit_tag "Delete record", class: "delete-link", id: "delete-link" %>
 	<% end %>
 </div>

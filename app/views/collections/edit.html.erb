@@ -11,7 +11,7 @@
   <div class="small-12 large-9 columns warning">
 		<strong>WARNING:</strong> The link below will permanently delete your collection. This can't be undone!
 		<%= form_tag(collection_path(@collection.id), method: :delete) do %>
-		  <%= submit_tag "Delete collection", class: "delete-link" %>
+		  <%= submit_tag "Delete collection", class: "delete-link", id: "delete-link" %>
 		<% end %>
 	</div>
 </div>

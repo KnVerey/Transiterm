@@ -83,9 +83,10 @@ p.compact-para {
 }
 
 .warning {
-	.delete-link, .delete-link:visited, a, a:visited {
+	.delete-link, .delete-link:visited, .delete-link:focus, a, a:visited {
 			background: none;
 			border: none;
+			outline: none;
 			color: $c-link-unchanging;
 		  text-decoration: none;
 		  padding: 2px 6px 3px;

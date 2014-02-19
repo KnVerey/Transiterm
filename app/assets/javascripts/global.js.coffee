@@ -5,6 +5,8 @@ $(document).ready ->
 
 	$('.record-expander').click(toggleRecordExpand)
 	$('.record-minimizer').click(toggleRecordExpand)
+	$('#delete-link').click(->
+		confirm("Are you sure? Deletion can't be undone!"))
 
 slideFlash = (target) ->
 	$(target).animate({top: 30}, 800)
