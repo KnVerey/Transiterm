@@ -15,7 +15,7 @@
       <div class="inner-wrap">
 
         <!-- SMALL-ONLY NAV AND SIDEBAR -->
-        <nav class="tab-bar show-for-small-only c-primary">
+        <nav class="tab-bar show-for-small-only c-primary hide-for-print" id="small-nav">
           <section class="left-small">
             <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
           </section>
@@ -24,7 +24,7 @@
           </section>
         </nav>
 
-        <aside class="show-for-small-only left-off-canvas-menu sidebar" id="sidebar">
+        <aside class="show-for-small-only left-off-canvas-menu sidebar hide-for-print" id="sidebar">
           <%= yield :sidebar_meat %>
         </aside>
 

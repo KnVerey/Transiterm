@@ -19,7 +19,7 @@
 	min-width: 180px !important;
 }
 
-nav.c-primary {
+#small-nav {
 	background-color: $c-bg-primary;
 	color: $c-text-primary;
 
@@ -58,7 +58,7 @@ body {
 }
 
 @media print {
-	.tooltip {
+	.tooltip, #small-nav {
 		display: none !important;
 	}
 }
