@@ -2,6 +2,10 @@
 	<strong><%= link_to "&larr;  Back to search".html_safe, query_path, class: "button tiny c-secondary" %></strong>
 <% end %>
 
+<% content_for :add_button_area do %>
+  <strong class="show-for-small-only"><%= link_to "&larr;  Back to search".html_safe, query_path, class: "button tiny c-secondary" %></strong>
+<% end %>
+
 <div class="row full-width">
 	<div class="small-12 columns">
 		<h1>My Transiterm</h1>

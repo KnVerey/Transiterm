@@ -1,3 +1,12 @@
+<% content_for :sidebar_meat do %>
+  <strong><%= link_to "&larr;  Back to search".html_safe, query_path, class: "button tiny c-secondary" %></strong>
+  <%= render 'formatting_guide' %>
+<% end %>
+
+<% content_for :add_button_area do %>
+  <strong class="show-for-small-only"><%= link_to "&larr;  Back to search".html_safe, query_path, class: "button tiny c-secondary" %></strong>
+<% end %>
+
 <%= form_for(@term_record) do |f| %>
 
   <% if @term_record.errors.any? %>

@@ -2,6 +2,10 @@
 	<strong><%= link_to "&larr;  Retry import".html_safe, new_excel_import_path, class: "button tiny c-secondary" %></strong>
 <% end %>
 
+<% content_for :add_button_area do %>
+  <strong class="show-for-small-only"><%= link_to "&larr;  Retry import".html_safe, new_excel_import_path, class: "button tiny c-secondary" %></strong>
+<% end %>
+
 <h2>Import failed</h2><br><br>
 <p><strong>For an import to succeed, Transiterm must be able to create a valid term record from every row in your Excel file.</strong> <br>Please read through the failed records below, adjust your Excel file accordingly, and then <%= link_to "try the import again", new_excel_import_path %>.</p>
 

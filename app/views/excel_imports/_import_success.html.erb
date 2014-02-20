@@ -2,6 +2,10 @@
 	<strong><%= link_to "Continue to collection &rarr;".html_safe, edit_collection_path(@importer.collection), class: "button tiny c-secondary" %></strong>
 <% end %>
 
+<% content_for :add_button_area do %>
+  <strong class="show-for-small-only"><%= link_to "Continue to collection &rarr;".html_safe, edit_collection_path(@importer.collection), class: "button tiny c-secondary" %></strong>
+<% end %>
+
 <h2>Import successful: <%= pluralize(@saved_records.count, 'record') %> imported</h2><br><br>
 <div class="row">
 	<div class="small-10 columns indented">
