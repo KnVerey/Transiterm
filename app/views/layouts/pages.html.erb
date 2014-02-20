@@ -7,6 +7,7 @@
     <title><%= content_for?(:title) ? yield(:title) : "Transiterm" %></title>
     <%= stylesheet_link_tag "application", media: "all" %>
     <%= csrf_meta_tags %>
+    <%= favicon_link_tag 'T-apple-touch.png', rel: 'apple-touch-icon', type: 'image/png' %>
   </head>
 
   <body>
