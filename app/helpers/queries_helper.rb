@@ -1,7 +1,7 @@
 module QueriesHelper
 
 	def title_for_print
-		"<p class='subheader'><strong>Collections:</strong>: #{format_collection_titles}</p>
+		"<p class='subheader'><strong>Collections</strong>: #{format_collection_titles}</p>
 		<p class='subheader'><strong>Filter</strong>: #{keywords_and_field}</p>".html_safe
 	end
 
