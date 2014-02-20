@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js full-height" lang="en">
+<html class="no-js" lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,50 +11,65 @@
 
   <body>
 
-    <div class="row no-margin">
+    <div class="row no-margin off-canvas-wrap">
+      <div class="inner-wrap">
 
-      <!-- SIDEBAR -->
-      <div class="small-4 medium-3 large-2 columns no-padding sidebar hide-for-print" id="sidebar">
+        <!-- SMALL-ONLY NAV AND SIDEBAR -->
+        <nav class="tab-bar show-for-small-only c-primary">
+          <section class="left-small">
+            <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+          </section>
+          <section class="tab-bar-section right">
+            <%= link_to image_tag("transiterm-100px-white.png", width: "150px", class: "logo right", alt:"Transiterm logo"), query_path %>
+          </section>
+        </nav>
 
-        <!-- Icon row -->
-        <div class="row no-margin">
-          <div class="small-12 small-centered columns">
-            <%= link_to image_tag("transiterm-150px.png", width: "150px", class: "logo", alt:"Transiterm logo"), query_path %>
+        <aside class="show-for-small-only left-off-canvas-menu sidebar" id="sidebar">
+          <%= yield :sidebar_meat %>
+        </aside>
+
+        <!-- MED+ SIDEBAR -->
+        <div class="show-for-medium-up medium-3 large-2 columns no-padding sidebar hide-for-print" id="sidebar">
+
+          <!-- Icon row -->
+          <div class="row no-margin">
+            <div class="small-12 small-centered columns">
+              <%= link_to image_tag("transiterm-150px.png", width: "150px", class: "logo", alt:"Transiterm logo"), query_path %>
+            </div>
           </div>
+
+          <!-- Collections list or back button row -->
+          <%= yield :sidebar_meat %>
         </div>
 
-        <!-- Collections list or back button row -->
-        <%= yield :sidebar_meat %>
+        <main class="main-section small-12 medium-8 medium-offset-1 large-9 columns full-height right">
+
+          <!-- Alerts section -->
+           <% if flash[:notice] %>
+              <div data-alert class="alert-box info" id="notice">
+                <%= flash[:notice] %>
+                <a href="#" class="close">&times;</a>
+              </div>
+            <% elsif flash[:alert] %>
+              <div data-alert class="alert-box alert" id="alert">
+                <%= flash[:alert] %>
+                <a href="#" class="close">&times;</a>
+              </div>
+            <% elsif flash[:success] %>
+              <div data-alert class="alert-box success" id="success">
+                <%= flash[:success] %>
+                <a href="#" class="close">&times;</a>
+              </div>
+            <% end %>
+          <%= yield %>
+        </main>
+        <a class="exit-off-canvas"></a>
       </div>
-
-      <main class="small-8 medium-8 medium-offset-1 large-9 columns full-height">
-
-        <!-- Alerts section -->
-         <% if flash[:notice] %>
-            <div data-alert class="alert-box info" id="notice">
-              <%= flash[:notice] %>
-              <a href="#" class="close">&times;</a>
-            </div>
-          <% elsif flash[:alert] %>
-            <div data-alert class="alert-box alert" id="alert">
-              <%= flash[:alert] %>
-              <a href="#" class="close">&times;</a>
-            </div>
-          <% elsif flash[:success] %>
-            <div data-alert class="alert-box success" id="success">
-              <%= flash[:success] %>
-              <a href="#" class="close">&times;</a>
-            </div>
-          <% end %>
-
-        <%= yield %>
-
-      </main>
     </div>
 
     <!-- Add button and Login/settings row -->
     <div class="row cling-bottom hide-for-print">
-      <div class="small-4 medium-3 large-2 columns color-hook">
+      <div class="small-12 medium-3 large-2 columns color-hook">
 
         <div class="row no-margin add-button-row">
             <%= yield :add_button_area %>

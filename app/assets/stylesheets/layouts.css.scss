@@ -1,5 +1,6 @@
 .full-height {
 	min-height: 100% !important;
+	position: static;
 }
 
 .full-width {
@@ -18,8 +19,33 @@
 	min-width: 180px !important;
 }
 
+nav.c-primary {
+	background-color: $c-bg-primary;
+	color: $c-text-primary;
+
+	section.left-small {
+		border-color: darken($c-text-primary, 20%);
+	}
+}
+
+html, body {
+	position: static;
+	height: 100%;
+}
+
+.off-canvas-wrap {
+	height: inherit;
+	display: inline;
+
+	.inner-wrap {
+		position: relative;
+		height: auto !important;
+		min-height: 100%;
+	}
+}
+
+
 body {
-	min-width: 520px;
 	z-index: 100;
 }
 
@@ -68,32 +94,23 @@ body {
 	}
 }
 
-html {
-	position: relative;
 
-	body {
-		height: 100%;
-		position: static;
+main {
+	padding-top: 2em;
+	background-color: white;
+
+	a.regular-link, a.regular-link:visited {
+		color: $c-link-unchanging;
+		text-decoration: underline;
 	}
 
-	main {
-		padding-top: 2em;
-		z-index: 95;
-		background-color: white;
+	a:hover {
+		background-color: initial;
+		color: $c-bg-primary;
+	}
 
-		a.regular-link, a.regular-link:visited {
-			color: $c-link-unchanging;
-			text-decoration: underline;
-		}
-
-		a:hover {
-			background-color: initial;
-			color: $c-bg-primary;
-		}
-
-		.button:visited {
-			color: white;
-		}
+	.button:visited {
+		color: white;
 	}
 }
 
@@ -139,6 +156,10 @@ form {
 	left: 0;
 	-ms-overflow-x: hidden;
 	overflow-x: hidden;
+}
+
+aside#sidebar {
+	padding: 3em 0;
 }
 
 .sidebar {
