@@ -2,9 +2,9 @@
 	<% lang_columns(term_record).each do |title| %>
 		<td class="term"><%= render_markdown(term_record.send(title.downcase)) %></td>
 	<% end %>
-	<td class="mandatory-field"><%= render_markdown(term_record.source.name) %></td>
-	<td class="mandatory-field"><%= render_markdown(term_record.domain.name) %></td>
-	<td>
+	<td class="mandatory-field hide-for-small"><%= render_markdown(term_record.source.name) %></td>
+	<td class="mandatory-field hide-for-small"><%= render_markdown(term_record.domain.name) %></td>
+	<td class="right">
 		<i class="fa fa-plus-square-o fa-lg record-expander hide-for-print"></i>
 		<i class="fa fa-minus-square-o fa-lg record-minimizer hide hide-for-print"></i>
 	</td>
@@ -12,6 +12,10 @@
 
 <tr class="record-expand hide">
 	<td colspan="<%= lang_columns(term_record).length + 3 %>" class="expanded-cell">
+		<span class="mandatory-field show-for-small-only">
+			<strong>Source</strong>: <%= render_markdown(term_record.source.name) %><br>
+			<strong>Domain</strong>: <%= render_markdown(term_record.domain.name) %>
+		</span>
 		<% if term_record.context.present? %>
 			<span class="optional-field"><strong>Context</strong>: <%= render_markdown(term_record.context) %></span><br>
 		<% end %>
