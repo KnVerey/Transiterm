@@ -26,13 +26,16 @@ describe TermRecordsController do
 			  assigns(:term_record).should be_a_new(TermRecord)
 			end
 
-			it "assigns most recently modified collection as @default_collection" do
+			it "assigns most recently modified collection (with the same language combo) as @default_collection" do
 				controller.stub(:current_user).and_return(person)
-				a = FactoryGirl.create(:collection, user: person)
-				b = FactoryGirl.create(:collection, user: person)
+				ignore = FactoryGirl.create(:collection, user: person, english: true, spanish: false, french: false)
+				a = FactoryGirl.create(:collection, user: person, english: true, spanish: false, french: true)
+				b = FactoryGirl.create(:collection, user: person, english: true, spanish: false, french: true)
 				t = FactoryGirl.create(:term_record)
 				t.collection = a
 				t.save
+				ignore.title = "Not me"
+				ignore.save
 
 				get :new
 				expect(assigns(:default_collection)).to eq(a)
