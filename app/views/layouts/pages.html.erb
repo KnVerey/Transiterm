@@ -7,9 +7,6 @@
     <title><%= content_for?(:title) ? yield(:title) : "Transiterm" %></title>
     <%= stylesheet_link_tag "application", media: "all" %>
     <%= csrf_meta_tags %>
-    <%= favicon_link_tag 'touch-icon-iphone.png', rel: 'apple-touch-icon', type: 'image/png' %>
-    <%= favicon_link_tag 'touch-icon-ipad.png', sizes: '76x76', rel: 'apple-touch-icon', type: 'image/png' %>
-    <%= favicon_link_tag 'touch-icon-iphone-retina.png', sizes: '120x120', rel: 'apple-touch-icon', type: 'image/png' %>
     <%= favicon_link_tag 'touch-icon-ipad-retina.png', sizes: '152x152', rel: 'apple-touch-icon', type: 'image/png' %>
   </head>
 
