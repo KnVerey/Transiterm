@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<svg width="440" height="440" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
+ <defs>
+  <linearGradient y2="0" x2="1" y1="0" x1="0" id="svg_2">
+   <stop stop-color="#d34504" offset="0"/>
+   <stop stop-color="#800404" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <g id="svg_1">
+   <g id="svg_33">
+    <path fill="url(#svg_2)" stroke="#000000" stroke-width="2" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m426.049988,20l-37.438354,37l-123.152771,0l0,320l-38.408859,43l-0.014801,-363l38.42366,-37l160.591125,0z" id="svg_31"/>
+    <line fill="url(#svg_2)" stroke="#000000" stroke-width="2" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="265.458855" y1="58" x2="265.458855" y2="20.000001" id="svg_32"/>
+   </g>
+   <g id="svg_34">
+    <path fill="url(#svg_2)" stroke="#000000" stroke-width="2" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m13.95,20l37.809049,37l124.372162,0l0,320l38.789124,43l0.014893,-363l-38.804016,-37l-162.181211,0z" id="svg_35"/>
+    <line fill="url(#svg_2)" stroke="#000000" stroke-width="2" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="176.131177" y1="58" x2="176.131177" y2="20.000001" id="svg_36"/>
+   </g>
+  </g>
+ </g>
+</svg>
