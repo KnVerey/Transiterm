@@ -20,11 +20,13 @@
 }
 
 #small-nav {
-	background-color: $c-bg-primary;
-	color: $c-text-primary;
-
 	section.left-small {
 		border-color: darken($c-text-primary, 20%);
+		background-color: $c-bg-primary;
+		color: $c-text-primary;
+	}
+	section.right {
+		background-color: darken($c-bg-secondary, 25%)
 	}
 }
 
