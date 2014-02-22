@@ -76,8 +76,7 @@ class User < ActiveRecord::Base
   def toggle_all(turn_off=false)
     relevant_ids = find_all_ids_in_lang_combo
 
-    # Next line: if all relevant ids are already active
-    if turn_off || all_already_active?
+    if turn_off || all_already_active?(relevant_ids)
       self.active_collection_ids = self.active_collection_ids - relevant_ids
     else
       self.active_collection_ids += relevant_ids
@@ -90,7 +89,7 @@ class User < ActiveRecord::Base
     self.password.present? || self.password_confirmation.present?
   end
 
-  def all_already_active?
+  def all_already_active?(relevant_ids)
     (relevant_ids & self.active_collection_ids).sort == relevant_ids.sort
   end
 

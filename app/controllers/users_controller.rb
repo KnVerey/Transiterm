@@ -13,7 +13,7 @@ class UsersController < ApplicationController
   end
 
   def collection_toggle
-    current_user.toggle_all(turn_off: true) if params[:disable_others]
+    current_user.toggle_all(turn_off: true) if params[:disable_others]=="true"
     current_user.toggle_collection(params[:collection_id])
     redirect_to query_path
   end
