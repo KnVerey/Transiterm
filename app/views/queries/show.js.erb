@@ -7,7 +7,7 @@ $('#term-records').append('<%= j render(@term_records) %>');
 <% end %>
 
 <% if !@term_records.present? && @selected_collections.present? %>
-	$('#message-area').html("No results, sorry")
+	$('#message-area').html("<h5>Sorry, no results</h5>")
 <% else %>
 	$('#message-area').empty()
 <% end %>
