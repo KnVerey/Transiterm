@@ -46,7 +46,7 @@
 
     <% @sidebar_collections.each do |c| %>
       <div class="row collection selector clearfix <%= collection_active_class(c) %>">
-        <%= link_to "#{collection_toggle_path}?collection_id=#{c.id}" do %>
+        <%= link_to "#{collection_toggle_path}?collection_id=#{c.id}&disable_others=true" do %>
           <div class="small-11 columns no-padding">
             <%= c.title %>
           </div>

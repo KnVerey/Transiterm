@@ -73,21 +73,25 @@ class User < ActiveRecord::Base
     save
   end
 
-  private
-  def password_present?
-    self.password.present? || self.password_confirmation.present?
-  end
-
-  def toggle_all
+  def toggle_all(turn_off=false)
     relevant_ids = find_all_ids_in_lang_combo
 
     # Next line: if all relevant ids are already active
-    if (relevant_ids & self.active_collection_ids).sort == relevant_ids.sort
+    if turn_off || all_already_active?
       self.active_collection_ids = self.active_collection_ids - relevant_ids
     else
       self.active_collection_ids += relevant_ids
       self.active_collection_ids.uniq!
     end
+  end
+
+  private
+  def password_present?
+    self.password.present? || self.password_confirmation.present?
+  end
+
+  def all_already_active?
+    (relevant_ids & self.active_collection_ids).sort == relevant_ids.sort
   end
 
   def find_all_ids_in_lang_combo
