@@ -10,9 +10,15 @@ jQuery ->
 			data: $(@).serialize()
 			dataType: 'script'
 			beforeSend: ->
-				$('#term-records').html("")
+				$('#records-table').hide()
+				$('#term-records').empty()
+				setWaitMsg("Searching...")
+			success: ->
+				$('#records-table').show()
+				$('.pagination').css('display', 'none')
 
 	if $('.pagination').length
+		$('.pagination').css('display', 'none')
 		$(window).scroll ->
 			url = $('.pagination span.next').children().attr('href')
 			if url && userNearBottom()
@@ -20,20 +26,15 @@ jQuery ->
 		$(window).scroll()
 
 userNearBottom = () ->
-	$(window).scrollTop() > $(document).height() - $(window).height() - 550
+	$(window).scrollTop() > $(document).height() - $(window).height() - 350
 
 appendNextPage = (url) ->
-	paginationHandler = paginationToMsg()
+	setWaitMsg("Loading more results...")
 	$.ajax
 		url: url
 		dataType: "script"
-		error: ->
-			paginationHandler.reset()
+		success: ->
+			$('.pagination').css('display', 'none')
 
-paginationToMsg = () ->
-	originalContent: $('.pagination').html()
-	setWaitMsg: do ->
-		msg = "&nbsp&nbsp<i class='fa fa-spinner fa-spin'></i> &nbsp&nbspLoading more results..."
-		$('.pagination').html(msg)
-	reset: ->
-		$('.pagination').html(@.originalContent)
+setWaitMsg = (msg) ->
+	$('#message-area').html("<i class='fa fa-spinner fa-spin'></i> &nbsp&nbsp#{msg}")

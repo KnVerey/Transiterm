@@ -55,7 +55,7 @@
 </div>
 
 <% if @term_records.present? %>
-	<table class="records-table">
+	<table class="records-table" id="records-table">
 		<thead>
 			<tr>
 				<% set_columns.each do |lang| %>
@@ -70,8 +70,12 @@
 			<%= render @term_records %>
 		</tbody>
 	</table>
-<% elsif @selected_collections.present? %>
-	<h5 class="subheader">No results, sorry</h5>
 <% end %>
+
+<div id="message-area">
+	<% if !@term_records.present? && @selected_collections.present? %>
+		<h5 class="subheader">No results, sorry</h5>
+	<% end %>
+</div>
 
 <span class="hide-for-print"><%= paginate @term_records %></span>

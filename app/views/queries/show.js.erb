@@ -1,2 +1,13 @@
 $('#term-records').append('<%= j render(@term_records) %>');
-$('.pagination').replaceWith('<%= j paginate(@term_records) %>');
+
+<% if (new_pagination = j paginate(@term_records)).present? %>
+	$('.pagination').replaceWith('<%= new_pagination %>');
+<% else %>
+	$('.pagination').empty()
+<% end %>
+
+<% if !@term_records.present? && @selected_collections.present? %>
+	$('#message-area').html("No results, sorry")
+<% else %>
+	$('#message-area').empty()
+<% end %>
