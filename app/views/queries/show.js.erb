@@ -1,4 +1,5 @@
 $('#term-records').append('<%= j render(@term_records) %>');
+$('#results-count').html('<%= @query.total_results %>')
 
 <% if (new_pagination = j paginate(@term_records)).present? %>
 	$('.pagination').replaceWith('<%= new_pagination %>');

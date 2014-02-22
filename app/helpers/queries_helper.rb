@@ -68,6 +68,6 @@ module QueriesHelper
 		num_results = @query.total_results
 		num_collections = @selected_collections.length
 
-		"#{num_collections} #{format_active_langs} #{'collection'.pluralize(num_collections)} (#{num_results} #{'result'.pluralize(num_results)})"
+		"#{num_collections} #{format_active_langs} #{'collection'.pluralize(num_collections)} (<span id='results-count'>#{num_results}</span> #{'result'.pluralize(num_results)})".html_safe
 	end
 end
