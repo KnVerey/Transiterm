@@ -45,16 +45,25 @@
     <% end %>
 
     <% @sidebar_collections.each do |c| %>
-      <div class="row collection selector clearfix <%= collection_active_class(c) %>">
-        <%= link_to "#{collection_toggle_path}?collection_id=#{c.id}&disable_others=true" do %>
-          <div class="small-11 columns no-padding">
-            <%= c.title %>
-          </div>
-        <% end %>
+      <div class="row collection <%= collection_active_class(c) %> selector">
         <div class="small-1 columns no-padding">
           <%= link_to edit_collection_path(c) do %>
-            <span data-tooltip class="tip-right hide-for-touch" title="<%= '<p>' + c.description + '</p>' if c.description.present? %><p>Click the <i class='fa fa-info-circle fa-lg'></i> to edit or delete this collection.</p>"><i class="fa fa-info-circle fa-lg"></i></span>
+            <span data-tooltip class="tip-top hide-for-touch" title="<%= '<p>' + c.description + '</p>' if c.description.present? %><p>Click the <i class='fa fa-info-circle fa-lg'></i> to edit or delete this collection.</p>"><i class="fa fa-info-circle fa-lg"></i></span>
             <i class="fa fa-info-circle fa-lg show-for-touch"></i>
+          <% end %>
+        </div>
+
+        <%= link_to "#{collection_toggle_path}?collection_id=#{c.id}&disable_others=true" do %>
+          <div class="small-9 columns no-padding">
+            <span data-tooltip class="hide-for-touch" title="<p>Click to activate this collection only</p>"><%= c.title %></span>
+            <span class="show-for-touch"><%= c.title %></span>
+          </div>
+        <% end %>
+
+        <div class="small-2 columns no-padding">
+          <%= link_to "#{collection_toggle_path}?collection_id=#{c.id}&disable_others=false" do %>
+            <span data-tooltip class="tip-right hide-for-touch" title="<p>Click to add/remove from selection</p>"><i class="fa fa-lg <%= checkbox_class(c) %>"></i></span>
+            <i class="fa fa-lg <%= checkbox_class(c) %> show-for-touch"></i>
           <% end %>
         </div>
       </div>

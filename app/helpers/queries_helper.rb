@@ -30,6 +30,10 @@ module QueriesHelper
 		"active" if current_user.active_languages.include?(language.downcase)
 	end
 
+	def checkbox_class(collection)
+		@selected_collections.include?(collection) ? "fa-check-square-o" : "fa-square-o"
+	end
+
 	def collection_active_class(collection)
 		"active" if @selected_collections.include?(collection)
 	end
