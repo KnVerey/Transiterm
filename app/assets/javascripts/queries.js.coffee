@@ -4,26 +4,19 @@ jQuery ->
 
 	$("#search").submit (e) ->
 		e.preventDefault()
-		$.ajax
-			type: 'GET'
-			url: $(@).attr('action')
-			data: $(@).serialize()
-			dataType: 'script'
-			beforeSend: ->
-				$('#records-table').hide()
-				$('#term-records').empty()
-				setWaitMsg("Searching...")
-			success: ->
-				$('#records-table').show()
-				$('.pagination').css('display', 'none')
+		data = $(@).serialize()
+		url = $(@).attr('action')
+		ajaxSearch(data, url)
 
 	if $('.pagination').length
-		$('.pagination').css('display', 'none')
-		$(window).scroll ->
-			url = $('.pagination span.next').children().attr('href')
-			if url && userNearBottom()
-				appendNextPage(url)
+		hidePagination()
+		bindInfiniteScroll()
 		$(window).scroll()
+
+bindInfiniteScroll = () ->
+	$(window).scroll ->
+		url = $('.pagination span.next').children().attr('href')
+		if url && userNearBottom() then appendNextPage(url)
 
 userNearBottom = () ->
 	$(window).scrollTop() > $(document).height() - $(window).height() - 350
@@ -34,7 +27,26 @@ appendNextPage = (url) ->
 		url: url
 		dataType: "script"
 		success: ->
-			$('.pagination').css('display', 'none')
+			hidePagination()
+
+ajaxSearch = (data, url) ->
+	setWaitMsg("Searching...")
+	clearRecordsTable()
+	$.ajax
+		type: 'GET'
+		url: url
+		data: data
+		dataType: 'script'
+		success: ->
+			hidePagination()
+			$('#records-table').show()
+
+clearRecordsTable = ->
+	$('#records-table').hide()
+	$('#term-records').empty()
 
 setWaitMsg = (msg) ->
 	$('#message-area').html("<i class='fa fa-spinner fa-spin'></i> &nbsp&nbsp#{msg}")
+
+hidePagination = ->
+	$('.pagination').css('display', 'none')
