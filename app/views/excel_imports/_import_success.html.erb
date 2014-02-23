@@ -16,7 +16,7 @@
 <div class="row">
 	<div class="small-10 columns emphasis-box indented">
 		<h3>First few records created:</h3>
-		<table class="records-table">
+		<table class="records-table" id="records-table">
 			<thead>
 				<tr>
 					<% set_columns.each do |lang| %>
@@ -27,7 +27,7 @@
 					<th class="expander-column"></th>
 				</tr>
 			</thead>
-			<tbody class="no-links">
+			<tbody class="no-links" id="term-records">
 				<%= render @saved_records.limit(5) %>
 			</tbody>
 		</table>
