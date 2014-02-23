@@ -19,9 +19,14 @@
 	display: none;
 }
 
+.reveal-modal-bg {
+	z-index: 101;
+}
+
 #please-wait-modal {
 	height: 75%;
 	text-align: center;
+	z-index: 1000;
 
 	.valign-content {
 		position: absolute;
