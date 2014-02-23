@@ -111,29 +111,18 @@ describe User do
     end
   end
 
-  describe "active_languages" do
-    context "with one active language" do
-      it "reports an array of one language" do
-        user = FactoryGirl.build(:user, french_active: true, english_active: false, spanish_active: false)
-        expect(user.active_languages.kind_of? Array).to be_true
-        expect(user.active_languages.length).to eq(1)
-      end
+  describe "language_statuses" do
+    it "returns a hash with three items" do
+      user = FactoryGirl.build(:user, french_active: true, english_active: false, spanish_active: false)
+      expect(user.language_statuses.kind_of? Hash).to be_true
+      expect(user.language_statuses.length).to eq(3)
     end
 
-    context "with two active languages" do
-      it "reports an array of two languages" do
-        user = FactoryGirl.build(:user, french_active: true, english_active: true, spanish_active: false)
-        expect(user.active_languages.kind_of? Array).to be_true
-        expect(user.active_languages.length).to eq(2)
-      end
-    end
-
-    context "with three active languages" do
-      it "reports an array of two languages" do
-        user = FactoryGirl.build(:user, french_active: true, english_active: true, spanish_active: true)
-        expect(user.active_languages.kind_of? Array).to be_true
-        expect(user.active_languages.length).to eq(3)
-      end
+    it "correctly records the active languages" do
+      user = FactoryGirl.build(:user, french_active: true, english_active: true, spanish_active: false)
+      expect(user.language_statuses[:french]).to eq(true)
+      expect(user.language_statuses[:english]).to eq(true)
+      expect(user.language_statuses[:spanish]).to eq(false)
     end
   end
 

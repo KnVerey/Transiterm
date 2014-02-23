@@ -11,18 +11,9 @@ class Collection < ActiveRecord::Base
 
   default_scope { order(title: :asc) }
 
-  scope :currently_visible, -> (current_user) {
+  scope :by_active_languages, -> (status_hash) {
 		where(
-      user_id: current_user.id,
-      french: current_user.french_active,
-      english: current_user.english_active,
-      spanish: current_user.spanish_active
-      )
-  }
-
-  scope :fully_active, -> (current_user) {
-		currently_visible(current_user).where(
-      id: current_user.active_collection_ids
+      status_hash.slice(:french, :english, :spanish)
       )
   }
 

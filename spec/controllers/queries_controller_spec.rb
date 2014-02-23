@@ -16,23 +16,21 @@ describe QueriesController do
 			before(:each) { login_user(person) }
 
 			it "sets @sidebar_collections correctly" do
+				FactoryGirl.create(:collection)
 				FactoryGirl.create(:collection, user: person)
 				FactoryGirl.create(:collection, user: person)
 				FactoryGirl.create(:three_lang_collection, user: person)
 
 			  get :show
-			  expect(assigns(:sidebar_collections)).not_to be_empty
 			  expect(assigns(:sidebar_collections).length).to eq(2)
 			end
 
 			it "sets @selected_collections correctly" do
 				c = FactoryGirl.create(:collection, user: person)
-				FactoryGirl.create(:collection, user: person)
-				FactoryGirl.create(:three_lang_collection, user: person)
+				FactoryGirl.create(:collection, user: person, active: false)
+				FactoryGirl.create(:three_lang_collection, user: person, active: false)
 
-				person.active_collection_ids << c.id
 			  get :show
-			  expect(assigns(:selected_collections)).not_to be_empty
 			  expect(assigns(:selected_collections).length).to eq(1)
 			end
 

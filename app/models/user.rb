@@ -17,7 +17,12 @@ class User < ActiveRecord::Base
   validates :last_name, presence: true
 
 
-  has_many :collections, dependent: :destroy
+  has_many :collections, dependent: :destroy do
+    def visible_for_user
+      by_active_languages(proxy_association.owner.language_statuses)
+    end
+  end
+
   has_many :term_records
   has_many :sources, dependent: :destroy
   has_many :domains, dependent: :destroy
@@ -32,6 +37,13 @@ class User < ActiveRecord::Base
       self.active_collection_ids_will_change!
       self.active_collection_ids.delete(collection.id)
       save
+    end
+  end
+
+  def language_statuses
+    Collection::LANGUAGES.inject({}) do |hash, lang|
+       hash[lang.to_sym] = self.send("#{lang}_active")
+       hash
     end
   end
 
