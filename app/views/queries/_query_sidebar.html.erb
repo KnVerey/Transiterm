@@ -48,7 +48,7 @@
       <div class="row collection <%= collection_active_class(c) %> selector">
         <div class="small-1 columns no-padding">
           <%= link_to edit_collection_path(c) do %>
-            <span data-tooltip class="tip-top hide-for-touch" title="<%= '<p>' + c.description + '</p>' if c.description.present? %><p>Click the <i class='fa fa-info-circle fa-lg'></i> to edit or delete this collection.</p>"><i class="fa fa-info-circle fa-lg"></i></span>
+            <span data-tooltip class="hide-for-touch" title="<%= '<p>' + c.description + '</p>' if c.description.present? %><p>Click the <i class='fa fa-info-circle fa-lg'></i> to edit or delete this collection.</p>"><i class="fa fa-info-circle fa-lg"></i></span>
             <i class="fa fa-info-circle fa-lg show-for-touch"></i>
           <% end %>
         </div>
