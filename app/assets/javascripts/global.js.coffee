@@ -1,20 +1,17 @@
 jQuery ->
-	if $('#notice').length then slideFlash($('#notice'))
-	if $('#alert').length then slideFlash($('#alert'))
-	if $('#success').length then slideFlash($('#success'))
-
-	$('#term-records').on 'click', '.record-expander', toggleRecordExpand
-	$('#term-records').on 'click', '.record-minimizer', toggleRecordExpand
+	$('#notice, #alert, #success').slideFlash()
+	$('#term-records').on 'click', '[data-toggler]', toggleRecordExpand
 	$('#delete-link').on 'click', ->
 		confirm("Are you sure? Deletion can't be undone!")
 
-slideFlash = (target) ->
-	$(target).animate({top: 30}, 800)
-	setTimeout((->
-		$(target).animate({top: -100}, 800)
-  ), 3000)
+$.fn.slideFlash = ->
+	@.each ->
+		$(@).animate({top: 30}, 800)
+		setTimeout((=>
+			$(@).animate({top: -100}, 800)
+	  ), 3000)
 
-toggleRecordExpand = () ->
-	$(@).parents('tr').next('.record-expand').toggleClass("hide")
-	$($(@).siblings('.fa')[0]).toggleClass("hide")
-	$(@).toggleClass("hide")
+toggleRecordExpand = ->
+	$this = $(@)
+	$this.closest('tr').next('.record-expand').toggle()
+	$this.parent().children('[data-toggler]').toggle()
