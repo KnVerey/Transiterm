@@ -189,4 +189,55 @@ describe CollectionsController do
 	    end
 	  end
   end
+
+  describe "GET activate_alone" do
+    context "when logged out" do
+      it "redirects to the login page" do
+        get :activate_alone, {id: person_collection.id}
+        expect(response).to redirect_to(login_path)
+      end
+    end
+
+    context "when logged in" do
+      before(:each) { login_user(person) }
+      it "redirects to the query page" do
+        get :activate_alone, {id: person_collection.id}
+        expect(response).to redirect_to('/query')
+      end
+
+      it "activates the collection" do
+      	person_collection.active = false
+      	person_collection.save
+        get :activate_alone, {id: person_collection.id}
+        expect(assigns(:collection).active).to be_true
+      end
+
+      it "deactives other visible collections" do
+        c = FactoryGirl.create(:collection, user: person, active: true)
+        c1 = FactoryGirl.create(:collection, user: person, active: true)
+        c2 = FactoryGirl.create(:collection, user: person, active: true)
+        get :activate_alone, {id: c.id}
+        any_active = [c1, c2].any? { |x| x.reload.active }
+        expect(any_active).to be_false
+      end
+   	end
+  end
+
+  describe "GET toggle" do
+    context "when logged out" do
+      it "redirects to the login page" do
+        get :toggle
+        expect(response).to redirect_to(login_path)
+      end
+    end
+
+    context "when logged in" do
+      before(:each) { login_user(person) }
+      it "redirects to the query page" do
+        User.any_instance.stub(:toggle_collection)
+        get :toggle
+        expect(response).to redirect_to('/query')
+      end
+   	end
+  end
 end
