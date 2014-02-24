@@ -61,4 +61,67 @@ describe Collection do
 		end
 	end
 
+	describe "#toggle" do
+		it "inverts the activity attribute of the collection (persisted)" do
+		  c = FactoryGirl.create(:three_lang_collection, active: true)
+		  c.toggle
+		  c.reload
+		  expect(c.active).to be_false
+		  c.toggle
+		  c.reload
+		  expect(c.active).to be_true
+		end
+	end
+
+	describe "self.toggle_all" do
+		context "when at least one collection is inactive" do
+			it "activates all collections passed in" do
+			  c = FactoryGirl.create(:three_lang_collection, active: false)
+			  c2 = FactoryGirl.create(:three_lang_collection, active: true)
+			  c3 = FactoryGirl.create(:three_lang_collection, active: true)
+
+			  Collection.toggle_all([c, c2, c3])
+
+			  all_active = [c, c2, c3].all? { |x| x.active }
+			  expect(all_active).to be_true
+			end
+		end
+
+		context "when all collections are already active" do
+			it "deactivates all the collections passed in" do
+			  c = FactoryGirl.create(:three_lang_collection, active: true)
+			  c2 = FactoryGirl.create(:three_lang_collection, active: true)
+			  c3 = FactoryGirl.create(:three_lang_collection, active: true)
+
+			  Collection.toggle_all([c, c2, c3])
+
+			  any_active = [c, c2, c3].any? { |x| x.active }
+			  expect(any_active).to be_false
+			end
+		end
+	end
+
+	describe "#activate" do
+		it "sets collection active to true (persisted)" do
+		  c = FactoryGirl.create(:three_lang_collection, active: false)
+		  c.activate
+		  c.reload
+		  expect(c.active).to be_true
+		  c.activate
+		  c.reload
+		  expect(c.active).to be_true
+		end
+	end
+
+	describe "#deactivate" do
+		it "sets collection active to false (persisted)" do
+		  c = FactoryGirl.create(:three_lang_collection, active: true)
+		  c.deactivate
+		  c.reload
+		  expect(c.active).to be_false
+		  c.deactivate
+		  c.reload
+		  expect(c.active).to be_false
+		end
+	end
 end
