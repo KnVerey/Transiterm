@@ -4,8 +4,9 @@ jQuery ->
 
 	$("#search").submit (e) ->
 		e.preventDefault()
-		data = $(@).serialize()
-		url = $(@).attr('action')
+		$this = $(@)
+		data = $this.serialize()
+		url = $this.attr('action')
 		ajaxSearch(data, url)
 
 	if $('.pagination').length
