@@ -226,7 +226,7 @@ describe CollectionsController do
   describe "GET toggle" do
     context "when logged out" do
       it "redirects to the login page" do
-        get :toggle
+    	  get :toggle, { id: person_collection.id }
         expect(response).to redirect_to(login_path)
       end
     end
@@ -235,8 +235,23 @@ describe CollectionsController do
       before(:each) { login_user(person) }
       it "redirects to the query page" do
         User.any_instance.stub(:toggle_collection)
-        get :toggle
+    	  get :toggle, { id: person_collection.id }
         expect(response).to redirect_to('/query')
+      end
+
+      context "without 'all' in the params" do
+      	it "calls toggle on the collection" do
+      		Collection.any_instance.stub(:toggle)
+      	  get :toggle, { id: person_collection.id }
+      	  expect(assigns(:collection)).to have_received(:toggle)
+      	end
+      end
+
+      context "with 'all' in the params" do
+      	it "calls toggle_all on collection" do
+      	  expect(Collection).to receive(:toggle_all)
+      	  get :toggle, { id: person_collection.id, all: true }
+      	end
       end
    	end
   end
