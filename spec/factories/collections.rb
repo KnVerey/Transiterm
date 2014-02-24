@@ -5,6 +5,7 @@ FactoryGirl.define do
     english true
     french true
     spanish false
+    active true
     user
 
     factory :one_lang_collection do
