@@ -35,11 +35,9 @@ class User < ActiveRecord::Base
   end
 
   def active_languages
-    langs = []
-    Collection::LANGUAGES.each do |lang|
-       langs << lang if self.send("#{lang}_active")
+    Collection::LANGUAGES.inject([]) do |active_array, lang|
+      self.send("#{lang}_active") ? active_array << lang : active_array
     end
-    langs
   end
 
   def active_languages=(to_activate)

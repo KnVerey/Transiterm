@@ -41,11 +41,9 @@ class Collection < ActiveRecord::Base
   end
 
 	def active_languages
-		langs = []
-		Collection::LANGUAGES.inject(0) do |counter, lang|
-			 langs << lang if self.send(lang)
+		Collection::LANGUAGES.inject([]) do |active_array, lang|
+			 self.send(lang) ? active_array << lang : active_array
 		end
-		langs
 	end
 
 	def num_languages
