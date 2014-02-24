@@ -58,35 +58,6 @@ describe UsersController do
     end
   end
 
-  describe "GET collection_toggle" do
-    context "when logged out" do
-      it "redirects to the login page" do
-        get :collection_toggle
-        expect(response).to redirect_to(login_path)
-      end
-    end
-
-    context "when logged in" do
-      before(:each) { login_user(person) }
-
-      it "calls toggle_collection on the current_user" do
-        User.any_instance.stub(:toggle_collection)
-        controller.stub(:current_user).and_return(person)
-        person_collection = FactoryGirl.create(:collection)
-
-        expect(person).to receive(:toggle_collection).with(person_collection.id.to_s)
-
-        get :collection_toggle, { collection_id: person_collection.id }
-      end
-
-      it "redirects to the query page" do
-        User.any_instance.stub(:toggle_collection)
-        get :collection_toggle
-        expect(response).to redirect_to('/query')
-      end
-    end
-  end
-
   describe "POST create" do
     describe "with valid params" do
 
