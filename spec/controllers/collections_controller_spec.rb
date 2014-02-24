@@ -55,13 +55,6 @@ describe CollectionsController do
 					assigns(:collection).user_id.should eq(person.id)
 				end
 
-				it "adds the new collection to the active list" do
-					post :create, collection: valid_attributes
-					new_id = assigns(:collection).id
-
-					expect(person.active_collection_ids).to include(new_id)
-				end
-
 				it "changes the active languages to match the collection's" do
 					post :create, collection: { title: "Music", description: "For music studio client", english: false, french: false, spanish: true }
 					expect(person.active_languages).to match_array(["spanish"])
@@ -188,22 +181,6 @@ describe CollectionsController do
 	      expect {
 	        delete :destroy, {id: person_collection.to_param, user_id: person.to_param}
 	      }.to change(Collection, :count).by(-1)
-	    end
-
-	    it "removes the collection from the active list, if there" do
-				person.active_collection_ids_will_change!
-				person.active_collection_ids << person_collection.id
-				person.save
-
-				expect {
-					delete :destroy, {id: person_collection.to_param, user_id: person.to_param}
-				}.to change(person.active_collection_ids, :length).by(-1)
-	    end
-
-	    it "leaves the collections active list alone if not in it" do
-				expect {
-					delete :destroy, {id: person_collection.to_param, user_id: person.to_param}
-				}.not_to change(person.active_collection_ids, :length)
 	    end
 
 	    it "redirects to the user's query page" do
