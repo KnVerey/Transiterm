@@ -35,8 +35,8 @@ class CollectionsController < ApplicationController
 	end
 
 	def activate_alone
-		current_user.collections.visible_for_user.where.not(id: @collection.id).each(&:deactivate!)
-		@collection.activate!
+		current_user.collections.visible_for_user.where.not(id: @collection.id).each(&:deactivate)
+		@collection.activate
 		redirect_to query_path
 	end
 

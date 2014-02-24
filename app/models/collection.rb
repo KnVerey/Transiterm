@@ -24,18 +24,18 @@ class Collection < ActiveRecord::Base
 
   def self.toggle_all(collections)
   	if collections.any? { |c| c.active == false }
-			collections.each(&:activate!)
+			collections.each(&:activate)
 		else
-			collections.each(&:deactivate!)
+			collections.each(&:deactivate)
 		end
   end
 
-  def deactivate!
+  def deactivate
   	self.active = false
   	save
   end
 
-  def activate!
+  def activate
   	self.active = true
   	save
   end
