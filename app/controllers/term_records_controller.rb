@@ -51,7 +51,7 @@ class TermRecordsController < ApplicationController
 	end
 
 	def set_collections_and_default
-		@collections = Collection.currently_visible(current_user)
-		@default_collection = @term_record ? @term_record.collection : Collection.unscoped.currently_visible(current_user).order(updated_at: :desc).first
+		@collections = current_user.collections.visible_for_user.order(title: :asc)
+		@default_collection = @term_record ? @term_record.collection : @collections.sort_by { |c| c.updated_at }.last
 	end
 end

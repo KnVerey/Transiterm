@@ -2,7 +2,7 @@ class QueriesController < ApplicationController
 	respond_to :html, :js
 
 	def show
-		@sidebar_collections = current_user.collections.visible_for_user.load
+		@sidebar_collections = current_user.collections.visible_for_user.order(title: :asc).load
 
 		@selected_collections = @sidebar_collections.select(&:active)
 

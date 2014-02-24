@@ -9,8 +9,6 @@ class Collection < ActiveRecord::Base
   LANGUAGES = %w{english french spanish}
   FIELDS = %w{domain source context comment all}
 
-  default_scope { order(title: :asc) }
-
   scope :by_active_languages, -> (status_hash) {
 		where(
       status_hash.slice(:french, :english, :spanish)
