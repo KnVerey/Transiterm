@@ -17,6 +17,29 @@ class Collection < ActiveRecord::Base
       )
   }
 
+  def toggle
+  	self.active = !self.active
+  	save
+  end
+
+  def self.toggle_all(collections)
+  	if collections.any? { |c| c.active == false }
+			collections.each(&:activate!)
+		else
+			collections.each(&:deactivate!)
+		end
+  end
+
+  def deactivate!
+  	self.active = false
+  	save
+  end
+
+  def activate!
+  	self.active = true
+  	save
+  end
+
 	def active_languages
 		langs = []
 		Collection::LANGUAGES.inject(0) do |counter, lang|

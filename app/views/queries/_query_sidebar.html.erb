@@ -33,7 +33,7 @@
 
   <h5>Select collections</h5>
     <% if @sidebar_collections.present? %>
-      <%= link_to "#{collection_toggle_path}?collection_id=all" do %>
+      <%= link_to "#{collection_toggle_path}?all=true" do %>
         <div class="collection selector <%= all_active_class %>" id="select-all">
           All <%= format_active_langs %>
         </div>
@@ -53,7 +53,7 @@
           <% end %>
         </div>
 
-        <%= link_to "#{collection_toggle_path}?collection_id=#{c.id}&disable_others=true" do %>
+        <%= link_to "#{activate_collection_alone_path}?id=#{c.id}" do %>
           <div class="small-9 columns no-padding">
             <span data-tooltip class="hide-for-touch" title="<p>Click to activate this collection only</p>"><%= c.title %></span>
             <span class="show-for-touch"><%= c.title %></span>
@@ -61,7 +61,7 @@
         <% end %>
 
         <div class="small-2 columns no-padding">
-          <%= link_to "#{collection_toggle_path}?collection_id=#{c.id}&disable_others=false" do %>
+          <%= link_to "#{collection_toggle_path}?id=#{c.id}" do %>
             <span data-tooltip class="tip-right hide-for-touch" title="<p>Click to add/remove from selection</p>"><i class="fa fa-lg <%= checkbox_class(c) %>"></i></span>
             <i class="fa fa-lg <%= checkbox_class(c) %> show-for-touch"></i>
           <% end %>

@@ -27,19 +27,6 @@ class User < ActiveRecord::Base
   has_many :sources, dependent: :destroy
   has_many :domains, dependent: :destroy
 
-  def ensure_collection_displays(collection)
-    self.toggle_collection(collection.id) unless self.active_collection_ids.include?(collection.id)
-    self.active_languages = collection.active_languages
-  end
-
-  def deactivate_collection(collection)
-    if self.active_collection_ids.include?(collection.id)
-      self.active_collection_ids_will_change!
-      self.active_collection_ids.delete(collection.id)
-      save
-    end
-  end
-
   def language_statuses
     Collection::LANGUAGES.inject({}) do |hash, lang|
        hash[lang.to_sym] = self.send("#{lang}_active")
@@ -70,42 +57,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def toggle_collection(collection_id_param)
-    toggle_me = collection_id_param.to_i
-    self.active_collection_ids_will_change!
-
-    if toggle_me == 0 # i.e. it was the "all" string
-      toggle_all
-    elsif self.active_collection_ids.include?(toggle_me)
-      self.active_collection_ids.delete(toggle_me)
-    else
-      self.active_collection_ids.push(toggle_me)
-    end
-
-    save
-  end
-
-  def toggle_all(turn_off=false)
-    relevant_ids = find_all_ids_in_lang_combo
-
-    if turn_off || all_already_active?(relevant_ids)
-      self.active_collection_ids = self.active_collection_ids - relevant_ids
-    else
-      self.active_collection_ids += relevant_ids
-      self.active_collection_ids.uniq!
-    end
-  end
-
   private
   def password_present?
     self.password.present? || self.password_confirmation.present?
-  end
-
-  def all_already_active?(relevant_ids)
-    (relevant_ids & self.active_collection_ids).sort == relevant_ids.sort
-  end
-
-  def find_all_ids_in_lang_combo
-    Collection.currently_visible(self).map(&:id)
   end
 end

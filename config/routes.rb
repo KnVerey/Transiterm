@@ -10,7 +10,8 @@ Transiterm::Application.routes.draw do
     end
   end
   get 'user_lang_toggle' => 'users#lang_toggle', as: :lang_toggle
-  get 'collection_toggle' => 'users#collection_toggle', as: :collection_toggle
+  get 'collection_toggle' => 'collections#toggle', as: :collection_toggle
+  get 'activate_collection_alone' => 'collections#activate_alone', as: :activate_collection_alone
 
   resources :collections, except: [:index, :show]
 

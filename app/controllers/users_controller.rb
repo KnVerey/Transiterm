@@ -12,12 +12,6 @@ class UsersController < ApplicationController
     redirect_to query_path
   end
 
-  def collection_toggle
-    current_user.toggle_all(turn_off: true) if params[:disable_others]=="true"
-    current_user.toggle_collection(params[:collection_id])
-    redirect_to query_path
-  end
-
   def activate
     if (@user = User.load_from_activation_token(params[:id]))
       @user.activate!
