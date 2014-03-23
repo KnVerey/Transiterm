@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140223181912) do
+ActiveRecord::Schema.define(version: 20140323230111) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,9 +88,14 @@ ActiveRecord::Schema.define(version: 20140223181912) do
     t.boolean  "french_active",                   default: true
     t.boolean  "english_active",                  default: true
     t.boolean  "spanish_active",                  default: false
+    t.datetime "last_login_at"
+    t.datetime "last_logout_at"
+    t.datetime "last_activity_at"
+    t.string   "last_login_from_ip_address"
   end
 
   add_index "users", ["activation_token"], name: "index_users_on_activation_token", using: :btree
+  add_index "users", ["last_logout_at", "last_activity_at"], name: "index_users_on_last_logout_at_and_last_activity_at", using: :btree
   add_index "users", ["remember_me_token"], name: "index_users_on_remember_me_token", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", using: :btree
 
