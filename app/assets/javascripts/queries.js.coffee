@@ -24,6 +24,7 @@ userNearBottom = () ->
 
 appendNextPage = (url) ->
 	setWaitMsg("Loading more results...")
+	$('.pagination').empty()
 	$.ajax
 		url: url
 		dataType: "script"
@@ -43,6 +44,7 @@ ajaxSearch = (data, url) ->
 			$('#records-table').show()
 
 clearRecordsTable = ->
+	$('.pagination').empty()
 	$('#records-table').hide()
 	$('#term-records').empty()
 
