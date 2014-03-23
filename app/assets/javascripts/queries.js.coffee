@@ -10,14 +10,14 @@ jQuery ->
 		ajaxSearch(data, url)
 
 	if $('.pagination').length
-		hidePagination()
+		$('.pagination').addClass('hide')
 		bindInfiniteScroll()
 		$(window).scroll()
 
 bindInfiniteScroll = () ->
 	$(window).scroll ->
 		url = $('.pagination span.next').children().attr('href')
-		if url && userNearBottom() then appendNextPage(url)
+		if url? && userNearBottom() then appendNextPage(url)
 
 userNearBottom = () ->
 	$(window).scrollTop() > $(document).height() - $(window).height() - 350
@@ -29,7 +29,7 @@ appendNextPage = (url) ->
 		url: url
 		dataType: "script"
 		success: ->
-			hidePagination()
+			$('.pagination').addClass('hide')
 
 ajaxSearch = (data, url) ->
 	setWaitMsg("Searching...")
@@ -40,7 +40,7 @@ ajaxSearch = (data, url) ->
 		data: data
 		dataType: 'script'
 		success: ->
-			hidePagination()
+			$('.pagination').addClass('hide')
 			$('#records-table').show()
 
 clearRecordsTable = ->
@@ -50,6 +50,3 @@ clearRecordsTable = ->
 
 setWaitMsg = (msg) ->
 	$('#message-area').html("<i class='fa fa-spinner fa-spin'></i> &nbsp&nbsp#{msg}")
-
-hidePagination = ->
-	$('.pagination').css('display', 'none')
