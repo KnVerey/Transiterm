@@ -27,6 +27,8 @@ Transiterm::Application.routes.draw do
 
   resources :excel_imports, only: [:new, :create]
 
+  resources :sources, only: [:index]
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

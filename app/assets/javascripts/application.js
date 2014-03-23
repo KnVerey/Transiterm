@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require modernizr
 //= require foundation.min
+//= require jquery.ui.autocomplete
 //= require_tree .
 
 $(function(){ $(document).foundation(); });
