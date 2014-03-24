@@ -1,4 +1,122 @@
-<h1>Transiterm 1.0:<h1>
-<h2>MS Access Tool</h1>
+<div class="panel callout">
+  The original MS-Access-based Transiterm ("Transiterm 1.0", last released as v1.6.1) is no longer supported. However, you can still get it here if you really want to.
+</div>
+<br>
+<h2>Transiterm 1.0 <span class="subheader">(MS Access tool)</span></h2>
+<hr>
+<ul class="inline-list">
+  <li><%= link_to "Limitations", "#limitations" %></li>
+  <li><%= link_to "Download", "#versions" %></li>
+  <li><%= link_to "Tutorial", "#tutorial" %></li>
+  <li><%= link_to "Importing records", "#importing" %></li>
+  <li><%= link_to "Making backups", "#backups" %></li>
+</ul>
+<hr>
 
-<p>Please note that the MS Access version of Transiterm is no longer supported. You may still download it here if you wish.</p>
+
+<div class="row panel">
+  <div class="small-2 columns">
+    <img src="http://nebula.wsimg.com/b4e2ae566749b2fc545aee6e06ee2c18?AccessKeyId=1BDBD91EEE51A17928E4&disposition=0&alloworigin=1" alt="Creative Commons Licence"\>
+  </div>
+  <div class="small-10 columns">
+    Transiterm 1.0 is released under the
+    <%= link_to "Creative Commons Attribution-NonCommercial-NoDerivs 2.5 Canada licence", "http://creativecommons.org/licenses/by-nc-nd/2.5/ca/" %>
+  </div>
+</div>
+
+<div id="limitations">
+  <h3 class="top-padded">Limitations</h3>
+  <ul>
+    <li>Not supported; if something goes wrong, you're on your own</li>
+    <li>Windows-only</li>
+    <li>No automatic synching</li>
+    <li>Requires MS Access 2007 specifically: MS Access 2007 (paid) or
+    <%= link_to "MS Access 2007 Runtime", "http://www.microsoft.com/en-ca/download/details.aspx?id=4438", class: "normal-link" %>
+    (free) must be installed. If you do not have either, be sure to download the installer with MS Access 2007 Runtime included.</p></li>
+  </ul>
+</div>
+
+<div id="versions">
+  <h3 class="top-padded">Download</h3>
+
+  <h5>Transiterm 1.0 + Access 2007 Runtime</h5>
+  <div class="row">
+    <div class="small-8 columns">
+      <em>Choose this if you don't already have MS Access 2007 or 2007 Runtime</em>
+      <p>The full package, with everything you need to use Transiterm 1.0 on one computer. It's a large file because of Access. French/English refers to the language of the Access 2007 package included; Transiterm 1.0 itself is bilingual.</p>
+    </div>
+    <div class="small-4 columns">
+      <ul class="button-group left">
+        <li><%= link_to "Download English", "https://dl.dropboxusercontent.com/u/34650386/Transiterm_Full_EN.zip", class: "button tiny secondary" %></li>
+        <li><%= link_to "Download French", "https://dl.dropboxusercontent.com/u/34650386/Transiterm_Full_FR.zip", class: "button tiny secondary" %></li>
+        </ul>
+    </div>
+  </div>
+
+  <h5>Transiterm 1.0 only, USB edition</h5>
+  <div class="row">
+    <div class="small-8 columns">
+      <p>Ideal for using Transiterm 1.0 on multiple computers. Please read the
+      <a href="#" class="normal-link" data-reveal-id="instructions" data-reveal>installation instructions</a>
+      first!</p>
+    </div>
+    <div class="small-4 columns">
+      <%= link_to "Download now", "https://dl.dropboxusercontent.com/u/34650386/TransitermUSB.exe", class: "button tiny secondary left" %>
+    </div>
+  </div>
+
+  <h5>Transiterm 1.0 only, single computer</h5>
+  <div class="row">
+    <div class="small-8 columns">
+      <p>Choose this option only if you're sure you have Access 2007 or Access 2007 Runtime installed!</p>
+    </div>
+    <div class="small-4 columns">
+      <%= link_to "Download now", "https://dl.dropboxusercontent.com/u/34650386/Transiterm.zip", class: "button tiny secondary left" %>
+    </div>
+  </div>
+</div>
+
+<div id="tutorial">
+  <h3 class="top-padded">Getting started: Tutorial</h3>
+  Transiterm 1.0 is proud to be included in the
+  <%= link_to "Linguistech virtual desktop", "http://linguistech.ca/discoverthevirtualdesktop" %>
+  , and the folks at Linguistech have put together some great video tutorials to help get Transiterm 1.0 users get started:
+  <%= link_to "English tutorial", "https://www.youtube.com/watch?v=sOEaojBLvZE", class: "normal-link" %> /
+  <%= link_to "French tutorial", "http://www.youtube.com/watch?v=2vuqlo5NElw", class: "normal-link" %>
+</div>
+
+<div id="importing">
+  <h3 class="top-padded">Importing from another program</h3>
+  <p>To import records from another program, you will need to add them to an Excel file that is formatted in a very specific way. Here's what to do:</p>
+  <ol>
+    <li>Download the <%= link_to "template file", "https://dl.dropboxusercontent.com/u/34650386/transiterm-template.xls", class: "normal-link" %>.</li>
+    <li>Leave the "Entry number" column blank and <strong>do not</strong> add any new columns.</li>
+    <li>Copy your data into the appropriate columns of the template, being careful not to change the column headings.</li>
+    <li>Make sure the "Source" column is filled out for every record (sources are mandatory in Transiterm 1.0).</li>
+    <li>Save the Excel file.</li>
+    <li>In Transiterm 1.0, click the menu button on the main screen, select "Import from Excel" and follow the prompts.</li>
+  </ol>
+</div>
+
+<div id="backups">
+  <h3 class="top-padded">Making backups</h3>
+  <p>Backing up your terminology database regularly is always a good idea, and with Transiterm 1.0, it's easy! Just click the menu button on the main screen, select "Create XML backup" and follow the prompts. Unlike Excel format, XML format will even save the line breaks and formatting (e.g. boldface, colours, italics) and line breaks in your records.</p>
+</div>
+
+<div id="instructions" class="reveal-modal medium" data-reveal>
+  <h3>Installing Transiterm 1.0 USB</h3>
+
+  <p>If you install Transiterm 1.0 on a USB drive, you can access your terminology on any computer with Access 2007 or Access 2007 Runtime installed.</p>
+
+  <ol>
+    <li>Install <%= link_to "Access 2007 Runtime", "http://www.microsoft.com/en-ca/download/details.aspx?id=4438", target: "blank", class: "regular-link" %> on any of your computers that do not already have Access. You can get the installation files from Microsoft in English or in French (they're free!).</li>
+
+    <li>Download and run the "Transiterm 1.0 only, USB edition" exe file</li>
+
+    <li>Under "Destination Folder," click "Browse..." and navigate to the location on your USB drive where you would like to install the files. Note that Transiterm 1.0 will make its own folder automatically. Click "OK" to select the location.</li>
+
+    <li>Click "Install."</li>
+
+    <li>Optional: For convenient access, you can copy the Transiterm link (located right under the TransitermUSB folder) to an easy-to-access location, such as the root of your USB drive or the desktop of each computer. If the link doesn't work, reset its target to the accdr file under \TransitermUSB\Files. If you accidentally delete the shortcut, you can create a new one from the accdr file; note that the Transiterm icon is also included under Files.</li>
+  </ol>
+</div>
