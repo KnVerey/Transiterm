@@ -96,22 +96,22 @@ html, body {
 	}
 }
 
+a.regular-link, a.regular-link:visited {
+	color: $c-link-unchanging;
+	text-decoration: underline;
+}
+
+a:hover {
+	background-color: initial;
+	color: $c-bg-primary;
+}
+
 main {
 	padding-top: 2em;
 	background-color: white;
 	margin-bottom: 2em;
 	position: relative;
 	z-index: 100;
-
-	a.regular-link, a.regular-link:visited {
-		color: $c-link-unchanging;
-		text-decoration: underline;
-	}
-
-	a:hover {
-		background-color: initial;
-		color: $c-bg-primary;
-	}
 
 	.button:visited {
 		color: white;
