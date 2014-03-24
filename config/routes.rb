@@ -2,6 +2,8 @@ Transiterm::Application.routes.draw do
   root to: 'pages#home'
   get 'msaccess' => 'pages#msaccess', as: :msaccess
   get 'home' => 'pages#home', as: :home
+  get 'support' => 'pages#support', as: :support
+  get 'about' => 'pages#about', as: :about
 
   resources :users, except: [:index, :show] do
     member do

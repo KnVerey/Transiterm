@@ -7,6 +7,11 @@ class PagesController < ApplicationController
 	end
 
 	def msaccess
-
 	end
+
+  def support
+  end
+
+  def about
+  end
 end
