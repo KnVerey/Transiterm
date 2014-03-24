@@ -31,3 +31,30 @@ nav {
 .top-padded {
 	padding-top: 1em;
 }
+
+.feature-header {
+	h4 {
+		text-align: center;
+	}
+	p {
+		text-align: justify;
+	}
+	.button {
+		width: 90%;
+	}
+	.button-centerer {
+		text-align: center;
+	}
+}
+
+.orbit-container {
+	max-width: 90%;
+
+	.orbit-prev, .orbit-next {
+		background-color: rgba(0, 0, 0, 0.3);
+	}
+
+	.orbit-slides-container > * .orbit-caption {
+		background-color: rgba(0, 0, 0, 0.85);
+	}
+}
