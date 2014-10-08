@@ -2,6 +2,13 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+main.pages {
+	width: 75%;
+	margin: auto;
+
+	h1 { font-size: 3em; }
+}
+
 nav {
 	color: white;
 
@@ -20,30 +27,41 @@ nav {
 	}
 }
 
-#remember {
-	margin: 10px;
-}
-
 .reveal-modal {
 	z-index: 101;
 }
 
-.top-padded {
-	padding-top: 1em;
+.feature-section {
+	.feature-para {
+		padding-top: 10em;
+		text-align: justify;
+
+		a { white-space: nowrap; }
+	}
+	.feature-header {
+		padding-top: 10em;
+		text-align: center;
+		margin-left: 0;
+
+		h2 {
+			font-size: 1.6em;
+			text-align: center;
+		}
+		p {
+			text-align: justify;
+		}
+	}
 }
 
-.feature-header {
-	h4 {
-		text-align: center;
-	}
-	p {
-		text-align: justify;
-	}
+.button-centerer {
+	width: 100%;
+	text-align: center;
 	.button {
-		width: 90%;
+		width: 50%;
+		margin: auto;
 	}
-	.button-centerer {
-		text-align: center;
+	.secondary {
+		background-color: #9E9B9B;
 	}
 }
 
@@ -53,8 +71,24 @@ nav {
 	.orbit-prev, .orbit-next {
 		background-color: rgba(0, 0, 0, 0.3);
 	}
+}
 
-	.orbit-slides-container > * .orbit-caption {
-		background-color: rgba(0, 0, 0, 0.85);
-	}
+#v1-orbit .orbit-caption {
+	background-color: rgba(0, 0, 0, 0.98);
+}
+
+#versions { padding: 3em 0; }
+
+.row.footer {
+	position: fixed;
+	bottom: 0;
+	text-align: center;
+	background: lightgrey;
+	z-index: 1000;
+	padding-top: 1em;
+}
+
+.feature-list {
+	padding: 0 1em;
+	margin-right: 2em;
 }

@@ -1,0 +1,33 @@
+<h1>Transiterm Web</h1>
+
+<p>Transiterm Web will be a brand-new online tool based on the Transiterm philosophy: terminology management made simple.
+It will do everything the original does and more—and best of all, it will be accessible through your browser on any computer!</p>
+
+<p>Transiterm Web is almost ready for beta, but I don't have much time to work on it. If you'd love to see this come to life, <%= mail_to "transiterm@gmail.com", "send me some encouragement!" %></p>
+
+<%= link_to "Get notified when Transiterm Web is ready", "https://docs.google.com/forms/d/1x2zme53HjWnPdbqfz7BSJ8a42HIUB5pNYLJframPBFc/viewform", class: 'button small', target: '_blank' %>
+
+<div class='ppt'>
+  <p>Here's a sneak peak at some of the features:</p>
+
+  <ul class="frontpage-orbit" data-orbit data-options="slide_number: false; resume_on_mouseout: true; timer: false; next_on_click: true; timer_speed: 1000">
+    <li>
+      <%= image_tag("screenshots/three_collections.png", alt: "Three collections selected") %>
+      <div class="orbit-caption">
+        Select specific collections to search
+      </div>
+    </li>
+    <li>
+      <%= image_tag("screenshots/add_record.png", alt: "Add a term record") %>
+      <div class="orbit-caption">
+        Sources and domains you've used before are auto-suggested
+      </div>
+    </li>
+    <li>
+      <%= image_tag("screenshots/unilingual.png", alt: "Unilingual interface") %>
+      <div class="orbit-caption">
+        Work with unilingual records
+      </div>
+    </li>
+  </ul>
+</div>

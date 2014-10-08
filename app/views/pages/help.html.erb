@@ -1,0 +1,32 @@
+<div id="tutorial">
+  <h3 class="ppt">Getting started: Tutorial</h3>
+  Transiterm is proud to be included in the
+  <%= link_to "Linguistech virtual desktop", "http://linguistech.ca/discoverthevirtualdesktop" %>
+  , and the folks at Linguistech have put together some great video tutorials to help get Transiterm users get started:
+  <%= link_to "English tutorial", "https://www.youtube.com/watch?v=sOEaojBLvZE", class: "normal-link" %> /
+  <%= link_to "French tutorial", "http://www.youtube.com/watch?v=2vuqlo5NElw", class: "normal-link" %>
+</div>
+
+<div id="importing">
+  <h3 class="ppt">Importing from another program</h3>
+  <p>To import records from another program, you will need to add them to an Excel file that is formatted in a very specific way. Here's what to do:</p>
+  <ol>
+    <li>Download the <%= link_to "template file", "https://dl.dropboxusercontent.com/u/34650386/transiterm-template.xls", class: "normal-link" %>.</li>
+    <li>Leave the "Entry number" column blank and <strong>do not</strong> add any new columns.</li>
+    <li>Copy your data into the appropriate columns of the template, being careful not to change the column headings.</li>
+    <li>Make sure the "Source" column is filled out for every record (sources are mandatory in Transiterm).</li>
+    <li>Save the Excel file.</li>
+    <li>In Transiterm, click the menu button on the main screen, select "Import from Excel" and follow the prompts.</li>
+  </ol>
+</div>
+
+<div id="backups">
+  <h3 class="ppt">Making backups</h3>
+  <p>Backing up your terminology database regularly is always a good idea, and with Transiterm, it's easy! Just click the menu button on the main screen, select "Create XML backup" and follow the prompts. Unlike Excel format, XML format will even save the line breaks and formatting (e.g. boldface, colours, italics) and line breaks in your records.</p>
+</div>
+
+<div>
+  <h3 class="ppt">Questions? Comments?</h3>
+  <p><%= mail_to "transiterm@gmail.com", "Email the developer" %><br>
+  This MS Access version of Transiterm is an old hobby project of mine. I may take a while to get back to you. Sorry. :(</p>
+</div>

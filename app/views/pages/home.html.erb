@@ -1,60 +1,14 @@
-<div class="row">
-  <div class="medium-4 columns feature-header top-padded">
+<div class="row feature-section">
+  <div class="large-4 medium-offset-1 columns feature-header">
     <%= image_tag("transiterm-500px.png") %>
-    <h4 class="subheader">Simple terminology management</h4>
-
-    <p class="top-padded">Transiterm is a personal terminology management solution that offers all the essentials in an elegant package. It has a straightforward, easy-to-learn interface that lets you dive right in and focus on the information, not the software.</p>
-    <div class="button-centerer"><%= link_to "Sign up", new_user_path, class: "button medium" %></div>
+    <h1 class="hide">Transiterm</h1>
+    <h2 class="subheader">Simple terminology management</h2>
   </div>
-
-  <div class="medium-7 medium-offset-1 columns top-padded">
-    <ul class="frontpage-orbit" data-orbit data-options="slide_number: false; resume_on_mouseout: true; timer: false; next_on_click: true; timer_speed: 1000">
-      <li>
-        <%= image_tag("screenshots/three_collections.png", alt: "Three collections selected") %>
-        <div class="orbit-caption">
-          Select specific collections to search
-        </div>
-      </li>
-      <li>
-        <%= image_tag("screenshots/add_record.png", alt: "Add a term record") %>
-        <div class="orbit-caption">
-          Sources and domains you've used before are auto-suggested
-        </div>
-      </li>
-      <li>
-        <%= image_tag("screenshots/unilingual.png", alt: "Unilingual interface") %>
-        <div class="orbit-caption">
-          Work with unilingual records
-        </div>
-      </li>
-    </ul>
+  <div class="large-6 columns feature-para">
+    <p class="top-padded">Transiterm was designed with translation students in mind, and it is also great for anyone who wants an easy way to keep track of their own terminology solutions without having to learn how to use a complicated (and expensive) program that has far more features than they want or need. </p>
+    <div class="button-centerer">
+      <%= link_to "Get it now", download_path, class: "button medium" %>
+      <%= link_to "Learn more >>", features_path, class: "button medium secondary inline" %>
+    </div>
   </div>
 </div>
-
-<hr>
-<div data-magellan-expedition="fixed">
-  <dl class="sub-nav">
-    <dd data-magellan-arrival="features"><a href="#features">Features</a></dd>
-    <dd data-magellan-arrival="price"><a href="#price">Price</a></dd>
-    <dd data-magellan-arrival="support"><a href="#support">Support</a></dd>
-    <dd data-magellan-arrival="access"><a href="#access">Transiterm 1.0</a></dd>
-    <dd><a href="<%= new_user_path %>">Sign up</a></dd>
-  </dl>
-</div>
-<hr>
-
-<a name="features"></a>
-<h3 data-magellan-destination="features">Features</h3>
-
-<a name="price"></a>
-<h3 data-magellan-destination="price">Price</h3>
-  <p>While Transiterm is in Beta, it is completely <strong>FREE!</strong><br>
-  If you sign up during the Beta, Transiterm will stay free for you for life!</p>
-  <p>Once the Beta is over, I will charge a small fee to offset maintenance costs. I am committed to keeping Transiterm affordable for everyone.</p>
-
-<a name="support"></a>
-<h3 data-magellan-destination="support">Support</h3>
-
-<a name="access"></a>
-<h3 data-magellan-destination="access">Transiterm 1.0</h3>
-<p>Transiterm was originally a Microsoft Access application. Read more about Transiterm's history on our <%= link_to "About page", about_path, class: "regular-link" %>, or if you really want the MS Access tool, you can still get it <%= link_to "here", msaccess_path, class: "regular-link" %>.</p>

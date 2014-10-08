@@ -13,8 +13,8 @@
   <body>
     <nav class="top-bar" data-topbar>
       <ul class="title-area">
-        <li class="left"><%= link_to (image_tag("transiterm-100px-white.png", class: "logo", alt:"Transiterm logo")), home_path, class: "logo-link" %></li>
-        <li class="name"><h1><a href="<%= home_path %>"></a></h1></li>
+        <li class="left"><%= link_to (image_tag("transiterm-100px-white.png", class: "logo", alt:"Transiterm logo")), root_path, class: "logo-link" %></li>
+        <li class="name"><h1><a href="<%= root_path %>"></a></h1></li>
 
         <li class="toggle-topbar menu-icon">
           <a href="#">
@@ -25,11 +25,11 @@
 
       <section class="top-bar-section">
         <ul class="right">
-          <li><%= link_to "Home", home_path %></li>
-          <li><%= link_to "About", about_path %></li>
-          <li><%= link_to "Support", support_path %></li>
-          <li><%= link_to "Sign up", new_user_path %></li>
-          <li class="active"><%= link_to "Log in", :login %></li>
+          <li class='<%= 'active' if params[:action] == 'home' %>'><%= link_to "Home", root_path %></li>
+          <li class='<%= 'active' if params[:action] == 'features' %>'><%= link_to "Features", features_path %></li>
+          <li class='<%= 'active' if params[:action] == 'download' %>'><%= link_to "Download", download_path %></li>
+          <li class='<%= 'active' if params[:action] == 'v2' %>'><%= link_to "Transiterm Web", v2_path %></li>
+          <li class='<%= 'active' if params[:action] == 'help' %>'><%= link_to "Help", help_path %></li>
         </ul>
       </section>
     </nav>
@@ -54,12 +54,17 @@
       <% end %>
     </div>
 
-    <main class="row">
-      <div class="small-12 medium-11 medium-offset-1 columns">
+    <main class="row pages">
+      <div class="small-12 columns">
         <%= yield %>
         <br><br><br>
       </div>
     </main>
+    <div class="row footer">
+      <div class="small-12 columns">
+        <p>Transiterm is proud to be included in the <%= link_to "Linguistech virtual desktop", "http://linguistech.ca/discoverthevirtualdesktop", target: "_blank" %></p>
+      </div>
+    </div>
     <%= javascript_include_tag "application" %>
   </body>
 </html>
