@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_filter :require_login, only: [:new, :create, :activate, :unlock]
+  # skip_before_filter :require_login, only: [:new, :create, :activate, :unlock]
 
   layout "pages", only: [:new, :create, :destroy]
 
@@ -63,7 +63,7 @@ class UsersController < ApplicationController
 
   def destroy
     current_user.destroy
-    redirect_to home_path
+    redirect_to root_path
   end
 
   private
