@@ -1,14 +1,14 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.0.2'
+gem 'rails', '4.0.13'
 gem 'thin'
-ruby '2.0.0'
+ruby '2.1.5'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0'
+gem 'sass-rails', '~> 4.0.5'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -54,4 +54,4 @@ gem 'newrelic_rpm'
 
 gem "letter_opener", :group => :development
 
-gem 'spreadsheet', '~> 0.9.6'
+gem 'spreadsheet', '~> 1.0.3'
