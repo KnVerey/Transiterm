@@ -1,8 +1,9 @@
 source 'https://rubygems.org'
 
 gem 'rails', '4.0.13'
-gem 'thin'
 ruby '2.1.5'
+gem 'puma'
+gem 'rack-timeout'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
