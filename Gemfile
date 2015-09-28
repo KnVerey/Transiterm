@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.0.13'
+gem 'rails', '4.1.9'
 ruby '2.1.5'
 gem 'puma'
 gem 'rack-timeout'
@@ -56,3 +56,5 @@ gem 'newrelic_rpm'
 gem "letter_opener", :group => :development
 
 gem 'spreadsheet', '~> 1.0.3'
+
+gem 'responders'
