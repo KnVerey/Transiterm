@@ -42,7 +42,7 @@ end
 
 gem 'simplecov', :require => false, :group => :test
 
-gem 'sorcery'
+gem 'sorcery', '~> 0.9.1'
 gem 'figaro'
 gem 'pg_search'
 gem 'kaminari', '~> 0.15'
