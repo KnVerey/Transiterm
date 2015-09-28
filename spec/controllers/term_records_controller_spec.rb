@@ -23,7 +23,7 @@ describe TermRecordsController do
 
 			it "assigns a new term record as @record" do
 			  get :new
-			  assigns(:term_record).should be_a_new(TermRecord)
+			  expect(assigns(:term_record)).to be_a_new(TermRecord)
 			end
 
 			it "assigns most recently modified collection (with the same language combo) as @default_collection" do
@@ -72,7 +72,7 @@ describe TermRecordsController do
 				it "assigns the record to the active collection" do
 					post :create, { term_record: valid_attributes }
 
-					assigns(:term_record).collection_id.should eq(person_collection.id)
+					expect(assigns(:term_record).collection_id).to eq(person_collection.id)
 				end
 
 				it "does not duplicate existing domains" do
@@ -88,7 +88,7 @@ describe TermRecordsController do
 
 					post :create, { term_record: valid_attributes }
 
-					assigns(:term_record).domain_id.should eq(domain.id)
+					expect(assigns(:term_record).domain_id).to eq(domain.id)
 				end
 
 				it "creates nonexisting domains" do
@@ -100,7 +100,7 @@ describe TermRecordsController do
 				it "assigns newly created domains to term record" do
 					name = "Also a new domain"
 					post :create, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain_name: name, source_name: "Common knowledge", collection_id: person_collection.id }
-					assigns(:term_record).domain.name.should eq(name)
+					expect(assigns(:term_record).domain.name).to eq(name)
 				end
 
 				it "adds source id for existing sources" do
@@ -108,7 +108,7 @@ describe TermRecordsController do
 
 					post :create, { term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain_name: "Greetings", source_name: "Common knowledge", collection_id: person_collection.id } }
 
-					assigns(:term_record).source_id.should eq(source.id)
+					expect(assigns(:term_record).source_id).to eq(source.id)
 				end
 
 				it "does not duplicate existing source" do
@@ -127,7 +127,7 @@ describe TermRecordsController do
 
 				it "assigns newly created sources to term record" do
 					post :create, { term_record: valid_attributes }
-					assigns(:term_record).source.name.should eq(valid_attributes[:source_name])
+					expect(assigns(:term_record).source.name).to eq(valid_attributes[:source_name])
 				end
 
 				it "creates a new term record" do
@@ -169,12 +169,12 @@ describe TermRecordsController do
 
 				it "does not set blank domains" do
 				  post :create, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain_name: "", source_name: "Something", collection_id: person_collection.id }
-				  assigns(:term_record).domain_id.should be_nil
+				  expect(assigns(:term_record).domain_id).to be_nil
 				end
 
 				it "does not set blank sources" do
 				  post :create, term_record: { english: "Hello", french: "Bonjour", spanish: "Hola", domain_name: "Greetings", source_name: "", collection_id: person_collection.id }
-				  assigns(:term_record).source_id.should be_nil
+				  expect(assigns(:term_record).source_id).to be_nil
 				end
 
 				it "does not save records with blank sources" do
@@ -365,7 +365,7 @@ describe TermRecordsController do
 
 			it "identifies the requested record" do
 			  delete :destroy, { collection_id: record.collection, id: record.id }
-			  assigns(:term_record).should eq(record)
+			  expect(assigns(:term_record)).to eq(record)
 			end
 
 			it "raises an error if record does not belong to user" do

@@ -22,7 +22,7 @@ describe CollectionsController do
 		it "assigns a new collection as @collection" do
 		  login_user(person)
 		  get :new
-		  assigns(:collection).should be_a_new(Collection)
+		  expect(assigns(:collection)).to be_a_new(Collection)
 		end
 	end
 
@@ -52,7 +52,7 @@ describe CollectionsController do
 
 				it "saves current_user's id in the collection" do
 					post :create, collection: valid_attributes
-					assigns(:collection).user_id.should eq(person.id)
+					expect(assigns(:collection).user_id).to eq(person.id)
 				end
 
 				it "changes the active languages to match the collection's" do
@@ -70,7 +70,7 @@ describe CollectionsController do
 				it "assigns a newly created but unsaved collection as @collection" do
 				  Collection.any_instance.stub(:save).and_return(false)
 				  post :create, collection: {nothing: "bad params"}
-				  assigns(:collection).should be_a_new(Collection)
+				  expect(assigns(:collection)).to be_a_new(Collection)
 				end
 
 				it "re-renders the 'new' template" do
@@ -99,7 +99,7 @@ describe CollectionsController do
     it "sets @collection to requested collection" do
       login_user(person)
       get :edit, { id: person_collection.to_param }
-      assigns(:collection).should eq(person_collection)
+      expect(assigns(:collection)).to eq(person_collection)
     end
 
 		it "renders the view if user logged in" do
@@ -133,7 +133,7 @@ describe CollectionsController do
 					controller.stub(:find_collection)
 					controller.instance_variable_set(:@collection, person_collection)
 
-				  person_collection.should_receive(:update).with({"title" => "Ornithology"})
+				  expect(person_collection).to receive(:update).with({"title" => "Ornithology"})
 				  put :update, id: person_collection.id, collection: {id: person_collection.id, title: "Ornithology"}
 				end
 
@@ -167,7 +167,7 @@ describe CollectionsController do
 
 	    it "sets @collection to requested collection" do
 	      delete :destroy, { id: person_collection.to_param }
-	      assigns(:collection).should eq(person_collection)
+	      expect(assigns(:collection)).to eq(person_collection)
 	    end
 
 	    it "raises an error if attempt to destroy collection that does not belong to user" do
@@ -185,7 +185,7 @@ describe CollectionsController do
 
 	    it "redirects to the user's query page" do
 	      delete :destroy, {:user_id => person.to_param, id: person_collection.to_param}
-	      response.should redirect_to("/query")
+	      expect(response).to redirect_to("/query")
 	    end
 	  end
   end

@@ -26,7 +26,7 @@ describe UsersController do
     it "assigns a new user as @user" do
       skip 'user creation disabled'
       get :new
-      assigns(:user).should be_a_new(User)
+      expect(assigns(:user)).to be_a_new(User)
     end
   end
 
@@ -34,7 +34,7 @@ describe UsersController do
     it "assigns current_user as @user (to share 'new' form)" do
       login_user(person)
       get :edit, { id: person.to_param }
-      assigns(:user).should eq(person)
+      expect(assigns(:user)).to eq(person)
     end
   end
 
@@ -50,7 +50,7 @@ describe UsersController do
       before(:each) { login_user(person) }
 
       it "calls toggle_language on the current_user" do
-        person.should_receive(:toggle_language).with("english")
+        expect(person).to receive(:toggle_language).with("english")
         User.any_instance.stub(:toggle_language)
         controller.stub(:current_user).and_return(person)
         get :lang_toggle, { user_id: person.id, lang_toggle: "english" }
@@ -82,8 +82,8 @@ describe UsersController do
       it "saves the new user to the db" do
         skip 'user creation disabled'
         post :create, user: valid_attributes
-        assigns(:user).should be_a(User)
-        assigns(:user).should be_persisted
+        expect(assigns(:user)).to be_a(User)
+        expect(assigns(:user)).to be_persisted
       end
 
       it "does not log in the new user" do
@@ -95,7 +95,7 @@ describe UsersController do
       it "redirects to the login page" do
         skip 'user creation disabled'
         post :create, user: valid_attributes
-        response.should redirect_to("/login")
+        expect(response).to redirect_to("/login")
       end
 
       it "alerts user to check for activation email" do
@@ -112,21 +112,21 @@ describe UsersController do
         User.any_instance.stub(:save).and_return(false)
         post :create, user: bad_user
 
-        assigns(:user).should_not be_valid
+        expect(assigns(:user)).not_to be_valid
       end
 
       it "assigns a newly created but unsaved user as @user" do
         skip 'user creation disabled'
         User.any_instance.stub(:save).and_return(false)
         post :create, user: { email: "invalid value" }
-        assigns(:user).should be_a_new(User)
+        expect(assigns(:user)).to be_a_new(User)
       end
 
       it "re-renders the 'new' template" do
         skip 'user creation disabled'
         User.any_instance.stub(:save).and_return(false)
         post :create, user: { "email" => "invalid value" }
-        response.should render_template("new")
+        expect(response).to render_template("new")
       end
     end
   end
@@ -145,20 +145,20 @@ describe UsersController do
 
       it "accesses current_user (no @user)" do
         put :update, id: person.to_param, user: { id: person.to_param, email: "test@test.com" }
-        assigns(:user).should be_nil
-        assigns(:current_user).should_not be_nil
+        expect(assigns(:user)).to be_nil
+        expect(assigns(:current_user)).not_to be_nil
       end
 
       describe "with valid params" do
 
         it "updates the requested user without password" do
-          person.should_receive(:update).with("email" => "test@test.com")
+          expect(person).to receive(:update).with("email" => "test@test.com")
           put :update, id: person.to_param, user: { id: person.to_param, email: "test@test.com" }
         end
 
         it "redirects to the same page if success" do
           put :update, {:id => person.to_param, :user => valid_attributes}
-          response.should redirect_to("/users/#{person.id}/edit")
+          expect(response).to redirect_to("/users/#{person.id}/edit")
         end
 
         it "lets the user know it succeeded" do
@@ -178,7 +178,7 @@ describe UsersController do
         it "re-renders the 'edit' template" do
           person.stub(:save).and_return(false)
           put :update, { id: person.to_param, user: { "email" => "invalid value" }}
-          response.should render_template("edit")
+          expect(response).to render_template("edit")
         end
       end
     end
@@ -198,8 +198,8 @@ describe UsersController do
 
       it "accesses current_user (no @user)" do
         delete :destroy, { id: person.to_param }
-        assigns(:user).should be_nil
-        assigns(:current_user).should_not be_nil
+        expect(assigns(:user)).to be_nil
+        expect(assigns(:current_user)).not_to be_nil
       end
 
       it "destroys the requested user" do
@@ -210,7 +210,7 @@ describe UsersController do
 
       it "redirects to the home page" do
         delete :destroy, {:id => person.to_param}
-        response.should redirect_to("/")
+        expect(response).to redirect_to("/")
       end
     end
   end

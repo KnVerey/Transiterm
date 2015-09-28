@@ -25,7 +25,7 @@ describe SessionsController do
 
         post :create, email: user.email, password: user.password
 
-        flash[:success].should_not be_nil
+        expect(flash[:success]).not_to be_nil
       end
     end
 
@@ -40,7 +40,7 @@ describe SessionsController do
       it "flashes failure message on login failure" do
         post :create, email: "notvalid@email.com", password: "notvalid"
 
-        flash[:alert].should_not be_nil
+        expect(flash[:alert]).not_to be_nil
       end
 
       it "tells the user they're locked out when applicable" do

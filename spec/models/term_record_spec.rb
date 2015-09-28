@@ -12,14 +12,14 @@ describe TermRecord do
     	collection = FactoryGirl.build(:collection, :english => true, :french => true, :spanish => false)
     	term_record = FactoryGirl.build(:term_record, :collection => collection, :french => "")
 
-    	term_record.should be_invalid
+    	expect(term_record).to be_invalid
     end
 
     it 'should say record is valid' do
     	collection = FactoryGirl.build(:collection, :english => true, :french => true, :spanish => false)
     	term_record = FactoryGirl.build(:term_record, :collection => collection)
 
-    	term_record.should be_valid
+    	expect(term_record).to be_valid
     end
 
     it 'should only add one error message' do
@@ -28,7 +28,7 @@ describe TermRecord do
 
     	term_record.valid?
 
-    	term_record.errors.count.should == 1
+    	expect(term_record.errors.count).to eq(1)
     end
   end
 

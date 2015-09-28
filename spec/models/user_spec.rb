@@ -5,13 +5,12 @@ describe User do
 
   it 'must have a first name' do
   	user = User.new
-  	user.first_name.should == nil
-  	user.first_name.should_not == "something"
-  	user.should_not be_valid
+  	expect(user.first_name).to be_nil
+  	expect(user).not_to be_valid
   end
 
   it 'should have saved user to db if valid fields provided' do
-  	person.first_name.should_not == nil
+  	expect(person.first_name).not_to be_nil
   end
 
   it 'should have default active languages set' do
