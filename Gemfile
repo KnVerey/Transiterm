@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.9'
+gem 'rails', '4.2.4'
 ruby '2.1.5'
 gem 'puma'
 gem 'rack-timeout'
@@ -57,4 +57,4 @@ gem "letter_opener", :group => :development
 
 gem 'spreadsheet', '~> 1.0.3'
 
-gem 'responders'
+gem 'responders', '~> 2.0'
