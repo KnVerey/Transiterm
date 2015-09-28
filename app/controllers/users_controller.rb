@@ -56,7 +56,7 @@ class UsersController < ApplicationController
         format.html { redirect_to edit_user_path(current_user), flash: { success: 'Your profile was successfully updated.' }}
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { render 'edit' }
         format.json { render json: current_user.errors, status: :unprocessable_entity }
       end
     end

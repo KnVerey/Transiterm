@@ -47,6 +47,11 @@ Spork.prefork do
     #     --seed 1234
     config.order = "random"
     config.infer_spec_type_from_file_location!
+
+    RSpec.configure do |config|
+      config.include Sorcery::TestHelpers::Rails::Controller, type: :controller
+      config.include Sorcery::TestHelpers::Rails::Integration, type: :feature
+    end
   end
 end
 

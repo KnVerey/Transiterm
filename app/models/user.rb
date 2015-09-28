@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   # Don't require passwords on update unless one is there
   validates :password, length: { in: 6..20 }, on: :update, if: :password_present?
   validates :password, confirmation: true, on: :update, if: :password_present?
+  validates :password_confirmation, on: :update, presence: true, if: :password_present?
 
   # Always validate the following
   validates :email, uniqueness: true
