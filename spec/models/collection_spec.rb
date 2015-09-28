@@ -18,7 +18,7 @@ describe Collection do
 		end
 
 		it "reports an array of one language name" do
-		  expect(@collection.active_languages.kind_of? Array).to be_true
+		  expect(@collection.active_languages.kind_of? Array).to be true
 		  expect(@collection.active_languages.length).to eq(1)
 		end
 
@@ -34,7 +34,7 @@ describe Collection do
 		end
 
 		it "reports an array of two language names" do
-		  expect(@collection.active_languages.kind_of? Array).to be_true
+		  expect(@collection.active_languages.kind_of? Array).to be true
 		  expect(@collection.active_languages.length).to eq(2)
 		end
 
@@ -52,7 +52,7 @@ describe Collection do
 		end
 
 		it "reports an array of three language names" do
-		  expect(@collection.active_languages.kind_of? Array).to be_true
+		  expect(@collection.active_languages.kind_of? Array).to be true
 		  expect(@collection.active_languages.length).to eq(3)
 		end
 
@@ -66,10 +66,10 @@ describe Collection do
 		  c = FactoryGirl.create(:three_lang_collection, active: true)
 		  c.toggle
 		  c.reload
-		  expect(c.active).to be_false
+		  expect(c.active).to be false
 		  c.toggle
 		  c.reload
-		  expect(c.active).to be_true
+		  expect(c.active).to be true
 		end
 	end
 
@@ -83,7 +83,7 @@ describe Collection do
 			  Collection.toggle_all([c, c2, c3])
 
 			  all_active = [c, c2, c3].all? { |x| x.active }
-			  expect(all_active).to be_true
+			  expect(all_active).to be true
 			end
 		end
 
@@ -96,7 +96,7 @@ describe Collection do
 			  Collection.toggle_all([c, c2, c3])
 
 			  any_active = [c, c2, c3].any? { |x| x.active }
-			  expect(any_active).to be_false
+			  expect(any_active).to be false
 			end
 		end
 	end
@@ -106,10 +106,10 @@ describe Collection do
 		  c = FactoryGirl.create(:three_lang_collection, active: false)
 		  c.activate
 		  c.reload
-		  expect(c.active).to be_true
+		  expect(c.active).to be true
 		  c.activate
 		  c.reload
-		  expect(c.active).to be_true
+		  expect(c.active).to be true
 		end
 	end
 
@@ -118,10 +118,10 @@ describe Collection do
 		  c = FactoryGirl.create(:three_lang_collection, active: true)
 		  c.deactivate
 		  c.reload
-		  expect(c.active).to be_false
+		  expect(c.active).to be false
 		  c.deactivate
 		  c.reload
-		  expect(c.active).to be_false
+		  expect(c.active).to be false
 		end
 	end
 end

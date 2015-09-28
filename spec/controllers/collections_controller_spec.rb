@@ -209,7 +209,7 @@ describe CollectionsController do
       	person_collection.active = false
       	person_collection.save
         get :activate_alone, {id: person_collection.id}
-        expect(assigns(:collection).active).to be_true
+        expect(assigns(:collection).active).to be true
       end
 
       it "deactives other visible collections" do
@@ -218,7 +218,7 @@ describe CollectionsController do
         c2 = FactoryGirl.create(:collection, user: person, active: true)
         get :activate_alone, {id: c.id}
         any_active = [c1, c2].any? { |x| x.reload.active }
-        expect(any_active).to be_false
+        expect(any_active).to be false
       end
    	end
   end

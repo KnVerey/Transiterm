@@ -30,7 +30,7 @@ group :doc do
 end
 
 group :development, :test do
-	gem 'rspec-rails'
+	gem 'rspec-rails', '~> 2.14'
 	gem 'factory_girl_rails', '~> 4.3.0'
 	gem 'pry-rails'
 	gem 'pry-byebug'
@@ -42,7 +42,7 @@ end
 
 gem 'simplecov', :require => false, :group => :test
 
-gem 'sorcery'
+gem 'sorcery', '0.8.5'
 gem 'figaro'
 gem 'pg_search'
 gem 'kaminari', '~> 0.15'

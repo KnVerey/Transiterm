@@ -46,6 +46,7 @@ Spork.prefork do
     # the seed, which is printed after each run.
     #     --seed 1234
     config.order = "random"
+    config.infer_spec_type_from_file_location!
   end
 end
 

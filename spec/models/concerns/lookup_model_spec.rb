@@ -32,7 +32,7 @@ shared_examples_for "lookup_model" do
 
   it "has an instance method #orphaned? that returns boolean for whether any records are associated with it" do
   	lookup_object.save
-  	expect(lookup_object.orphaned?).to be_true
+  	expect(lookup_object.orphaned?).to be true
   end
 
 end

@@ -13,11 +13,18 @@ describe UsersController do
 
   describe "GET new" do
     it "is available to logged out users" do
+      skip 'user creation disabled'
       get :new
       expect(response.status).to eq(200)
     end
 
+    it "is not available" do
+      get :new
+      expect(response).to redirect_to(login_path)
+    end
+
     it "assigns a new user as @user" do
+      skip 'user creation disabled'
       get :new
       assigns(:user).should be_a_new(User)
     end
@@ -60,30 +67,39 @@ describe UsersController do
 
   describe "POST create" do
     describe "with valid params" do
+      it "is not available" do
+        get :new
+        expect(response).to redirect_to(login_path)
+      end
 
       it "creates a new User" do
+        skip 'user creation disabled'
         expect {
           post :create, user: valid_attributes
         }.to change(User, :count).by(1)
       end
 
       it "saves the new user to the db" do
+        skip 'user creation disabled'
         post :create, user: valid_attributes
         assigns(:user).should be_a(User)
         assigns(:user).should be_persisted
       end
 
       it "does not log in the new user" do
+        skip 'user creation disabled'
         post :create, user: valid_attributes
-        expect(controller.current_user).to be_false
+        expect(controller.current_user).to be false
       end
 
       it "redirects to the login page" do
+        skip 'user creation disabled'
         post :create, user: valid_attributes
         response.should redirect_to("/login")
       end
 
       it "alerts user to check for activation email" do
+        skip 'user creation disabled'
         post :create, user: valid_attributes
         expect(flash[:success]).to match(/email/i)
       end
@@ -91,6 +107,7 @@ describe UsersController do
 
     describe "with invalid params" do
       it "does not allow creation without password and confirmation" do
+        skip 'user creation disabled'
         bad_user = { first_name: "Test", last_name: "Test", email: "test@gmail.com", password: "password1" }
         User.any_instance.stub(:save).and_return(false)
         post :create, user: bad_user
@@ -99,12 +116,14 @@ describe UsersController do
       end
 
       it "assigns a newly created but unsaved user as @user" do
+        skip 'user creation disabled'
         User.any_instance.stub(:save).and_return(false)
         post :create, user: { email: "invalid value" }
         assigns(:user).should be_a_new(User)
       end
 
       it "re-renders the 'new' template" do
+        skip 'user creation disabled'
         User.any_instance.stub(:save).and_return(false)
         post :create, user: { "email" => "invalid value" }
         response.should render_template("new")
@@ -191,7 +210,7 @@ describe UsersController do
 
       it "redirects to the home page" do
         delete :destroy, {:id => person.to_param}
-        response.should redirect_to("/home")
+        response.should redirect_to("/")
       end
     end
   end
@@ -203,11 +222,13 @@ describe UsersController do
 
     describe "with a valid token" do
       it "logs the user in" do
+        skip 'user creation disabled'
         get :activate, {:id => @activate_me.activation_token}
-        expect(controller.current_user).to_not be_false
+        expect(controller.current_user).to_not be false
       end
 
       it "redirects to the query page" do
+        skip 'user creation disabled'
         get :activate, {:id => @activate_me.activation_token}
         expect(response).to redirect_to("/query")
       end
@@ -215,12 +236,14 @@ describe UsersController do
 
     describe "with invalid token" do
       it "alerts the user of a problem with token" do
+        skip 'user creation disabled'
         User.any_instance.stub(:load_from_activation_token).and_return(false)
         get :activate, {id: "invalid_id"}
         expect(flash[:alert]).to match(/token/i)
       end
 
       it "redirects to the login screen" do
+        skip 'user creation disabled'
         User.any_instance.stub(:load_from_activation_token).and_return(false)
         get :activate, {id: "invalid_id"}
         expect(response).to redirect_to("/login")
@@ -235,11 +258,13 @@ describe UsersController do
 
     describe "with a valid token" do
       it "logs the user in" do
+        skip 'user creation disabled'
         get :unlock, {:id => @unlock_me.unlock_token}
-        expect(controller.current_user).to_not be_false
+        expect(controller.current_user).to_not be false
       end
 
       it "redirects to the query page" do
+        skip 'user creation disabled'
         get :unlock, {:id => @unlock_me.unlock_token}
         expect(response).to redirect_to("/query")
       end
@@ -247,12 +272,14 @@ describe UsersController do
 
     describe "with invalid token" do
       it "alerts the user of a problem with token" do
+        skip 'user creation disabled'
         User.any_instance.stub(:load_from_unlock_token).and_return(false)
         get :unlock, {id: "invalid_id"}
         expect(flash[:alert]).to match(/token/i)
       end
 
       it "redirects to the login screen" do
+        skip 'user creation disabled'
         User.any_instance.stub(:load_from_unlock_token).and_return(false)
         get :unlock, {id: "invalid_id"}
         expect(response).to redirect_to("/login")

@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   # skip_before_filter :require_login, only: [:new, :create, :activate, :unlock]
+  skip_after_filter :register_last_activity_time_to_db, only: :destroy
 
   layout "pages", only: [:new, :create, :destroy]
 

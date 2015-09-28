@@ -15,9 +15,9 @@ describe User do
   end
 
   it 'should have default active languages set' do
-    expect(person.french_active).to be_true
-    expect(person.english_active).to be_true
-    expect(person.spanish_active).to be_false
+    expect(person.french_active).to be true
+    expect(person.english_active).to be true
+    expect(person.spanish_active).to be false
   end
 
   describe "toggle_language" do
@@ -25,7 +25,7 @@ describe User do
     it "toggles the language specified as arg" do
       user = FactoryGirl.build(:active_user, french_active: true)
       user.toggle_language("french")
-      expect(user.french_active).to be_false
+      expect(user.french_active).to be false
     end
 
     it "persists the change" do
@@ -38,7 +38,7 @@ describe User do
   describe "language_statuses" do
     it "returns a hash with three items" do
       user = FactoryGirl.build(:user, french_active: true, english_active: false, spanish_active: false)
-      expect(user.language_statuses.kind_of? Hash).to be_true
+      expect(user.language_statuses.kind_of? Hash).to be true
       expect(user.language_statuses.length).to eq(3)
     end
 

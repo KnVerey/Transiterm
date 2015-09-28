@@ -9,6 +9,7 @@ describe PagesController do
 		end
 
 		it 'should redirect when logged in' do
+			skip 'login currently disabled'
 			user = FactoryGirl.create(:active_user)
 			login_user(user)
 
@@ -18,20 +19,33 @@ describe PagesController do
 		end
 	end
 
-	describe "GET access" do
-		it "should render access template when no current_user" do
-			get :msaccess
-			expect(response).to render_template("msaccess")
+	describe "GET features" do
+		it "should render features template when no current_user" do
+			get :features
+			expect(response).to render_template("features")
 		end
 
-		it "should render access template when logged in" do
+		it "should render features template when logged in" do
 			user = FactoryGirl.create(:active_user)
 			login_user(user)
 
-			get :msaccess
+			get :features
 
-			expect(response).to render_template("msaccess")
+			expect(response).to render_template("features")
 		end
 	end
 
+	describe "GET v2" do
+		it "should render v2 template when no current_user" do
+			get :v2
+			expect(response).to render_template("v2")
+		end
+	end
+
+	describe "GET download" do
+		it "should render download template when no current_user" do
+			get :download
+			expect(response).to render_template("download")
+		end
+	end
 end
